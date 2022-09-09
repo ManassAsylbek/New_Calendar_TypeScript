@@ -9,7 +9,12 @@
     border-radius: 2px;
     content: '';
 }
+.miniCalendar{
+    visibility: hidden;
+    background: transparent;
+    z-index: 1;
 
+}
 
 .calendarBar/*.ant-picker-date-panel*/{
     position: absolute!important;

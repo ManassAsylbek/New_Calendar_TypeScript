@@ -5,7 +5,11 @@ import logoColendar from "../../../Media/icons/logoColendar.svg"
 import addMarker from "../../../Media/icons/addMarker.svg"
 import {Toaster} from "react-hot-toast";
 import MiniCalendar from "../MiniCalendar/MiniCalendar";
+import {markerAPI} from "../../../services/markerServices";
 const Sidebar = () => {
+
+    const {isLoading,error,data:markers} = markerAPI.useFetchAllMarkersQuery(10)
+    const [createMarker,{}] = markerAPI.useCreateMarkersMutation()
     return (
         <div className={style.sidebar}>
             <div className={style.logo}>
@@ -27,11 +31,13 @@ const Sidebar = () => {
                     <img src={addMarker} alt=""/></button>
             </div>
             <ul>
-               {/* {props.markersDate.map(m => <div key={m.id} className={style.mark}
+                {isLoading && <h1>loading</h1>}
+                {error && <h1>error</h1>}
+                {markers && markers.map(m => <div key={m.id} className={style.mark}
                                                  onClick={() =>{}}>
                     <div style={{backgroundColor: m.color}}></div>
                     <span>{m.name}</span>
-                </div>)}*/}
+                </div>)}
             </ul>
 
             <Toaster

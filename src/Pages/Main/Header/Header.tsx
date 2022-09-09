@@ -5,45 +5,39 @@ import rightArrow from "../../../Media/icons/right_arrow.svg"
 import search_icon from "../../../Media/icons/Search.svg"
 import bell from "../../../Media/icons/bell.svg"
 import avatar from "../../../Media/images/avatar-7.jpg"
-import {useAppDispatch, useAppSelector} from "../../../hooks/redux";
+import {useAppSelector} from "../../../hooks/redux";
 import moment from "moment";
-import {dateSlice} from "../../../store/reducer/dateSlice";
+
+import {useMomentDate} from "../../../hooks/momentDate";
 
 
 const Header = () => {
 
-    const dispatch = useAppDispatch()
-    const {addDate} = dateSlice.actions
-    const {date} = useAppSelector(state => state.dateSlice)
+    const {format} = useAppSelector(state => state.dateSlice)
 
-    const dateDay = moment(date).format('DD MMMM YYYY - dddd')
+/*    const dateDay = moment(date).format('DD MMMM YYYY - dddd')*/
 
-    const todayDate = () => {
-        dispatch(addDate(moment(new Date())))
-    }
+    const {nextDate,prevDate,todayDate,setValue}=useMomentDate()
 
     return (
         <div className={style.header}>
             <div className={style.left}>
                 <button className={style.today} onClick={todayDate}>Сегодня
                 </button>
-                <select className={style.day} id="" onChange={() => {
-                }}>
+                <select className={style.day} id="" onChange={setValue}>
                     <option value="day">День</option>
                     <option value="week">Неделя</option>
                     <option value="month">Месяц</option>
                 </select>
-                <button className={style.btnArrowLeft} onClick={() => {
-                }}><img src={leftArrow} alt="стрелка влево"/>
+                <button className={style.btnArrowLeft} onClick={prevDate}>
+                    <img src={leftArrow} alt="стрелка влево"/>
                 </button>
-                <button className={style.btnArrowRight} onClick={() => {
-                }}><img src={rightArrow} alt="стрелка вправо"/>
+                <button className={style.btnArrowRight} onClick={nextDate}>
+                    <img src={rightArrow} alt="стрелка вправо"/>
                 </button>
-                <span className={style.date}>{dateDay}</span>
+                <span className={style.date}>{format}</span>
 
             </div>
-
-
             <div className={style.right}>
                 <button className={style.search}
                         onClick={() => {

@@ -1,0 +1,118 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.week {
+    background: #FFFFFF;
+}
+
+.title {
+    display: grid;
+    grid-template-columns: 72px 1fr;
+    height: 40px;
+    background: #4B84F4;
+    border-bottom: 1px solid rgba(35, 35, 35, .1);
+
+}
+
+.logoTime {
+    display: grid;
+    align-items: center;
+    justify-self: center;
+}
+
+.weekNumber{
+    display: flex;
+    align-items: center;
+}
+.weekItem{
+    width: 100%;
+    display: grid;
+    align-items: center;
+    border-left: 1px solid rgba(35, 35, 35, .1);
+    padding: 0 16px;
+    color: #ffffff;
+}
+
+.weekItem h2 {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.weekItem span {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 22px;
+
+    color: #FFFFFF;
+}
+
+.times {
+    display: grid;
+    grid-template-columns: 72px 1fr;
+    overflow-y: auto;
+    height: calc(100vh - 112px);
+}
+
+/*убираете скрол
+*/
+.times {
+    overflow: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.times::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+
+.times div {
+    height: 72px;
+    border-bottom: 1px solid rgba(35, 35, 35, .1);
+}
+
+.hours div {
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+    color: #2E2E2E;
+}
+.hour_items{
+    width: 100%;
+}
+/*
+.hour_items div {
+    border-left: 1px solid rgba(35, 35, 35, .1);
+}
+
+.hour_items div:hover {
+    background-color: #F9F9F9;
+}*/
+.day_items{
+    display: flex;
+
+}
+.item{
+    width: 100%;
+    border-left: 1px solid rgba(35, 35, 35, .1);
+}
+.item:hover {
+    background-color: #F9F9F9;
+}

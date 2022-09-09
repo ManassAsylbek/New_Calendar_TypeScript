@@ -1,5 +1,6 @@
 import {combineReducers, configureStore} from "@reduxjs/toolkit";
 import dateSlice from "./reducer/dateSlice";
+import {markerAPI} from "../services/markerServices";
 
 
 
@@ -7,7 +8,8 @@ import dateSlice from "./reducer/dateSlice";
 
 
 const rootReducer = combineReducers({
-    dateSlice
+    dateSlice,
+    [markerAPI.reducerPath]:markerAPI.reducer
 })
 
 export const setupStore = () =>{
