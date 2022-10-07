@@ -91,6 +91,7 @@ const EditEvent: FC<NewEventProps> = ({setActive, event, deleteEvent, updateEven
                                 <> {error && <div className={style.error}>{error.message}</div>}
                                     <DatePicker
                                         className={style.DatePicker}
+                                        allowClear={false}
                                         popupClassName="modalDatePickerDrop"
                                         showToday={false}
                                         locale={locale}

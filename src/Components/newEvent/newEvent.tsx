@@ -89,6 +89,7 @@ const NewEvent: FC<NewEventProps> = ({setActive,date,time}) => {
                                 <DatePicker
                                     popupClassName="modalDatePickerDrop"
                                     className={style.DatePicker}
+                                    allowClear={false}
                                     showToday={false}
                                     locale={locale}
                                     mode="date"
