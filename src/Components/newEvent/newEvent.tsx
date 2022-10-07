@@ -12,7 +12,14 @@ import {Controller, SubmitHandler, useForm} from "react-hook-form";
 import {IOption} from "../../Intarface/isShippingField";
 import Input from "../formControl/Input";
 import ReactSelect from 'react-select';
-import {optionAccess, optionMarker, optionRepeat, optionRoom, optionTime} from "../../Constants/option";
+import {
+    optionAccess,
+    optionMarker,
+    optionRepeat,
+    optionRoom,
+    optionTime, SelectStyles,
+    SelectTimeStyles
+} from "../../Constants/option";
 import {getValue} from "../../hooks/getValue";
 import {IEvent} from "../../Intarface/IEvent";
 import {eventAPI} from "../../services/eventServices";
@@ -52,6 +59,8 @@ const NewEvent: FC<NewEventProps> = ({setActive,date,time}) => {
         setActive(false)
     }
 
+
+
     return (
         <div className={style.newEventContent} onClick={e => e.stopPropagation()}>
             <div className={style.header}>
@@ -63,7 +72,7 @@ const NewEvent: FC<NewEventProps> = ({setActive,date,time}) => {
             <form action="javascript:void (0)">
                 <div>
                     <h4>Название</h4>
-                    <Input defaultValue={undefined} label='title' register={register} required
+                    <Input label='title' register={register} required
                            className={style.titleInput}/>
                 </div>
                 <div className={style.date}>
@@ -79,6 +88,7 @@ const NewEvent: FC<NewEventProps> = ({setActive,date,time}) => {
                             render={({field: {onChange, value}, fieldState: {error}}) => (<>
                                 <DatePicker
                                     popupClassName="modalDatePickerDrop"
+                                    className={style.DatePicker}
                                     showToday={false}
                                     locale={locale}
                                     mode="date"
@@ -102,6 +112,7 @@ const NewEvent: FC<NewEventProps> = ({setActive,date,time}) => {
                                         render={({field: {onChange, value}, fieldState: {error}}) => <>
                                             <ReactSelect
                                                 className={style.startTime}
+                                                styles={SelectTimeStyles}
                                                 placeholder={optionTime[0].label}
                                                 options={optionTime}
                                                 value={getValue(value, optionTime)}
@@ -119,6 +130,7 @@ const NewEvent: FC<NewEventProps> = ({setActive,date,time}) => {
                                         defaultValue={endTime}
                                         render={({field: {onChange, value}, fieldState: {error}}) => <>
                                             <ReactSelect
+                                                styles={SelectTimeStyles}
                                                 className={style.endTime}
                                                 placeholder={optionTime[0].label}
                                                 options={optionTime}
@@ -136,6 +148,7 @@ const NewEvent: FC<NewEventProps> = ({setActive,date,time}) => {
                                     }}
                                     render={({field: {onChange, value}, fieldState: {error}}) => <>
                                         <ReactSelect
+                                            styles={SelectStyles}
                                             className={style.endTime}
                                             placeholder={optionRepeat[0].label}
                                             options={optionRepeat}
@@ -185,6 +198,7 @@ const NewEvent: FC<NewEventProps> = ({setActive,date,time}) => {
                                 }}
                                 render={({field: {onChange, value}, fieldState: {error}}) => <>
                                     <ReactSelect
+                                        styles={SelectStyles}
                                         className={style.endTime}
                                         placeholder={optionRoom[0].label}
                                         options={optionRoom}
@@ -206,6 +220,7 @@ const NewEvent: FC<NewEventProps> = ({setActive,date,time}) => {
                                                 }}
                                                 render={({field: {onChange, value}, fieldState: {error}}) => <>
                                                     <ReactSelect
+                                                        styles={SelectStyles}
                                                         className={style.endTime}
                                                         placeholder={markers[0].label}
                                                         options={markers}
@@ -226,6 +241,7 @@ const NewEvent: FC<NewEventProps> = ({setActive,date,time}) => {
                                     }}
                                     render={({field: {onChange, value}, fieldState: {error}}) => <>
                                         <ReactSelect
+                                            styles={SelectStyles}
                                             className={style.endTime}
                                             placeholder={optionAccess[0].label}
                                             options={optionAccess}

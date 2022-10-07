@@ -8,7 +8,7 @@ type InputProps = {
     register: UseFormRegister<IEvent>
     required: boolean
     className:string
-    defaultValue:string |undefined
+    defaultValue?:string |undefined
 };
 
 const Input = ({ label, register, required, className,defaultValue}: InputProps) => (

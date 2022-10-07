@@ -12,5 +12,6 @@ export interface IUser {
     "department": string,
     "position": string,
     "login":loginType,
+    "password"?:string
     "id": number
 }

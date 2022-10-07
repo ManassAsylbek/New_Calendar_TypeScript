@@ -1,13 +1,14 @@
 
-.registration{
+.registration {
 
     display: grid;
-    width:100%;
+    width: 100%;
     height: 100vh;
-    justify-items:center;
+    justify-items: center;
     grid-template-columns: 1fr 1fr;
 }
-.right{
+
+.right {
     width: 100%;
     align-items: center;
     background: #345294;
@@ -18,7 +19,7 @@
 }
 
 
-.title_right{
+.title_right {
     font-style: normal;
     font-weight: 600;
     font-size: 24px;
@@ -26,17 +27,19 @@
     color: #FFFFFF;
     margin-bottom: 32px;
 }
-.left{
+
+.left {
 
     height: 100%;
     display: grid;
     align-content: center;
     width: 408px;
     align-self: center;
-    /*margin-top: 112px;*/
+
 
 }
-.title_left{
+
+.title_left {
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 600;
@@ -48,16 +51,18 @@
     color: #4B84F4;
 
 }
-.addFile{
-    display:flex;
+
+.addFile {
+    display: flex;
     align-items: center;
     cursor: pointer;
     width: 250px;
     margin-bottom: 5px;
     margin-top: 12px;
 }
-.addFile span{
-margin-left:9px;
+
+.addFile span {
+    margin-left: 9px;
 
     font-family: 'Roboto';
     font-style: normal;
@@ -66,23 +71,27 @@ margin-left:9px;
     line-height: 16px;
     display: flex;
     align-items: center;
-    color:#979797
-    /*color: #2E2E2E;
+    color: #979797 /*color: #2E2E2E;
 
     opacity: 0.5;*/
 }
 
-.file{
-display: none;
+.error {
+    color: red;
 }
 
-.inputArea{
+.file {
+    display: none;
+}
+
+.inputArea {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr ;
-    grid-column-gap: 8px ;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    grid-column-gap: 8px;
 }
-.inputArea p{
+
+.inputArea p {
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 300;
@@ -90,47 +99,61 @@ display: none;
     line-height: 16px;
     display: flex;
     align-items: center;
-      color:#979797;
-    margin-top:8px;
+    color: #979797;
+    margin-top: 8px;
     margin-bottom: 8px;
-   /* color: #2E2E2E;
-    opacity: 0.5;*/
+    /* color: #2E2E2E;
+     opacity: 0.5;*/
 }
 
 
-.inputArea input{
+.inputArea input {
     box-sizing: border-box;
     width: 200px;
     height: 40px;
     /*    opacity: 0.1;*/
-    outline:#CBCBCB;
+    outline: #CBCBCB;
 
     border: 1px solid #CBCBCB;
     border-radius: 8px;
     color: black;
     /*color: #444;*/
-    padding:8px 16px;
+    padding: 8px 16px;
 }
-.inputArea .select{
+
+.inputArea.select {
     color: #CBCBCB;
     box-sizing: border-box;
-    width: 200px;
-    height: 40px;
+    /*    width: 200px;*/
+    /* height: 40px;*/
     /*    opacity: 0.1;*/
-    outline:#CBCBCB;
+    outline: #CBCBCB;
 
     border: 1px solid #CBCBCB;
     border-radius: 8px;
 }
-.btn{
+
+.btn {
     margin-top: 16px;
     width: 408px;
     height: 40px;
     background: #0A253F;
     opacity: 0.2;
     border-radius: 8px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 19px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #FFFFFF;
 }
-.link{
+
+.link {
     width: 376px;
     height: 24px;
     font-family: 'Roboto';
