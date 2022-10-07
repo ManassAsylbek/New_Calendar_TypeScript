@@ -1,0 +1,10 @@
+.modalDatePickerDrop{
+    width: 253px;
+    border:1px solid #F0F0F0;
+    padding: 5px;
+    background-color: white;
+
+}
+.modalDatePickerDrop{
+    z-index: 10;
+}

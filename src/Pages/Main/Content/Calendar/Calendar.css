@@ -1,10 +1,24 @@
 * {
     margin: 0;
-position: relative;
+    position: relative;
     padding: 0;
 }
 
-.window{
+.calendar_table tbody {
+    overflow-y: auto!important;
+    height: calc(100vh - 72px)!important;
+    -ms-overflow-style: none!important;
+    scrollbar-width: none!important;
+
+}
+.calendar_table{
+    height: calc(100vh - 72px)!important;
+}
+.ant-picker-calendar-full .ant-picker-panel .ant-picker-calendar-date-content{
+ /*   height: 68px!important;*/
+}
+
+.window {
     background: #979797;
     width: 200px;
     height: 50px;
@@ -15,16 +29,19 @@ position: relative;
     padding: 0;
     list-style: none;
 }
-.markerCalendar{
+
+.markerCalendar {
     background: brown;
     width: 10px;
     height: 10px;
 }
-events label{
-    background: brown!important;
-    width: 10px!important;
+
+events label {
+    background: brown !important;
+    width: 10px !important;
     height: 10px !important;
 }
+
 .events li {
     width: 100%;
     overflow: hidden;
@@ -66,9 +83,23 @@ events label{
 .ant-picker-calendar-full .ant-picker-panel .ant-picker-calendar-date-value {
     padding-left: 8px !important;
 }
-
+.ant-picker-calendar-full .ant-picker-panel .ant-picker-calendar-date{
+    border-top:none !important;
+}
+ant-picker-calendar-full .ant-picker-panel .ant-picker-calendar-date-content
+/*.ant-picker-calendar-full .ant-picker-panel .ant-picker-calendar-date {
+    border: 0;
+    border-radius: 0;
+    border-top: 2px solid #f0f0f0;
+    display: block;
+    margin: 0 4px;
+    padding: 4px 0px 0;
+    transition: background .3s;
+    width: auto;
+}*/
 .ant-picker-calendar-full .ant-picker-panel .ant-picker-calendar-date-content {
     padding-left: 8px !important;
+    height: 1fr;
     width: 1fr !important;
 }
 
@@ -82,7 +113,7 @@ events label{
     font-size: 14px !important;
     line-height: 17px !important;
     padding-left: 16px !important;
-   /* table-layout:fixed!important;*/
+    /* table-layout:fixed!important;*/
     width: 100% !important;
 }
 
@@ -102,7 +133,6 @@ events label{
     width: auto;
 }
 */
-
 
 
 /*.calendar_table .ant-picker-content thead tr th {

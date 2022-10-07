@@ -8,18 +8,11 @@ interface dateState {
     dateFormat: "day" | "week" | "month";
 }
 
-/*interface IFormat_Map {
-    day: string;
-    week: string;
-    month: string;
-}*/
-
 const initialState: dateState = {
     date: moment(new Date()).format('YYYY-MM-DD'),
     format: moment(new Date()).format('DD MMMM YYYY - dddd'),
-    dateFormat: "day"
+    dateFormat: 'day'
 }
-
 
 export const dateSlice = createSlice({
     name: "date",
@@ -27,39 +20,26 @@ export const dateSlice = createSlice({
     reducers: {
         addDate(state, action: PayloadAction<string>) {
             state.date = action.payload;
-          /*  const format_Map = {
-                'day': moment(state.date).format('DD MMMM YYYY - dddd'),
-                'week': `${moment(state.date).startOf("week").format('D')} -  ${moment(state.date).endOf("week").format('D MMMM YYYY')}`,
-                'month': moment(state.date).format('MMMM YYYY')
+
+            if (state.dateFormat === 'day') {
+                state.format = moment(action.payload).format('DD MMMM YYYY - dddd')
             }
-
-            // @ts-ignore
-            state.format = format_Map[action.payload]
-
-*/
-             if (state.dateFormat === 'day') {
-                 state.format= moment(state.date).format('DD MMMM YYYY - dddd')
-             }
-             if (state.dateFormat=== 'week') {
-                 state.format = `${moment(state.date).startOf("week").format('D')} -
-                                  ${moment(state.date).endOf("week").format('D MMMM YYYY')}`
-             }
-             if (state.dateFormat === 'month') {
-                 state.format = moment(state.date).format('MMMM YYYY')
-             }
+            if (state.dateFormat === 'week') {
+                state.format = `${moment(action.payload).startOf("week").format('D')} -
+                                  ${moment(action.payload).endOf("week").format('D MMMM YYYY')}`
+            }
+            if (state.dateFormat === 'month') {
+                state.format = moment(action.payload).format('MMMM YYYY')
+            }
         },
-        changeDateFormat(state, action: PayloadAction<"day" | "week" | "month" | string>) {
-            // @ts-ignore
-            state.dateFormat = action.payload;
-            /* addDate(state.date)*/
-
+        changeDateFormat(state, action: PayloadAction<string>) {
+            if (action.payload === "day")
+                state.dateFormat = "day"
+            if (action.payload === "week")
+                state.dateFormat = "week"
+            if (action.payload === "month")
+                state.dateFormat = "month"
         },
-        changeFormat(state, action: PayloadAction<string | undefined>) {
-
-            state.format = action.payload
-        },
-
-
     }
 })
 

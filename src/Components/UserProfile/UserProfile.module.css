@@ -1,0 +1,148 @@
+
+.newEventContent {
+    width: 288px;
+    height: 290px;
+    position: absolute;
+    right: 24px;
+    top: 56px;
+    padding: 16px;
+    background: #FFFFFF;
+    box-shadow: 0px 2px 25px rgba(136, 136, 136, 0.35);
+    border-radius: 8px;
+
+}
+
+.body {
+    display: grid;
+    grid-template-rows: 1fr;
+    gap: 16px;
+}
+
+.newEventContent h4 {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 17px;
+    display: flex;
+    align-items: center;
+
+    color: rgba(46, 46, 46, 0.5);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 16px;
+
+}
+
+.header h2 {
+    margin: 0;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 19px;
+    line-height: 23px;
+
+    color: #2E2E2E;
+}
+
+.eventBtn {
+    background-color: transparent;
+    border: none;
+}
+
+.titleInput,.place select {
+    padding-left: 16px;
+    width: 100%;
+    height: 40px;
+    border-radius: 8px;
+    border: 1px solid rgba(46, 46, 46, 0.2);
+    outline: none;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    display: flex;
+    align-items: center;
+
+}
+
+.time {
+    display: grid;
+    grid-template-columns: 232px 162px 1fr;
+    gap: 8px;
+    align-items: center;
+}
+
+.select {
+    display: flex;
+}
+
+.select img {
+    margin: 0 3px;
+}
+
+.time select, .modalDatePicker {
+    height: 40px;
+    border: 1px solid rgba(46, 46, 46, 0.2);
+    border-radius: 8px;
+    padding: 0 8px;
+}
+
+.add{
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    margin-bottom: 4px;
+}
+.add button{
+    border:none;
+    background: transparent;
+}
+.add h4{
+    margin-bottom: 0;
+}
+
+.person {
+    width: 100%;
+    height: 88px;
+    border: 1px solid rgba(46, 46, 46, 0.2);
+    border-radius: 8px;
+
+}
+
+.room{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+.room select{
+    width: 100%;
+    height: 40px;
+    border: 1px solid rgba(46, 46, 46, 0.2);
+    border-radius: 8px;
+    padding: 0 8px;
+}
+
+.footer{
+    display: flex;
+    justify-content: end;
+}
+.footer button{
+    width: 184px;
+    height: 40px;
+    background: #4B84F4;
+    border-radius: 10px;
+    outline: none;
+    border:none;
+    ont-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 19px;
+    color: #FFFFFF;
+}

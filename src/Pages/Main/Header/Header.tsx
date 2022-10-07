@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FC, useState} from 'react';
 import style from './Header.module.css'
 import leftArrow from "../../../Media/icons/left_arrow.svg"
 import rightArrow from "../../../Media/icons/right_arrow.svg"
@@ -6,19 +6,24 @@ import search_icon from "../../../Media/icons/Search.svg"
 import bell from "../../../Media/icons/bell.svg"
 import avatar from "../../../Media/images/avatar-7.jpg"
 import {useAppSelector} from "../../../hooks/redux";
-import moment from "moment";
 
 import {useMomentDate} from "../../../hooks/momentDate";
+import Modal from "../../../Modal/modal";
+import Notification from "../../../Components/Notification/Notification";
+import Search from "../../../Components/Search/Search";
+import UserProfile from "../../../Components/UserProfile/UserProfile";
 
 
-const Header = () => {
+const Header: FC = () => {
+
+
+    const [notificationActive, setNotificationActive] = useState(false)
+    const [searchActive, setSearchActive] = useState(false)
+    const [userProfileActive, setUserProfileActive] = useState(false)
+
+    const {nextDate, prevDate, todayDate, setValue} = useMomentDate()
 
     const {format} = useAppSelector(state => state.dateSlice)
-
-/*    const dateDay = moment(date).format('DD MMMM YYYY - dddd')*/
-
-    const {nextDate,prevDate,todayDate,setValue}=useMomentDate()
-
     return (
         <div className={style.header}>
             <div className={style.left}>
@@ -40,20 +45,22 @@ const Header = () => {
             </div>
             <div className={style.right}>
                 <button className={style.search}
-                        onClick={() => {
-                        }}>
+                        onClick={() => setSearchActive(true)}>
                     <img src={search_icon} alt=""/>
                 </button>
                 <button className={style.bell}
-                        onClick={() => {
-                        }}>
+                        onClick={() => setNotificationActive(true)}>
                     <img src={bell} alt=""/>
                 </button>
-                <div className={style.avatar} onClick={() => {
-                }}><img src={avatar} alt=""/>
+                <div className={style.avatar} onClick={() => setUserProfileActive(true)}><img src={avatar} alt=""/>
                 </div>
             </div>
-
+            {notificationActive && <Modal setActive={setNotificationActive} active={notificationActive}
+                                          children={<Notification setActive={setNotificationActive}/>}/>}
+            {searchActive && <Modal setActive={setSearchActive} active={searchActive}
+                                    children={<Search setActive={setSearchActive}/>}/>}
+            {userProfileActive && <Modal setActive={setUserProfileActive} active={userProfileActive}
+                   children={<UserProfile setActive={setUserProfileActive}/>}/>}
         </div>
     );
 };

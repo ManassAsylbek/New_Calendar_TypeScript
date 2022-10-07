@@ -1,0 +1,172 @@
+
+.notification {
+    width: 85vw;
+    height: 80vh;
+
+    padding: 16px;
+    background: #FFFFFF;
+    box-shadow: 0px 2px 25px rgba(136, 136, 136, 0.35);
+    border-radius: 8px;
+
+
+}
+.message{
+    border-bottom: 1px solid rgba(46, 46, 46, 0.08);
+}
+.body {
+    display: grid;
+    grid-template-rows: 1fr;
+    gap: 16px;
+}
+
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 16px;
+
+}
+.header div{
+    display: flex;
+    gap: 8px;
+}
+
+.incoming, .sent {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 17px;
+    line-height: 21px;
+    display: flex;
+    align-items: center;
+    text-decoration:none;
+cursor: pointer;
+    color: rgba(46, 46, 46, 0.5);
+}
+.eventBtn {
+    background-color: transparent;
+    border: none;
+}
+.activated {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 17px;
+    line-height: 21px;
+    display: flex;
+    align-items: center;
+    text-decoration-line: underline;
+
+    color: #2E2E2E;
+}
+.messageHeader h3{
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 16px;
+
+    display: flex;
+    align-items: center;
+
+    color: rgba(75, 132, 244, 0.8);
+
+}
+.eventTitle{
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 17px;
+    display: flex;
+    align-items: center;
+
+    color: #2E2E2E;
+}
+.messageHeader{
+    display: grid;
+    grid-template-columns: 3.2fr 1fr 1fr 1.5fr 1fr 1fr 1.3fr;
+}
+
+.message{
+
+    display: grid;
+    align-items: center;
+    grid-template-columns: 3.2fr 1fr 1fr 1.5fr 1fr 1fr 1.3fr;
+    height: 56px;
+
+}
+.message h3{
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    display: flex;
+    align-items: flex-end;
+
+    color: #2E2E2E;
+}
+
+.btn{
+    display: flex;
+    gap:8px
+}
+.btn button{
+    width: 24px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    box-shadow: 0px 2px 6px rgba(136, 136, 136, 0.35);
+    border-radius: 8px;
+    border: none;
+}
+
+.incomingBody{
+    height: 65vh;
+    overflow-y:auto ;
+
+    -ms-overflow-style: none;
+}
+.incomingBody::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+.choosePerson {
+    width: 128px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #FFFFFF;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.12);
+    border-radius: 10px;
+    overflow: auto;
+    -ms-overflow-style: none;
+    overscroll-behavior: auto;
+}
+.choosePerson::-webkit-scrollbar {
+    width: 2px;
+    height: 2px;
+}
+
+
+
+.chooseAvatar{
+    background: #4B84F4;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.chooseAvatarImg{
+    width: 32px;
+    height: 32px;
+    border-radius: 100%;
+    object-fit: cover
+
+}

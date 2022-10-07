@@ -91,7 +91,7 @@
     color: #2E2E2E;
 }
 
-.hours_items div {
+.hours_items {
     border-left: 1px solid rgba(35, 35, 35, .1);
 }
 

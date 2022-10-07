@@ -1,14 +1,11 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
+import {IMarker} from "../Intarface/IMarker";
 
-interface IMarker {
-    "name": string,
-    "color": string,
-    "id": number
-}
+
 
 export const markerAPI = createApi({
     reducerPath: "markerAPI",
-    baseQuery: fetchBaseQuery({baseUrl: 'http://localhost:5000'}),
+    baseQuery: fetchBaseQuery({baseUrl: 'http://localhost:5000/'}),
     tagTypes: ['Marker'],
     endpoints: (build) => ({
         fetchAllMarkers: build.query<IMarker[],number>({
@@ -30,7 +27,7 @@ export const markerAPI = createApi({
         }),
         updateMarkers: build.mutation<IMarker , IMarker>({
             query: (marker: IMarker ) => ({
-                url: `/markers/${marker.id}`,
+                url: `markers/${marker.id}`,
                 method:"PUT",
                 body: marker
             }),
@@ -38,14 +35,11 @@ export const markerAPI = createApi({
         }),
         deleteMarkers: build.mutation<IMarker , IMarker>({
             query: (marker: IMarker ) => ({
-                url: `/markers/${marker.id}`,
+                url: `markers/${marker.id}`,
                 method:"DELETE",
                 body: marker
             }),
             invalidatesTags:['Marker']
         }),
-
-
-
     })
 })

@@ -1,12 +1,12 @@
-import React from 'react';
+import React, {FC} from 'react';
 import Header from "../Header/Header";
 import style from "./Content.module.css"
 import {useAppSelector} from "../../../hooks/redux";
-import Calendar from "../Calendar/Calendar";
+import Calendar from "./Calendar/Calendar";
 import Day from "./Day/Day";
 import Week from "./Week/Week";
 
-const Content = () => {
+const Content:FC = () => {
     const  {dateFormat} = useAppSelector(state => state.dateSlice)
     return (
         <div className={style.content}>

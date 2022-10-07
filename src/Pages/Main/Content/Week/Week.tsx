@@ -1,70 +1,105 @@
-import React, {useState} from 'react';
+import React, {FC, useState} from 'react';
 import style from "../Week/Week.module.css";
 import logoTime from "../../../../Media/icons/logoTime.svg";
 import {useWeekDate} from "../../../../hooks/weekHooks";
+import Event from "../Event/Event";
+import Modal from "../../../../Modal/modal";
+import EditEvent from "../../../../Components/EditEvent/EditEvent";
+import {times} from "../../../../Constants/constants";
+import {IEvent} from "../../../../Intarface/IEvent";
+import NewEvent from "../../../../Components/newEvent/newEvent";
+import {useAppDispatch, useAppSelector} from "../../../../hooks/redux";
+import {dateSlice} from "../../../../store/reducer/dateSlice";
+import {eventAPI} from "../../../../services/eventServices";
+import {toast} from "react-hot-toast";
 
-const times=[
-    {id:1,  time:"09:00" },
-    {id:2,  time:"10:00" },
-    {id:3,  time:"11:00" },
-    {id:4,  time:"12:00" },
-    {id:5,  time:"13:00" },
-    {id:6,  time:"14:00" },
-    {id:7,  time:"15:00" },
-    {id:8,  time:"16:00" },
-    {id:9,  time:"17:00" },
-    {id:10, time:"18:00" }
-]
 
-const Week = () => {
+const Week: FC = () => {
 
-    const [events, setEvents] = useState([])
+    const {date} = useAppSelector(state => state.dateSlice)
 
-const {wd,wno} = useWeekDate()
+    const [eventActive, setEventActive] = useState(false)
+    const [editEventActive, setEditEventActive] = useState(false)
+    const [event, setEvent] = useState<IEvent | undefined>()
+    const [timeEvent, setTimeEvent] = useState<string>()
 
+    const {wd, wno,} = useWeekDate()
+    const dispatch = useAppDispatch()
+    const {addDate} = dateSlice.actions
+
+    const [deleteEvent, {isSuccess: deleteEventSuccess}] = eventAPI.useDeleteEventsMutation()
+    const [updateEvent, {
+        isSuccess: updateEventSuccess,
+        isError: updateEventError,
+        isLoading: updateEventLoading
+    }] = eventAPI.useUpdateEventsMutation()
+
+
+    const setDate = (time:string,date:string) => {
+        dispatch(addDate( date))
+        setTimeEvent(time)
+    }
 
     return (
-        <div className={style.week}>
-            <div className={style.title}>
-                <div className={style.logoTime}><img src={logoTime} alt=""/></div>
-                <div className={style.weekNumber}>
-                    {wno.map((n, i) => <div className={style.weekItem}>
-                        <h2>{n.d}</h2>
-                        <span>{wd[i]}</span></div>)}
+        <>
+            <div className={style.week}>
+                <div className={style.title}>
+                    <div className={style.logoTime}><img src={logoTime} alt=""/></div>
+                    <div className={style.weekNumber}>
+                        {wno.map((n, i) => <div className={style.weekItem} key={n.id}>
+                            <h2>{n.d}</h2>
+                            <span>{wd[i]}</span></div>)}
+                    </div>
                 </div>
-            </div>
-            <div className={style.times}>
-                <div className={style.hours}>
-                    {times.map((t) => <div   key={t.id}>{t.time}</div>)}
-                </div>
-                <div className={style.hour_items}>
-                    {
-                        times.map((t) => <div
-                                onClick={() => {}}
-                                className={style.day_items} key={t.id}>
-
-                                {
-                                    wno.map(n => <div key={n} onClick={()=>{}}
-                                                      className={style.item}>
-                                            <div>
-                                                {/*<Event date={n.date} time={t.time} events={events}
-                                                       setEditActive={props.setEditActive}
-                                                       setEventValue={props.setEventValue}
-                                                       setEventActive={props.setEventActive}
-                                                       setInfoActive={props.setInfoActive}
-                                                       setLocationInfo={props.setLocationInfo}
-                                                />*/}
+                <div className={style.times}>
+                    <div className={style.hours}>
+                        {times.map((t) => <div key={t.id}>{t.time}</div>)}
+                    </div>
+                    <div className={style.hour_items}>
+                        {
+                            times.map((t) => <div key={t.id}
+                                                  onClick={() => {
+                                                  }}
+                                                  className={style.day_items}>
+                                    {
+                                        wno.map(n => <div key={n.id} onClick={() => setDate(t.time, n.date)}
+                                                          className={style.item}>
+                                                <div>
+                                                    <Event
+                                                        setEditEvent={setEditEventActive}
+                                                        setEventActive={setEventActive}
+                                                        setEvent={setEvent}
+                                                        time={t.time}
+                                                        date={n.date}
+                                                    />
+                                                </div>
                                             </div>
-                                        </div>
-                                    )}
-                            </div>
-                        )}
+                                        )}
+                                </div>
+                            )}
 
+                    </div>
                 </div>
+
+
             </div>
 
 
-        </div>
+            {eventActive && <Modal setActive={setEventActive} active={eventActive}
+                                   children={<NewEvent
+                                       time={timeEvent}
+                                       date={date}
+                                       setActive={setEventActive}/>}/>}
+
+            {editEventActive && event && <Modal setActive={setEditEventActive} active={editEventActive}
+                                                children={<EditEvent
+                                                    deleteEvent={deleteEvent}
+                                                    updateEvent={updateEvent}
+                                                    event={event}
+                                                    setActive={setEditEventActive}/>}/>}
+            {deleteEventSuccess && toast.success("Событие успешно удалено")}
+            {updateEventSuccess && toast.success("Событие успешно редактирована")}
+        </>
     );
 };
 

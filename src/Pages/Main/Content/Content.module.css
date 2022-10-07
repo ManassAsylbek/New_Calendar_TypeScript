@@ -10,3 +10,19 @@
     margin-right: 24px;
     background: #FFFFFF;
 }
+
+/*
+.content_calendar{
+
+    overflow-y: auto;
+    height: calc(100vh - 72px);
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+
+
+.content_calendar::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}*/

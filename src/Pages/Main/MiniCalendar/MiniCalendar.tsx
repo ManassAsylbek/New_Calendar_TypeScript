@@ -9,9 +9,6 @@ import {dateSlice} from "../../../store/reducer/dateSlice";
 import moment from "moment";
 
 
-
-
-
 const MiniCalendar: React.FC = () => {
     const dispatch = useAppDispatch()
     const {addDate} = dateSlice.actions
@@ -20,17 +17,16 @@ const MiniCalendar: React.FC = () => {
 
     const onChange: DatePickerProps['onChange'] = (date, dateString) => {
 
-        dispatch(addDate(dateString))
+        dispatch(addDate( moment(date).format('YYYY-MM-DD')))
     };
-
 
     return (
         <DatePicker
             value={moment(date)}
             onChange={onChange}
+            onPanelChange={onChange}
             className = "miniCalendar"
             popupClassName="calendarBar"
-            /*     ClassName="calendarSitebar"*/
             showToday={false}
             locale={locale}
             open={true}

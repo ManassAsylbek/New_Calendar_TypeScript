@@ -1,0 +1,153 @@
+.Content {
+    width: 632px;
+    height: 542px;
+    padding: 16px;
+    background: #FFFFFF;
+    box-shadow: 0px 2px 25px rgba(136, 136, 136, 0.35);
+    border-radius: 8px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 16px;
+
+}
+
+.eventBtn {
+    background-color: transparent;
+    border: none;
+}
+
+.header h2 {
+    margin: 0;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 19px;
+    line-height: 23px;
+    color: #2E2E2E;
+}
+
+.searchInput {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 40px;
+    border: 1px solid rgba(46, 46, 46, 0.2);
+    border-radius: 8px;
+    padding: 0 16px;
+    margin-bottom: 5px;
+}
+
+.searchInput img {
+    width: 14px;
+    margin-right: 6px;
+}
+
+.searchInput input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+}
+
+.person {
+    display: grid;
+    align-items: center;
+    cursor:pointer;
+    grid-template-columns:50px 1.2fr 1fr 1fr;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(46, 46, 46, 0.08);
+}
+
+.avatar {
+    width: 42px;
+    height: 42px;
+    background: #4B84F4;
+    padding: 2px;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.avatarImg{
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+    margin: 2px;
+    object-fit:cover;
+}
+
+.name{
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 17px;
+    display: flex;
+    align-items: center;
+
+    color: #2E2E2E;
+}
+.redClose{
+    position: absolute;
+    top:0;
+    right: -6px;
+    width: 18px;
+    cursor:pointer;
+}
+
+
+.footer {
+    display: flex;
+    justify-content: end;
+}
+
+.footer button {
+    width: 184px;
+    height: 40px;
+    background: #4B84F4;
+    border-radius: 10px;
+    outline: none;
+    border: none;
+    ont-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 19px;
+    color: #FFFFFF;
+}
+
+.choosePerson {
+    height: 46px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.chooseAvatar{
+    width: 36px;
+    height: 36px;
+    background: #4B84F4;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.chooseAvatarImg{
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+    object-fit: cover
+
+}
+.body {
+    height: 344px;
+    overflow: auto;
+    -ms-overflow-style: none;
+}
+.body::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}

@@ -3,38 +3,41 @@ import {dateSlice} from "../store/reducer/dateSlice";
 import {useAppDispatch, useAppSelector} from "./redux";
 import React, {useState} from "react";
 
+type funcType = () => void
 
-export const useMomentDate =() =>{
-    const {date,dateFormat,} = useAppSelector(state => state.dateSlice)
+interface IMomentDate {
+    (): {
+        todayDate: funcType;
+        nextDate: funcType;
+        prevDate: funcType;
+        setValue: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+    }
+}
 
-    const [dateDay,setDateDay]=useState(date)
+export const useMomentDate:IMomentDate = () => {
+    const {date, dateFormat} = useAppSelector(state => state.dateSlice)
 
     const dispatch = useAppDispatch()
 
     const {addDate, changeDateFormat} = dateSlice.actions
 
 
-
-    const todayDate = () => {
-        setDateDay(moment(new Date()).format("YYYY-MM-DD"))
-        dispatch(addDate(dateDay))
-    }
-    const nextDate = () => {
-        setDateDay(moment(date).add(1, dateFormat).format("YYYY-MM-DD"))
-        dispatch(addDate(dateDay))
+    const todayDate:funcType = () => {
+        dispatch(addDate(moment(new Date()).format("YYYY-MM-DD")))
     }
 
-    const prevDate = () => {
-        setDateDay(moment(date).subtract(1, dateFormat).format("YYYY-MM-DD"))
-        dispatch(addDate(dateDay))
+    const nextDate:funcType = () => {
+        dispatch(addDate(moment(date).add(1, `${dateFormat}`).format("YYYY-MM-DD")))
     }
 
-    const setValue = (e:React.ChangeEvent<HTMLSelectElement>) => {
+    const prevDate:funcType = () => {
+        dispatch(addDate(moment(date).subtract(1,`${dateFormat}`).format("YYYY-MM-DD")))
+    }
+
+    const setValue:(e: React.ChangeEvent<HTMLSelectElement>)=>void= (e) => {
         dispatch(changeDateFormat(e.target.value))
         dispatch(addDate(date))
-
     }
 
-
-    return {todayDate,nextDate,prevDate,setValue}
+    return {todayDate, nextDate, prevDate, setValue}
 }

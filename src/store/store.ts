@@ -1,6 +1,8 @@
 import {combineReducers, configureStore} from "@reduxjs/toolkit";
 import dateSlice from "./reducer/dateSlice";
 import {markerAPI} from "../services/markerServices";
+import {eventAPI} from "../services/eventServices";
+import {userAPI} from "../services/userServicse";
 
 
 
@@ -9,12 +11,16 @@ import {markerAPI} from "../services/markerServices";
 
 const rootReducer = combineReducers({
     dateSlice,
-    [markerAPI.reducerPath]:markerAPI.reducer
+    [markerAPI.reducerPath]:markerAPI.reducer,
+    [eventAPI.reducerPath]:eventAPI.reducer,
+    [userAPI.reducerPath]:userAPI.reducer,
 })
 
 export const setupStore = () =>{
     return configureStore({
         reducer:rootReducer,
+        middleware:(getDefaultMiddleware) => getDefaultMiddleware().concat(markerAPI.middleware,
+            eventAPI.middleware,userAPI.middleware)
 
     })
 }
