@@ -67,7 +67,7 @@ const InviteParticipants: FC<InviteParticipantsType> = ({
                         }}>
                             <img src={user.avatar ? user.avatar : avatar} className={style.avatarImg} alt=""/>
                         </div>
-                        <div className={style.name}>{user.name} {user.surname}</div>
+                        <div className={style.name}>{user.name}</div>
                         <div>{user.position}</div>
                         <div>{user.department}</div>
                     </div>)

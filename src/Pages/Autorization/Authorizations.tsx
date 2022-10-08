@@ -1,14 +1,18 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect} from 'react';
 import style from "./Authorization.module.css";
 import {Link} from "react-router-dom";
 import logo from "../../Media/images/logo.svg";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {IUser} from "../../Intarface/IUser";
-import {useAppSelector} from "../../hooks/redux";
+import {useAppDispatch, useAppSelector} from "../../hooks/redux";
 import {Navigate} from "react-router-dom";
+import {getAuth, onAuthStateChanged, signInWithEmailAndPassword} from "firebase/auth";
+import {setUser, setLoader} from "../../store/reducer/authSlices";
 
 const Authorizations: FC = () => {
-    const {isAuth} = useAppSelector(state => state.authSlice)
+
+    const {isAuth, loading} = useAppSelector(state => state.authSlice)
+    const dispatch = useAppDispatch()
 
     const {
         register,
@@ -16,18 +20,38 @@ const Authorizations: FC = () => {
         formState: {errors},
     } = useForm<IUser>({mode: 'onChange'})
 
-    const onSubmit: SubmitHandler<IUser> = (data) => {
+    const auth = getAuth();
 
+    onAuthStateChanged(auth, (user) => {
+        if (user !== null) {
+            dispatch(setUser({
+                email: user.email,
+                id: user.uid,
+                token: user.refreshToken,
+            }))
+            dispatch(setLoader())
+        } else {
+            dispatch(setLoader())
+        }
+    });
+    const onSubmit: SubmitHandler<IUser> = async (data) => {
 
-        const newEvent = {...data, status: {label: null, value: null}, user: 'Darrell Steward'}
-        /*createEvent(newEvent)
-        setActive(false)*/
+        const {user} = await signInWithEmailAndPassword(auth, data.email, data.password)
+        dispatch(setUser({
+            email: user.email,
+            id: user.uid,
+            token: user.refreshToken,
+            department: data.department,
+            position: data.position,
+        }))
     }
 
 
     return (
         <>
+            {loading && <div>loading</div>}
             {isAuth && <Navigate to={'/'}/>}
+            {!loading &&
             <div className={style.authorization}>
                 <form className={style.left} onSubmit={handleSubmit(onSubmit)}>
                     <h1 className={style.title_left}>Вход</h1>
@@ -59,7 +83,7 @@ const Authorizations: FC = () => {
                     <h2 className={style.title_right}>Calendar</h2>
                     <img src={logo} alt=""/>
                 </div>
-            </div>
+            </div>}
         </>
     );
 };

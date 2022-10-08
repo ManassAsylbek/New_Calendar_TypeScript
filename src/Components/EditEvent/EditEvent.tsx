@@ -183,7 +183,7 @@ const EditEvent: FC<NewEventProps> = ({setActive, event, deleteEvent, updateEven
                                         {value && value.map(user =>
                                             <div className={style.chooseAvatar}>
                                                 <img src={user.avatar} alt="" className={style.chooseAvatarImg}/>
-                                                <div className={style.name}>{user.name} {user.surname}</div>
+                                                <div className={style.name}>{user.name}</div>
                                             </div>)
                                         }
                                         {inviteActive && <Modal setActive={setInviteActive}

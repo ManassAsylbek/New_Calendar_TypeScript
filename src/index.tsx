@@ -8,6 +8,7 @@ import {setupStore} from "./store/store";
 import 'antd/dist/antd.css'
 import "antd/es/calendar/style/index.css"
 import "antd/lib/calendar/style/index.css"
+import "./utilits/firebase_utilits"
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement

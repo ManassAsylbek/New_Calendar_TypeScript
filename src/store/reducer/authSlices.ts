@@ -3,30 +3,26 @@ import {loginType} from "../../Intarface/IUser";
 
 interface IAuth {
     avatar:string|null,
-    surname: string|null,
     name: string|null,
-    middleName: string|null,
     email: string|null,
     department: string|null,
     position: string|null,
-    password:string|null,
     isAuth:boolean
+    loading:boolean
     token: string|null
     id: string|null
 }
 
 const initialState:IAuth = {
     avatar:null,
-    surname: null,
     name: null,
-    middleName:null,
     email: null,
     department: null,
     position: null,
-    password:null,
     isAuth:false,
     token: null,
     id: null,
+    loading:true
 }
 
 const authSlice = createSlice({
@@ -37,20 +33,26 @@ const authSlice = createSlice({
             state.email = action.payload.email;
             state.token = action.payload.token;
             state.id = action.payload.id;
-            state.surname = action.payload.surname;
             state.name = action.payload.name;
+            state.department = action.payload.department;
+            state.position = action.payload.position;
             state.isAuth = true;
+        },
+        setLoader:(state)=>{
+            state.loading = false;
         },
         removeUser:(state) =>{
             state.email = null;
             state.token = null;
             state.id = null;
-            state.surname = null;
             state.name = null;
+            state.department = null;
+            state.position=null;
+            state.loading = false;
             state.isAuth = false;
         }
     }
 })
 
-export const {setUser,removeUser} = authSlice.actions
+export const {setUser,removeUser,setLoader} = authSlice.actions
 export default authSlice.reducer

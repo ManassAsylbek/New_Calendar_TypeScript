@@ -87,7 +87,7 @@
 .inputArea {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
     grid-column-gap: 8px;
 }
 
@@ -137,8 +137,9 @@
     margin-top: 16px;
     width: 408px;
     height: 40px;
-    background: #0A253F;
-    opacity: 0.2;
+    background: #345294;
+    /*opacity: 0.2;*/
+    border: none;
     border-radius: 8px;
     font-family: 'Roboto';
     font-style: normal;
