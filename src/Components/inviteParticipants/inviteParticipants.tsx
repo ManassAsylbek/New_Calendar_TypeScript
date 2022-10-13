@@ -65,9 +65,9 @@ const InviteParticipants: FC<InviteParticipantsType> = ({
                     <div className={style.person} onClick={() => addUser(user)}>
                         <div className={style.avatar} onClick={() => {
                         }}>
-                            <img src={user.avatar ? user.avatar : avatar} className={style.avatarImg} alt=""/>
+                            <img src={user.photoURL ? user.photoURL : avatar} className={style.avatarImg} alt=""/>
                         </div>
-                        <div className={style.name}>{user.name}</div>
+                        <div className={style.name}>{user.displayName}</div>
                         <div>{user.position}</div>
                         <div>{user.department}</div>
                     </div>)
@@ -78,7 +78,7 @@ const InviteParticipants: FC<InviteParticipantsType> = ({
                 {
                     newUsers.map(user =>
                         <div className={style.chooseAvatar}>
-                            <img src={user.avatar ? user.avatar : avatar} className={style.chooseAvatarImg} alt=""/>
+                            <img src={user.photoURL ? user.photoURL : avatar} className={style.chooseAvatarImg} alt=""/>
                             <img src={redClose} className={style.redClose} alt="" onClick={() => removeUser(user.id)}/>
                         </div>)
                 }

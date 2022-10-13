@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import style from './Header.module.css'
 import leftArrow from "../../../Media/icons/left_arrow.svg"
 import rightArrow from "../../../Media/icons/right_arrow.svg"
@@ -12,6 +12,8 @@ import Modal from "../../../Modal/modal";
 import Notification from "../../../Components/Notification/Notification";
 import Search from "../../../Components/Search/Search";
 import UserProfile from "../../../Components/UserProfile/UserProfile";
+import {getCurrentUser} from "../../../utilits/firebase_utilits";
+import {isUserAuthenticated} from "../../../store/Auth/ActionCreatorAuth";
 
 
 const Header: FC = () => {
@@ -23,7 +25,7 @@ const Header: FC = () => {
 
     const {nextDate, prevDate, todayDate, setValue} = useMomentDate()
 
-    const {format} = useAppSelector(state => state.dateSlice)
+    const {format,} = useAppSelector(state => state.dateSlice)
     return (
         <div className={style.header}>
             <div className={style.left}>
@@ -60,7 +62,7 @@ const Header: FC = () => {
             {searchActive && <Modal setActive={setSearchActive} active={searchActive}
                                     children={<Search setActive={setSearchActive}/>}/>}
             {userProfileActive && <Modal setActive={setUserProfileActive} active={userProfileActive}
-                   children={<UserProfile setActive={setUserProfileActive}/>}/>}
+                                         children={<UserProfile setActive={setUserProfileActive}/>}/>}
         </div>
     );
 };

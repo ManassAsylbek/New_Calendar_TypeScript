@@ -15,6 +15,7 @@ import {IMarker} from "../../../Intarface/IMarker";
 
 import {useAppSelector} from "../../../hooks/redux";
 import {Toaster} from "react-hot-toast";
+import {getUsersAndDocuments} from "../../../utilits/firebase_utilits";
 
 
 
@@ -37,6 +38,12 @@ const Sidebar:FC = () => {
         setMarker(marker)
         setEditMarkerActive(!editMarkerActive)
     }
+
+    const user= async ()=> {
+        let us = await getUsersAndDocuments()
+        console.log(us)
+    }
+
     return (
         <div className={style.sidebar}>
             <div className={style.logo}>
@@ -52,6 +59,7 @@ const Sidebar:FC = () => {
             </div>
             <div className={style.box}></div>
 
+            <div><button onClick={user}>users</button></div>
             <div className={style.addMarker}><span>Мои метки</span>
                 <button
                     onClick={() => setMarkerActive(!markerActive)}>

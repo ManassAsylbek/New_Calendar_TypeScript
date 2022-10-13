@@ -38,7 +38,7 @@ interface NewEventProps {
 
 const NewEvent: FC<NewEventProps> = ({setActive,date,time}) => {
     const [inviteActive, setInviteActive] = useState(false)
-    const {data: markers, error, isLoading} = markerAPI.useFetchAllMarkersQuery(10)
+ /*   const {data: markers, error, isLoading} = markerAPI.useFetchAllMarkersQuery(10)*/
 
 
     const {setNewUsers} = useFilterPerson()
@@ -175,8 +175,8 @@ const NewEvent: FC<NewEventProps> = ({setActive,date,time}) => {
                                     <div className={style.person}>
                                         {value && value.map(user =>
                                             <div className={style.chooseAvatar}>
-                                                <img src={user.avatar} alt="" className={style.chooseAvatarImg}/>
-                                                <div className={style.name}>{user.name}</div>
+                                                <img src={user.photoURL} alt="" className={style.chooseAvatarImg}/>
+                                                <div className={style.name}>{user.displayName}</div>
                                             </div>)
                                         }
                                         {inviteActive && <Modal setActive={setInviteActive} active={inviteActive}
@@ -214,7 +214,7 @@ const NewEvent: FC<NewEventProps> = ({setActive,date,time}) => {
                 <div className={style.room}>
                     <div>
                         <h4>Календарь</h4>
-                        {markers && <Controller control={control}
+                        {optionMarker && <Controller control={control}
                                                 name="marker"
                                                 rules={{
                                                     required: 'выберите помещение'
@@ -223,9 +223,9 @@ const NewEvent: FC<NewEventProps> = ({setActive,date,time}) => {
                                                     <ReactSelect
                                                         styles={SelectStyles}
                                                         className={style.endTime}
-                                                        placeholder={markers[0].label}
-                                                        options={markers}
-                                                        value={getValue(value, markers)}
+                                                        placeholder={optionMarker[0].label}
+                                                        options={optionMarker}
+                                                        value={getValue(value, optionMarker)}
                                                         onChange={(newValue) => onChange((newValue as IOption).value)}
                                                     />
                                                     {error && <div>{error.message}</div>}

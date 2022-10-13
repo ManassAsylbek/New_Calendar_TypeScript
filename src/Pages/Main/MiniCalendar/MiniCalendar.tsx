@@ -5,7 +5,7 @@ import 'moment/locale/ru';
 import locale from 'antd/es/date-picker/locale/ru_RU';
 import "./MiniCalendar.css"
 import {useAppDispatch, useAppSelector} from "../../../hooks/redux";
-import {dateSlice} from "../../../store/reducer/dateSlice";
+import {dateSlice} from "../../../store/Date/dateSlice";
 import moment from "moment";
 
 

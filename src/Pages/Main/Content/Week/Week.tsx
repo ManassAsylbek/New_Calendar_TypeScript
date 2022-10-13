@@ -9,7 +9,7 @@ import {times} from "../../../../Constants/constants";
 import {IEvent} from "../../../../Intarface/IEvent";
 import NewEvent from "../../../../Components/newEvent/newEvent";
 import {useAppDispatch, useAppSelector} from "../../../../hooks/redux";
-import {dateSlice} from "../../../../store/reducer/dateSlice";
+import {dateSlice} from "../../../../store/Date/dateSlice";
 import {eventAPI} from "../../../../services/eventServices";
 import {toast} from "react-hot-toast";
 

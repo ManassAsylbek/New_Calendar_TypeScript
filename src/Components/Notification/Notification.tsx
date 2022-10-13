@@ -81,7 +81,7 @@ const Notification: FC<NotificationProps> = ({setActive}) => {
                                 {
                                     e.participant.map(user =>
                                         <div className={style.chooseAvatar}>
-                                            <img src={user.avatar ? user.avatar : avatar}
+                                            <img src={user.photoURL ? user.photoURL : avatar}
                                                  className={style.chooseAvatarImg} alt=""/>
                                         </div>)
                                 }

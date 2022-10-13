@@ -1,5 +1,5 @@
 import moment from "moment";
-import {dateSlice} from "../store/reducer/dateSlice";
+import {dateSlice} from "../store/Date/dateSlice";
 import {useAppDispatch, useAppSelector} from "./redux";
 import React, {useState} from "react";
 

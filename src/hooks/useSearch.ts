@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {IUser} from "../Intarface/IUser";
 import {userAPI} from "../services/userServicse";
+import {useAppSelector} from "./redux";
 
 
 interface ISearchType {
@@ -11,12 +12,13 @@ interface ISearchType {
 }
 
 export const useSearch: ISearchType = () => {
-    const {data: users} = userAPI.useFetchAllUsersQuery(10)
+   // const {data: users} = userAPI.useFetchAllUsersQuery(10)
+    const {users}= useAppSelector(state => state.userSlice)
     const [searchUsers, setSearchUsers] = useState<Array<IUser>>(users as IUser[])
 
     const search: (e: React.ChangeEvent<HTMLInputElement> | undefined) => void = (e) => {
         if (e) {
-            users && setSearchUsers(users.filter(user => user.name.toLowerCase().includes(e.target.value)))
+            users && setSearchUsers(users.filter(user => user.displayName.toLowerCase().includes(e.target.value)))
         }
     }
     return {search, searchUsers}

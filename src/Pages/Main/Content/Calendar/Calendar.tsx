@@ -6,7 +6,7 @@ import 'moment/locale/ru';
 import locale from 'antd/es/calendar/locale/ru_RU';
 import moment from "moment";
 import {useAppDispatch, useAppSelector} from "../../../../hooks/redux";
-import {dateSlice} from "../../../../store/reducer/dateSlice";
+import {dateSlice} from "../../../../store/Date/dateSlice";
 import {eventAPI} from "../../../../services/eventServices";
 import {IEvent} from "../../../../Intarface/IEvent";
 import Modal from "../../../../Modal/modal";

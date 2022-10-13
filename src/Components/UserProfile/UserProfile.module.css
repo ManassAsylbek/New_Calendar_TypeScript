@@ -32,9 +32,10 @@
 
 .header {
     display: flex;
-    justify-content: space-between;
-    align-items: start;
-    margin-bottom: 16px;
+    justify-content: center;
+    align-items:center;
+    align-self: center;
+    margin-bottom: 8px;
 
 }
 
@@ -50,99 +51,26 @@
 }
 
 .eventBtn {
+    position:absolute;
+    right: 0;
+    top:0;
+    justify-self: start;
+    display: flex;
+    align-items: start;
     background-color: transparent;
     border: none;
 }
-
-.titleInput,.place select {
-    padding-left: 16px;
-    width: 100%;
-    height: 40px;
-    border-radius: 8px;
-    border: 1px solid rgba(46, 46, 46, 0.2);
-    outline: none;
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 17px;
+.avatar {
+    width: 56px;
+    height: 56px;
+    padding: 0;
     display: flex;
-    align-items: center;
-
-}
-
-.time {
-    display: grid;
-    grid-template-columns: 232px 162px 1fr;
-    gap: 8px;
+    justify-content: center;
     align-items: center;
 }
-
-.select {
-    display: flex;
-}
-
-.select img {
-    margin: 0 3px;
-}
-
-.time select, .modalDatePicker {
-    height: 40px;
-    border: 1px solid rgba(46, 46, 46, 0.2);
-    border-radius: 8px;
-    padding: 0 8px;
-}
-
-.add{
-    display: flex;
-    align-items: end;
-    justify-content: space-between;
-    margin-bottom: 4px;
-}
-.add button{
-    border:none;
-    background: transparent;
-}
-.add h4{
-    margin-bottom: 0;
-}
-
-.person {
+.avatar img{
     width: 100%;
-    height: 88px;
-    border: 1px solid rgba(46, 46, 46, 0.2);
-    border-radius: 8px;
-
-}
-
-.room{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-}
-.room select{
-    width: 100%;
-    height: 40px;
-    border: 1px solid rgba(46, 46, 46, 0.2);
-    border-radius: 8px;
-    padding: 0 8px;
-}
-
-.footer{
-    display: flex;
-    justify-content: end;
-}
-.footer button{
-    width: 184px;
-    height: 40px;
-    background: #4B84F4;
-    border-radius: 10px;
-    outline: none;
-    border:none;
-    ont-family: 'Inter';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 16px;
-    line-height: 19px;
-    color: #FFFFFF;
+    height: 100%;
+    border-radius: 100%;
+    object-fit: cover
 }
