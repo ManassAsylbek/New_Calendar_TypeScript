@@ -2,6 +2,7 @@ import {combineReducers, configureStore} from "@reduxjs/toolkit";
 import dateSlice from "./Date/dateSlice";
 import authSlice from "./Auth/authSlice";
 import userSlice from './User/userSlice'
+import eventSlice from './events/eventSlice'
 
 import {markerAPI} from "../services/markerServices";
 import {eventAPI} from "../services/eventServices";
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
     dateSlice,
     authSlice,
     userSlice,
+    eventSlice,
     [markerAPI.reducerPath]:markerAPI.reducer,
     [eventAPI.reducerPath]:eventAPI.reducer,
     [userAPI.reducerPath]:userAPI.reducer,

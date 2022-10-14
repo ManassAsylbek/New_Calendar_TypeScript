@@ -13,7 +13,7 @@ export interface IAuth {
     "email": string|null,
     "department": string|null,
     "position": string|null,
-    "id": string|undefined,
+    "id": string,
     "token":string|null,
 }
 
@@ -40,7 +40,7 @@ export interface IUser {
 }
 
 export interface IUserSignUp {
-    avatar: string | undefined
+    "photoURL": string | undefined
     /*"avatar":string*/
     "displayName": string,
     "email": string,

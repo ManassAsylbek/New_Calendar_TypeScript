@@ -9,15 +9,20 @@ import {useAppDispatch, useAppSelector} from "./hooks/redux";
 import {isUserAuthenticated} from "./store/Auth/ActionCreatorAuth";
 import {auth} from "./utilits/firebase_utilits";
 import {fetchUser} from "./store/User/ActionCreator";
+import {getEvents} from "./store/events/thunky";
 
 function App() {
     const dispatch = useAppDispatch()
-    const {isLoading} = useAppSelector(state => state.authSlice)
+    const {isLoading, id} = useAppSelector(state => state.authSlice)
+
     useEffect(() => {
         dispatch(isUserAuthenticated())
     }, [])
     useEffect(() => {
         dispatch(fetchUser())
+    }, [])
+    useEffect(() => {
+        dispatch(getEvents(id))
     }, [])
 
     return (

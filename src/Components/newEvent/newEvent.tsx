@@ -23,11 +23,13 @@ import {
 import {getValue} from "../../hooks/getValue";
 import {IEvent} from "../../Intarface/IEvent";
 import {eventAPI} from "../../services/eventServices";
-import {markerAPI} from "../../services/markerServices";
 import InviteParticipants from "../inviteParticipants/inviteParticipants";
 import Modal from "../../Modal/modal";
 import {useFilterPerson} from "../../hooks/filterPerson";
 import {useTime} from "../../hooks/useTime";
+import {useAppDispatch, useAppSelector} from "../../hooks/redux";
+import {setEvents} from "../../store/events/thunky";
+import {createEventsDocumentFromAuth} from "../../utilits/firebase_utilits";
 
 interface NewEventProps {
     setActive: (pt: boolean) => void
@@ -40,10 +42,10 @@ const NewEvent: FC<NewEventProps> = ({setActive,date,time}) => {
     const [inviteActive, setInviteActive] = useState(false)
  /*   const {data: markers, error, isLoading} = markerAPI.useFetchAllMarkersQuery(10)*/
 
-
+    const {user} = useAppSelector(state => state.authSlice)
     const {setNewUsers} = useFilterPerson()
     const {startTime,endTime} =useTime(time)
-
+    const dispatch = useAppDispatch()
     const {
         register,
         handleSubmit,
@@ -52,10 +54,15 @@ const NewEvent: FC<NewEventProps> = ({setActive,date,time}) => {
     } = useForm<IEvent>({mode: 'onChange'})
 
     const [createEvent, {}] = eventAPI.useCreateEventsMutation()
+    const {id} = useAppSelector(state => state.authSlice)
 
-    const onSubmit: SubmitHandler<IEvent> = (data) => {
-        const newEvent = {...data, status: {label: null, value: null}, user: 'Darrell Steward'}
-        createEvent(newEvent)
+    const onSubmit: SubmitHandler<IEvent> = async (data) => {
+       await createEventsDocumentFromAuth(id,data)
+        const newData = {...data,participant:{...data.participant,author:user}}
+   /*     const sdf=await createEventsDocumentFromAuth(id,data)*/
+        dispatch(setEvents(id,data))
+        /*const newEvent = {...data, status: {label: null, value: null}, user: 'Darrell Steward'}
+        createEvent(newEvent)*/
         setActive(false)
     }
 

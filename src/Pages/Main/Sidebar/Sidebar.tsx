@@ -1,6 +1,5 @@
 import React, {FC, useState} from 'react';
 import style from "./SideBar.module.css"
-import {message } from 'antd';
 import logoColendar from "../../../Media/icons/logoColendar.svg"
 import addMarker from "../../../Media/icons/addMarker.svg"
 import MiniCalendar from "../MiniCalendar/MiniCalendar";
@@ -8,40 +7,44 @@ import {markerAPI} from "../../../services/markerServices";
 import Modal from "../../../Modal/modal";
 import NewEvent from "../../../Components/newEvent/newEvent";
 import Marker from "../../../Components/marker/Marker";
-
 import EditMarker from "../../../Components/EditMarker/EditMarker";
-
 import {IMarker} from "../../../Intarface/IMarker";
-
-import {useAppSelector} from "../../../hooks/redux";
+import {useAppDispatch, useAppSelector} from "../../../hooks/redux";
 import {Toaster} from "react-hot-toast";
-import {getUsersAndDocuments} from "../../../utilits/firebase_utilits";
+import {creat, createEventsDocumentFromAuth, getUser, getUsersAndDocuments} from "../../../utilits/firebase_utilits";
+import {getEvents} from "../../../store/events/thunky";
 
 
-
-const Sidebar:FC = () => {
+const Sidebar: FC = () => {
 
     const {date} = useAppSelector(state => state.dateSlice)
-
+    const {user,id} = useAppSelector(state => state.authSlice)
     const [eventActive, setEventActive] = useState(false)
     const [markerActive, setMarkerActive] = useState(false)
     const [editMarkerActive, setEditMarkerActive] = useState(false)
     const [limit, setLImit] = useState(10)
-    const [marker, setMarker] = useState<IMarker>({label:"",value:"",id:0})
+    const [marker, setMarker] = useState<IMarker>({label: "", value: "", id: 0})
 
-    const {data:markers,error,isLoading } = markerAPI.useFetchAllMarkersQuery(limit)
+    const {data: markers, error, isLoading} = markerAPI.useFetchAllMarkersQuery(limit)
 
-  /*  isLoading && message.loading('Action in progress..', 0);
-*/
-
+    /*  isLoading && message.loading('Action in progress..', 0);
+  */
+    const dispatch = useAppDispatch()
     const onEditMarker = (marker: IMarker) => {
         setMarker(marker)
         setEditMarkerActive(!editMarkerActive)
     }
 
-    const user= async ()=> {
-        let us = await getUsersAndDocuments()
-        console.log(us)
+    const getUsers =  async () => {
+        dispatch(getEvents(id))
+
+        //await  creat()
+        //await createEventsDocumentFromAuth(id)
+       //dispatch(getEvents(id))
+        /*let user
+        if (id)
+          user = await getUser(id)*/
+
     }
 
     return (
@@ -59,7 +62,9 @@ const Sidebar:FC = () => {
             </div>
             <div className={style.box}></div>
 
-            <div><button onClick={user}>users</button></div>
+            <div>
+                <button onClick={getUsers}>users</button>
+            </div>
             <div className={style.addMarker}><span>Мои метки</span>
                 <button
                     onClick={() => setMarkerActive(!markerActive)}>
@@ -83,10 +88,10 @@ const Sidebar:FC = () => {
                                        setActive={setEventActive}/>}/>}
 
             {markerActive && <Modal setActive={setMarkerActive} active={markerActive}
-                                    children={<Marker setActive={setMarkerActive} />}/>}
+                                    children={<Marker setActive={setMarkerActive}/>}/>}
             {editMarkerActive && <Modal setActive={setEditMarkerActive} active={editMarkerActive}
-                                  children={<EditMarker marker={marker}
-                                                        setActive={setEditMarkerActive}/>}/>}
+                                        children={<EditMarker marker={marker}
+                                                              setActive={setEditMarkerActive}/>}/>}
             <Toaster
                 position="top-center"
             />

@@ -1,18 +1,14 @@
-
 import {
     createAuthUserWithEmailAndPassword,
     createUserDocumentFromAuth,
-    getCurrentUser,
+    getCurrentUser, getUser,
     signInAuthUserWithEmailAndPassword, signOutUser
 } from "../../utilits/firebase_utilits";
-import {User} from 'firebase/auth';
+
 import {AppDispatch} from "../store";
-import {AuthFetching, AuthFetchingSuccess, AuthFetchingError,removeUser} from "./authSlice"
-import {AdditionalInformation} from "../../Intarface/IFirebase";
-import {IUser, IUserSignUp} from "../../Intarface/IUser";
-
-
-
+import {AuthFetching, AuthFetchingSuccess, AuthFetchingError, removeUser} from "./authSlice"
+import {IUserSignUp} from "../../Intarface/IUser";
+import {getEvents} from "../events/thunky";
 
 
 export const signOut = () => async (dispatch: AppDispatch) => {
@@ -26,34 +22,23 @@ export const signOut = () => async (dispatch: AppDispatch) => {
     }
 }
 
-export const getSnapshotFromUserAuth = (userAuth: User,
-                                        additionalDetails?: AdditionalInformation) => async (dispatch: AppDispatch) => {
-    try {
-        dispatch(AuthFetching())
-        const userSnapshot = await createUserDocumentFromAuth(userAuth, additionalDetails)
-        dispatch(AuthFetchingSuccess({
-            ...userSnapshot.data()
-        }))
-    } catch (e) {
-// @ts-ignore
-        dispatch(AuthFetchingError(e.message))
-    }
-}
-
 export const signUp = (data: IUserSignUp) => async (dispatch: AppDispatch) => {
     try {
         dispatch(AuthFetching())
         const {user} = await createAuthUserWithEmailAndPassword(data.email, data.password)
-        console.log(user)
         const userSnapshot = await createUserDocumentFromAuth(user,
             {displayName: data.displayName, department: data.department, position: data.position})
+        const currentUser = await getUser(user.uid)
+
         dispatch(AuthFetchingSuccess({
-            displayName: data.displayName,
-            department: data.department,
-            position: data.position,
-            email: user.email,
-            id: user.uid,
-            token: user.refreshToken}))
+            displayName: currentUser?.displayName,
+            department: currentUser?.department,
+            position: currentUser?.position,
+            email: currentUser?.email,
+            id: currentUser?.id,
+            token: user.refreshToken
+        }))
+        await getEvents(user.uid)
     } catch (e) {
 // @ts-ignore
         dispatch(AuthFetchingError(e.message))
@@ -64,17 +49,23 @@ export const isUserAuthenticated = () => async (dispatch: AppDispatch) => {
     try {
         dispatch(AuthFetching())
         const user = await getCurrentUser()
-        console.log(user)
-        if (!user) return ;
+        if (!user) {
+            dispatch(AuthFetchingError("error"))
+            return
+        }
+        ;
+        const currentUser = await getUser(user.uid)
+        console.log(user.uid)
+        await getEvents(user.uid)
         dispatch(AuthFetchingSuccess({
-            email: user.email,
-            id: user.uid,
-            token: user.refreshToken,
-            displayName: user.displayName,
-            department: "user.department",
-            position: "user.position",
-        }));
-        await getSnapshotFromUserAuth(user)
+            displayName: currentUser?.displayName,
+            department: currentUser?.department,
+            position: currentUser?.position,
+            email: currentUser?.email,
+            id: currentUser?.id,
+            token: user.refreshToken
+        }))
+
 
     } catch (e) {
 // @ts-ignore
@@ -87,44 +78,23 @@ export const signInWithEmail = (data: { email: string, password: string }) => as
     try {
         dispatch(AuthFetching())
         const {user} = await signInAuthUserWithEmailAndPassword(data.email, data.password)
-        if (user) {
+        /*if (user) {
             await getSnapshotFromUserAuth(user);
-        }
+        }*/
+        const currentUser = await getUser(user.uid)
+
         dispatch(AuthFetchingSuccess({
-            email: user.email,
-            id: user.uid,
-            token: user.refreshToken,
-            displayName: user.displayName,
-            department: "user.department",
-            position: "user.position",
+            displayName: currentUser?.displayName,
+            department: currentUser?.department,
+            position: currentUser?.position,
+            email: currentUser?.email,
+            id: currentUser?.id,
+            token: user.refreshToken
         }))
+        await getEvents(user.uid)
     } catch (e) {
         // @ts-ignore
         dispatch(AuthFetchingError(e.message))
     }
 }
 
-
-/*
-export const fetchAuth = createAsyncThunk(
-    "Auth/fetchAll",
-    async (data: {email:string,password:string},thunkApi) => {
-        try {
-
-            const {user} = await signInAuthUserWithEmailAndPassword(data.email,data.password)
-            return {
-                email: user.email,
-                id: user.uid,
-                token: user.refreshToken,
-                displayName:user.displayName,
-            /!*    department: user.department,
-                position: user.position,*!/
-            }
-            /!*const response = await axios.get<IUser[]>("https://jsonplaceholder.typicode.com/users")*!/
-            /!*return response.data*!/
-        } catch (e) {
-            return thunkApi.rejectWithValue("не удалось загрузить")
-        }
-
-    }
-)*/

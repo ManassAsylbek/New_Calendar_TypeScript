@@ -26,6 +26,7 @@ export const fetchUser = () => async (dispatch: AppDispatch) => {
     try {
         dispatch(usersFetching())
         const users = await getUsersAndDocuments()
+        console.log(users)
         dispatch(usersFetchingSuccess(users))
     } catch (e) {
 // @ts-ignore

@@ -41,9 +41,6 @@ const Registration: FC = () => {
                 }
             }
         }
-        const newEvent = {...data, status: {label: null, value: null}, user: 'Darrell Steward'}
-        /*createEvent(newEvent)
-        setActive(false)*/
     }
     return (<>
             {isLoading

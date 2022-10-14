@@ -8,11 +8,12 @@ export interface IEvent {
     startTime: string
     endTime: string
     repeat: string
+    author:string
     participant: Array<IUser>|undefined
     room: string
     marker: string
     access: string
-    id:number
+    id:number|string
     status:IStatus
 }
 
@@ -23,6 +24,7 @@ export interface IEventAdd{
     startTime: string
     endTime: string
     repeat: string
+    author:string
     participant: Array<IUser>|undefined
     room: string
     marker: string
