@@ -1,16 +1,18 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {IAuth} from "../../Intarface/IUser";
+import {IUser} from "../../Intarface/IUser";
 
 interface IAuthState {
     isAuth:boolean,
     isLoading:boolean,
     error:string,
-    user:IAuth|null,
+    user:IUser|null,
     id:string
+    token:string
 }
 
 const initialState:IAuthState = {
     isAuth:false,
+    token:"",
     isLoading:false,
     error:"",
     user:null,
@@ -18,27 +20,33 @@ const initialState:IAuthState = {
 }
 
 export const authSlice = createSlice({
-    name: 'Auth',
+    name: 'auth',
     initialState,
     reducers: {
         removeUser:(state) =>{
             state.isAuth = false;
             state.user = null
             state.isLoading = false;
+            state.token =""
+
         },
         AuthFetching:(state) =>{
             state.isLoading = true;
         },
-        AuthFetchingSuccess:(state, action: PayloadAction<IAuth>) => {
+        AuthFetchingSuccess:(state, action: PayloadAction<IUser>) => {
             state.isLoading = false;
             state.isAuth = true;
             state.user = action.payload;
-            state.id = action.payload.id;
+            state.id = action.payload.id
         },
         AuthFetchingError: (state, action: PayloadAction<string>) => {
             state.isLoading = false;
             state.error = action.payload
+        },
+        AddToken:(state, action: PayloadAction<string>) => {
+            state.token = action.payload;
         }
+
     },
     /*extraReducers: {
         [signInWithEmail.pending.type]: (state) => {
@@ -57,5 +65,5 @@ export const authSlice = createSlice({
     }*/
 })
 
-export const {removeUser,AuthFetching,AuthFetchingSuccess,AuthFetchingError} = authSlice.actions
+export const {removeUser,AuthFetching,AuthFetchingSuccess,AuthFetchingError,AddToken} = authSlice.actions
 export default authSlice.reducer

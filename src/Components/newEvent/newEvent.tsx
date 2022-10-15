@@ -28,23 +28,24 @@ import Modal from "../../Modal/modal";
 import {useFilterPerson} from "../../hooks/filterPerson";
 import {useTime} from "../../hooks/useTime";
 import {useAppDispatch, useAppSelector} from "../../hooks/redux";
-import {setEvents} from "../../store/events/thunky";
+import {setEvents} from "../../store/events/ACEvents";
 import {createEventsDocumentFromAuth} from "../../utilits/firebase_utilits";
+import {IUser} from "../../Intarface/IUser";
 
 interface NewEventProps {
     setActive: (pt: boolean) => void
-    date:string|undefined
-    time?:string|undefined
+    date: string | undefined
+    time?: string | undefined
 }
 
 
-const NewEvent: FC<NewEventProps> = ({setActive,date,time}) => {
+const NewEvent: FC<NewEventProps> = ({setActive, date, time}) => {
     const [inviteActive, setInviteActive] = useState(false)
- /*   const {data: markers, error, isLoading} = markerAPI.useFetchAllMarkersQuery(10)*/
+    /*   const {data: markers, error, isLoading} = markerAPI.useFetchAllMarkersQuery(10)*/
 
     const {user} = useAppSelector(state => state.authSlice)
     const {setNewUsers} = useFilterPerson()
-    const {startTime,endTime} =useTime(time)
+    const {startTime, endTime} = useTime(time)
     const dispatch = useAppDispatch()
     const {
         register,
@@ -52,20 +53,21 @@ const NewEvent: FC<NewEventProps> = ({setActive,date,time}) => {
         formState,
         control
     } = useForm<IEvent>({mode: 'onChange'})
-
+    let userArray: IUser[] = []
+    if (user)
+        userArray.push(user)
     const [createEvent, {}] = eventAPI.useCreateEventsMutation()
     const {id} = useAppSelector(state => state.authSlice)
 
     const onSubmit: SubmitHandler<IEvent> = async (data) => {
-       await createEventsDocumentFromAuth(id,data)
-        const newData = {...data,participant:{...data.participant,author:user}}
-   /*     const sdf=await createEventsDocumentFromAuth(id,data)*/
-        dispatch(setEvents(id,data))
-        /*const newEvent = {...data, status: {label: null, value: null}, user: 'Darrell Steward'}
-        createEvent(newEvent)*/
+        // await createEventsDocumentFromAuth(id,data)
+
+
+        const newData: IEvent = {...data, participant: [...data.participant, ...userArray]}
+        /*     const sdf=await createEventsDocumentFromAuth(id,data)*/
+        dispatch(setEvents(id, data))
         setActive(false)
     }
-
 
 
     return (
@@ -174,6 +176,7 @@ const NewEvent: FC<NewEventProps> = ({setActive,date,time}) => {
                                 rules={{
                                     required: 'выберите участников'
                                 }}
+                                defaultValue={userArray}
                                 render={({field: {onChange, value}, fieldState: {error}}) => <>
                                     <div className={style.add}>
                                         <h4>Участники ({value && value.length})</h4>
@@ -182,14 +185,16 @@ const NewEvent: FC<NewEventProps> = ({setActive,date,time}) => {
                                     <div className={style.person}>
                                         {value && value.map(user =>
                                             <div className={style.chooseAvatar}>
-                                                <img src={user.photoURL} alt="" className={style.chooseAvatarImg}/>
-                                                <div className={style.name}>{user.displayName}</div>
+                                                <div className={style.Avatar}>
+                                                    <img src={user.photoURL} alt="" className={style.chooseAvatarImg}/>
+                                                    <div className={style.name}>{user.displayName}</div>
+                                                </div>
                                             </div>)
                                         }
                                         {inviteActive && <Modal setActive={setInviteActive} active={inviteActive}
                                                                 children={<InviteParticipants onChange={onChange}
                                                                                               value={value}
-                                                                                             /* users={users}*/
+                                                                    /* users={users}*/
                                                                                               label={"Пригласить"}
                                                                                               setActive={setInviteActive}/>}/>}
 
@@ -222,22 +227,22 @@ const NewEvent: FC<NewEventProps> = ({setActive,date,time}) => {
                     <div>
                         <h4>Календарь</h4>
                         {optionMarker && <Controller control={control}
-                                                name="marker"
-                                                rules={{
-                                                    required: 'выберите помещение'
-                                                }}
-                                                render={({field: {onChange, value}, fieldState: {error}}) => <>
-                                                    <ReactSelect
-                                                        styles={SelectStyles}
-                                                        className={style.endTime}
-                                                        placeholder={optionMarker[0].label}
-                                                        options={optionMarker}
-                                                        value={getValue(value, optionMarker)}
-                                                        onChange={(newValue) => onChange((newValue as IOption).value)}
-                                                    />
-                                                    {error && <div>{error.message}</div>}
-                                                </>
-                                                }
+                                                     name="marker"
+                                                     rules={{
+                                                         required: 'выберите помещение'
+                                                     }}
+                                                     render={({field: {onChange, value}, fieldState: {error}}) => <>
+                                                         <ReactSelect
+                                                             styles={SelectStyles}
+                                                             className={style.endTime}
+                                                             placeholder={optionMarker[0].label}
+                                                             options={optionMarker}
+                                                             value={getValue(value, optionMarker)}
+                                                             onChange={(newValue) => onChange((newValue as IOption).value)}
+                                                         />
+                                                         {error && <div>{error.message}</div>}
+                                                     </>
+                                                     }
                         />}
                     </div>
                     <div>

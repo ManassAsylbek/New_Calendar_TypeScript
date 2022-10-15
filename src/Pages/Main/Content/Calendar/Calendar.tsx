@@ -37,7 +37,8 @@ const App: React.FC = () => {
     const [event, setEvent] = useState<IEvent | undefined>()
     const [limit, setLimit] = useState(100)
 
-    const {data: events} = eventAPI.useFetchAllEventsQuery(limit)
+    //const {data: events} = eventAPI.useFetchAllEventsQuery(limit)
+    const {events} = useAppSelector(state => state.eventSlice)
 
     const monthCellRender = (value: Moment) => {
         const num = getMonthData(value);

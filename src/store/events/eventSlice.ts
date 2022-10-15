@@ -2,21 +2,23 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {IAuth, IUser} from "../../Intarface/IUser";
 import {IEvent} from "../../Intarface/IEvent";
 
-interface UserState {
+interface eventState {
     events: IEvent[]|[];
     isLoading: boolean;
     error: string;
+    trash:number
 }
 
-const initialState: UserState = {
+const initialState: eventState = {
     events: [],
     isLoading: false,
     error: "",
+    trash:0
 
 }
 
 export const eventSlice = createSlice({
-    name: 'user',
+    name: 'event',
     initialState,
     reducers: {
         eventsFetching:(state) =>{
@@ -30,6 +32,9 @@ export const eventSlice = createSlice({
         eventsFetchingError: (state, action: PayloadAction<string>) => {
             state.isLoading = false;
             state.error = action.payload
+        },
+        addEvent:(state) => {
+            state.trash ++
         }
     },
     /*extraReducers: {
@@ -47,5 +52,5 @@ export const eventSlice = createSlice({
         }
     }*/
 })
-export const {eventsFetching,eventsFetchingSuccess,eventsFetchingError}= eventSlice.actions
+export const {eventsFetching,eventsFetchingSuccess,eventsFetchingError,addEvent}= eventSlice.actions
 export default eventSlice.reducer

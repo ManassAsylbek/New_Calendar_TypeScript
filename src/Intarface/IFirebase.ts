@@ -9,5 +9,5 @@ export type AdditionalInformation = {
     displayName?: string;
     position?:string
     department?:string
-    /*photoURL:string*/
+    photoURL:string
 };

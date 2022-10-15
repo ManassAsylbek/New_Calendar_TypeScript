@@ -27,7 +27,8 @@ import {
 import {AdditionalInformation} from "../Intarface/IFirebase";
 import {IAuth, IUser} from "../Intarface/IUser";
 import {IEvent, IEventAdd} from "../Intarface/IEvent";
-import {useAppSelector} from "../hooks/redux";
+import {IMarker} from "../Intarface/IMarker";
+
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -76,32 +77,10 @@ export const addCollectionAndDocuments = async <T extends ObjectToAdd>(
 };
 
 
-export const getUsersAndDocuments = async (): Promise<IUser[]> => {
-    const collectionRef = collection(db, 'users');
-    const q = query(collectionRef);
-    const querySnapshot = await getDocs(collectionRef);
-    return querySnapshot.docs.map(
-        (docSnapshot) => docSnapshot.data() as IUser
-    );
-};
-
-export const getUser = async (uid: string) => {
-    let userDocRef = doc(db, 'users', uid);
-
-    let userSnapshot = await getDoc(userDocRef);
-    /*  if (!userSnapshot.exists()) {
-          if (uid) {
-              userSnapshot = await getDoc(userDocRef);
-          }
-      }*/
-    return userSnapshot.data()
-
-}
-
 export const createUserDocumentFromAuth = async (
     userAuth: User,
     additionalInformation = {} as AdditionalInformation
-): Promise<QueryDocumentSnapshot<IAuth>> => {
+): Promise<void> /*Promise<QueryDocumentSnapshot<IAuth>>*/ => {
     if (auth.currentUser) {
         await updateProfile(auth.currentUser, {
             displayName: additionalInformation.displayName,
@@ -118,7 +97,6 @@ export const createUserDocumentFromAuth = async (
                 displayName,
                 email,
                 id: uid,
-                photoURL: "https://cdn.pixabay.com/photo/2016/01/25/19/48/man-1161337__340.jpg",
                 ...additionalInformation,
             });
         } catch (error) {
@@ -126,7 +104,7 @@ export const createUserDocumentFromAuth = async (
         }
     }
 //нужно возврашать инфо из users текушего пользователя
-    return userSnapshot as QueryDocumentSnapshot<IAuth>;
+    //return userSnapshot as QueryDocumentSnapshot<IAuth>;
 };
 
 export const createAuthUserWithEmailAndPassword = async (
@@ -140,7 +118,6 @@ export const signInAuthUserWithEmailAndPassword = async (
     email: string,
     password: string
 ) => {
-    /* if (!email || !password) return;*/
 
 
     return await signInWithEmailAndPassword(auth, email, password);
@@ -160,7 +137,47 @@ export const getCurrentUser = (): Promise<User | null> => {
         );
     });
 };
+///////users
 
+export const getUsersAndDocuments = async (): Promise<IUser[]> => {
+    const collectionRef = collection(db, 'users');
+    const q = query(collectionRef);
+    const querySnapshot = await getDocs(collectionRef);
+
+    return querySnapshot.docs.map(
+        (docSnapshot) => docSnapshot.data() as IUser
+    );
+};
+
+export const getUser = async (uid: string) => {
+    let userDocRef = doc(db, 'users', uid);
+
+
+    let userSnapshot = await getDoc(userDocRef);
+    return userSnapshot.data()
+
+}
+
+///////marker
+export const getMarkerAndDocuments = async (id: string): Promise<IMarker[]>=> {
+
+    const collectionRef = collection(db, `markers_${id}`);
+    const q = query(collectionRef);
+
+    const querySnapshot = await getDocs(q);
+
+    let Markers: { [x: string]: any; }[] = []
+    querySnapshot.docs.forEach((docSnapshot) => Markers.push({...docSnapshot.data(), id: docSnapshot.id}));
+    return Markers as IMarker[]
+};
+
+export const createMarkersDocumentFromAuth = async (id: string, marker = {} as IMarker) => {
+
+    const eventDocRef = collection(db, `markers_${id}`);
+    await setDoc(doc(eventDocRef), {...marker})
+}
+
+///////event
 
 export const getEventsAndDocuments = async (id: string): Promise<IEvent[]> => {
 
@@ -208,30 +225,30 @@ export const createEventsDocumentFromAuth = async (id: string, event = {} as IEv
     }*/
 }
 export const creat = async () => {
-    console.log( console.log(auth))
+    console.log(console.log(auth))
     const citiesRef = collection(db, "cities");
 
- /*   await setDoc(doc(citiesRef, "SF"), {
-        name: "San Francisco", state: "CA", country: "USA",
-        capital: false, population: 860000,
-        regions: ["west_coast", "norcal"] });
-    await setDoc(doc(citiesRef, "LA"), {
-        name: "Los Angeles", state: "CA", country: "USA",
-        capital: false, population: 3900000,
-        regions: ["west_coast", "socal"] });
-    await setDoc(doc(citiesRef, "DC"), {
-        name: "Washington, D.C.", state: null, country: "USA",
-        capital: true, population: 680000,
-        regions: ["east_coast"] });
-    await setDoc(doc(citiesRef, "TOK"), {
-        name: "Tokyo", state: null, country: "Japan",
-        capital: true, population: 9000000,
-        regions: ["kanto", "honshu"] });
-    await setDoc(doc(citiesRef, "BJ"), {
-        name: "Beijing", state: null, country: "China",
-        capital: true, population: 21500000,
-        regions: ["jingjinji", "hebei"]
-    });*/
+    /*   await setDoc(doc(citiesRef, "SF"), {
+           name: "San Francisco", state: "CA", country: "USA",
+           capital: false, population: 860000,
+           regions: ["west_coast", "norcal"] });
+       await setDoc(doc(citiesRef, "LA"), {
+           name: "Los Angeles", state: "CA", country: "USA",
+           capital: false, population: 3900000,
+           regions: ["west_coast", "socal"] });
+       await setDoc(doc(citiesRef, "DC"), {
+           name: "Washington, D.C.", state: null, country: "USA",
+           capital: true, population: 680000,
+           regions: ["east_coast"] });
+       await setDoc(doc(citiesRef, "TOK"), {
+           name: "Tokyo", state: null, country: "Japan",
+           capital: true, population: 9000000,
+           regions: ["kanto", "honshu"] });
+       await setDoc(doc(citiesRef, "BJ"), {
+           name: "Beijing", state: null, country: "China",
+           capital: true, population: 21500000,
+           regions: ["jingjinji", "hebei"]
+       });*/
 }
 
 

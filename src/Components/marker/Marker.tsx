@@ -24,6 +24,8 @@ const Marker: FC<MarkerProps> = ({setActive}) => {
     } = useForm<IMarker>({mode: 'onChange'})
 
     const onSubmit: SubmitHandler<IMarker> = (data) => {
+
+        console.log(data)
         createMarker(data)
         setActive(false)
     }

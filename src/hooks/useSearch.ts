@@ -13,8 +13,12 @@ interface ISearchType {
 
 export const useSearch: ISearchType = () => {
    // const {data: users} = userAPI.useFetchAllUsersQuery(10)
+    const {id} = useAppSelector(state => state.authSlice)
+
     const {users}= useAppSelector(state => state.userSlice)
-    const [searchUsers, setSearchUsers] = useState<Array<IUser>>(users as IUser[])
+    const filterUsers =users.filter(user => user.id !==id)
+
+    const [searchUsers, setSearchUsers] = useState<Array<IUser>>(filterUsers as IUser[])
 
     const search: (e: React.ChangeEvent<HTMLInputElement> | undefined) => void = (e) => {
         if (e) {

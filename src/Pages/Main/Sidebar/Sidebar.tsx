@@ -12,7 +12,8 @@ import {IMarker} from "../../../Intarface/IMarker";
 import {useAppDispatch, useAppSelector} from "../../../hooks/redux";
 import {Toaster} from "react-hot-toast";
 import {creat, createEventsDocumentFromAuth, getUser, getUsersAndDocuments} from "../../../utilits/firebase_utilits";
-import {getEvents} from "../../../store/events/thunky";
+import {getEvents} from "../../../store/events/ACEvents";
+import {addEvent} from "../../../store/events/eventSlice";
 
 
 const Sidebar: FC = () => {
@@ -36,7 +37,9 @@ const Sidebar: FC = () => {
     }
 
     const getUsers =  async () => {
-        dispatch(getEvents(id))
+
+        dispatch(addEvent())
+        //dispatch(getEvents(id))
 
         //await  creat()
         //await createEventsDocumentFromAuth(id)

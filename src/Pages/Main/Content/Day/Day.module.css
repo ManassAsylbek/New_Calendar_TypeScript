@@ -73,12 +73,13 @@
 }
 
 
-.times div {
+/*.times div {
     height: 72px;
     border-bottom: 1px solid rgba(35, 35, 35, .1);
-}
-
-.hours div {
+}*/
+.hour{
+    height: 72px;
+    border-bottom: 1px solid rgba(35, 35, 35, .1);
     display: grid;
     align-items: center;
     justify-content: center;
@@ -91,8 +92,23 @@
     color: #2E2E2E;
 }
 
+/*.hours div {
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+    color: #2E2E2E;
+}*/
+
 .hours_items {
     border-left: 1px solid rgba(35, 35, 35, .1);
+    height: 72px;
+    border-bottom: 1px solid rgba(35, 35, 35, .1);
 }
 
 .hours_items div:hover {

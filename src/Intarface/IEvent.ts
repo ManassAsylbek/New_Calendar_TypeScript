@@ -9,7 +9,7 @@ export interface IEvent {
     endTime: string
     repeat: string
     author:string
-    participant: Array<IUser>|undefined
+    participant: Array<IUser>
     room: string
     marker: string
     access: string
@@ -25,7 +25,7 @@ export interface IEventAdd{
     endTime: string
     repeat: string
     author:string
-    participant: Array<IUser>|undefined
+    participant: Array<IUser>
     room: string
     marker: string
     access: string

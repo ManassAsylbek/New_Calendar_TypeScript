@@ -4,6 +4,7 @@ import {eventAPI} from "../../../../services/eventServices";
 import {IEvent} from "../../../../Intarface/IEvent";
 import {useFindEvent} from "../../../../hooks/findEventHook";
 import moment from "moment";
+import {useAppSelector} from "../../../../hooks/redux";
 
 
 interface EventItemProps {
@@ -18,7 +19,10 @@ const Event: FC<EventItemProps> = ({time, date, setEditEvent, setEvent, setEvent
 
     const [limit, setLimit] = useState(100)
 
-    const {data: events} = eventAPI.useFetchAllEventsQuery(limit)
+    //const {data: events} = eventAPI.useFetchAllEventsQuery(limit)
+
+    const {events} = useAppSelector(state => state.eventSlice)
+
     const {findEvent} = useFindEvent(time, date)
 
     const getEvent = () => {
@@ -42,9 +46,9 @@ const Event: FC<EventItemProps> = ({time, date, setEditEvent, setEvent, setEvent
                                                         onMouseOut={() => {
                                                         }}>
                     <div style={{background: item.marker}} className={style.marker}></div>
-                    <div className={style.EventItem}
-                    >{item.title}
-                        <div>
+                    <div className={style.EventItem}>
+                        {item.title}
+                        <div className={style.EventStart}>
                             {item.startTime}
                         </div>
                     </div>

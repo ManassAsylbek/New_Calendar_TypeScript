@@ -8,6 +8,7 @@ import {IUser} from "../../Intarface/IUser";
 import {useFilterPerson} from "../../hooks/filterPerson";
 import {useSearch} from "../../hooks/useSearch";
 import {IEvent} from "../../Intarface/IEvent";
+import {useAppSelector} from "../../hooks/redux";
 
 
 interface InviteParticipantsType {
@@ -28,7 +29,9 @@ const InviteParticipants: FC<InviteParticipantsType> = ({
                                                             updateEvent, event
                                                         }) => {
 
-    const {addUser, removeUser, newUsers, setNewUsers} = useFilterPerson()
+    const {id} = useAppSelector(state => state.authSlice)
+
+    const {addUser, removeUser, newUsers, setNewUsers} = useFilterPerson(value)
     const {searchUsers, search} = useSearch()
 
     useEffect(() => {
@@ -79,10 +82,11 @@ const InviteParticipants: FC<InviteParticipantsType> = ({
                     newUsers.map(user =>
                         <div className={style.chooseAvatar}>
                             <img src={user.photoURL ? user.photoURL : avatar} className={style.chooseAvatarImg} alt=""/>
-                            <img src={redClose} className={style.redClose} alt="" onClick={() => removeUser(user.id)}/>
+                            {user.id!==id
+                                ? <img src={redClose} className={style.redClose} alt="" onClick={() => removeUser(user.id)}/>
+                            :<></>}
                         </div>)
                 }
-
             </div>
             <div className={style.footer}>
                 <button onClick={selectPerson}>{label}</button>

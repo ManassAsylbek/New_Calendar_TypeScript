@@ -114,7 +114,7 @@
     border-radius: 8px;
     overflow: auto;
     padding: 8px;
-    gap:1px;
+    gap:3px;
     -ms-overflow-style: none;
 }
 .person::-webkit-scrollbar {
@@ -124,6 +124,14 @@
 
 .chooseAvatar{
     display: flex;
+    align-items: start;
+
+
+}
+.Avatar{
+    display: flex;
+    align-items: center;
+    gap: 7px;
 }
 .chooseAvatarImg{
     width: 32px;

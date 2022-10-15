@@ -53,7 +53,7 @@ const Week: FC = () => {
                 </div>
                 <div className={style.times}>
                     <div className={style.hours}>
-                        {times.map((t) => <div key={t.id}>{t.time}</div>)}
+                        {times.map((t) => <div key={t.id} className={style.hour}>{t.time}</div>)}
                     </div>
                     <div className={style.hour_items}>
                         {

@@ -77,12 +77,12 @@
 }
 
 
-.times div {
+.hours{
+
+}
+.hour{
     height: 72px;
     border-bottom: 1px solid rgba(35, 35, 35, .1);
-}
-
-.hours div {
     display: grid;
     align-items: center;
     justify-content: center;
@@ -94,19 +94,15 @@
     text-align: center;
     color: #2E2E2E;
 }
+
 .hour_items{
     width: 100%;
-}
-/*
-.hour_items div {
-    border-left: 1px solid rgba(35, 35, 35, .1);
-}
 
-.hour_items div:hover {
-    background-color: #F9F9F9;
-}*/
+}
 .day_items{
     display: flex;
+    height: 72px;
+    border-bottom: 1px solid rgba(35, 35, 35, .1);
 }
 .item{
     width: 100%;

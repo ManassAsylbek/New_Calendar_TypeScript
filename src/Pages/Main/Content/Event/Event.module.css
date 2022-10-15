@@ -16,14 +16,18 @@
     /*border: 1px solid #E9E9E9;*/
     border-radius: 6px;
     overflow: hidden;
-    position: relative;
+    /*position: relative;*/
     height: 70px;
 }
 
 .EventItem {
-    display: grid;
+    display:block;
     align-items: center;
     cursor: pointer;
+    padding-right:5px ;
+}
+.EventStart{
+    width: 100%;
 }
 
 .marker {
