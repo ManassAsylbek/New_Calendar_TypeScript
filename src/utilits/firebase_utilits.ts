@@ -22,11 +22,13 @@ import {
     writeBatch,
     query,
     getDocs,
+    deleteDoc,
+    updateDoc,
     QueryDocumentSnapshot,
 } from 'firebase/firestore';
 import {AdditionalInformation} from "../Intarface/IFirebase";
-import {IAuth, IUser} from "../Intarface/IUser";
-import {IEvent, IEventAdd} from "../Intarface/IEvent";
+import {IUser} from "../Intarface/IUser";
+import {IEvent} from "../Intarface/IEvent";
 import {IMarker} from "../Intarface/IMarker";
 
 
@@ -158,12 +160,44 @@ export const getUser = async (uid: string) => {
 
 }
 
-///////marker
-export const getMarkerAndDocuments = async (id: string): Promise<IMarker[]>=> {
+///////update////////////////////////////////////////////////
+export const setUpdateDoc = async (uId:string,docId:string,data:IMarker|IEvent) =>{
+    console.log(uId)
+    const dataDocRef = doc(db, uId,docId);
+    console.log(dataDocRef)
+
+    try{
+        await setDoc(dataDocRef,data)
+        // @ts-ignore
+        //await updateDoc(dataDocRef, data)
+    } catch (err) {
+        alert(err)
+    }
+}
+
+/////////delete/////////////////////////////////////////////
+export const setDeleteDoc = async (uId:string,docId:string) => {
+    await deleteDoc(doc(db, uId, docId));
+}
+
+///////marker///////////////////////////////////////////////
+
+
+export const setDefaultMarker = async (id: string): Promise<void> => {
+    const markerDocRef = doc(db, `markers_${id}`,"default_marker");
+    let markerSnapshot = await getDoc(markerDocRef)
+    if (!markerSnapshot.exists()) {
+        await setDoc(markerDocRef, {
+            label: "рабочий",
+            value: "#445370"
+        })
+    }
+}
+
+export const getMarkerAndDocuments = async (id: string): Promise<IMarker[]> => {
 
     const collectionRef = collection(db, `markers_${id}`);
     const q = query(collectionRef);
-
     const querySnapshot = await getDocs(q);
 
     let Markers: { [x: string]: any; }[] = []
@@ -173,11 +207,27 @@ export const getMarkerAndDocuments = async (id: string): Promise<IMarker[]>=> {
 
 export const createMarkersDocumentFromAuth = async (id: string, marker = {} as IMarker) => {
 
-    const eventDocRef = collection(db, `markers_${id}`);
-    await setDoc(doc(eventDocRef), {...marker})
+    const markerCollRef = collection(db, `markers_${id}`)
+    await setDoc(doc(markerCollRef), {...marker})
+    /*const markerDocRef = doc(db, `markers_${id}`);
+    let userSnapshot = await getDoc(markerDocRef)
+    console.log(userSnapshot.exists())
+    if (!userSnapshot.exists()) {
+
+    }*/
+   /* const q = query(markerCollRef);
+    const querySnapshot = await getDocs(q);
+    if(querySnapshot.empty){
+        await setDoc(doc(markerCollRef), {
+            label: "рабочий",
+            value: "#445370",
+            id: "default"
+        })
+    }*/
+
 }
 
-///////event
+///////event///////////////////////////////////////////////////////////
 
 export const getEventsAndDocuments = async (id: string): Promise<IEvent[]> => {
 
@@ -192,11 +242,11 @@ export const getEventsAndDocuments = async (id: string): Promise<IEvent[]> => {
 };
 
 
-export const createEventsDocumentFromAuth = async (id: string, event = {} as IEventAdd) => {
+export const createEventsDocumentFromAuth = async (id: string, event = {} as IEvent) => {
 
     const eventDocRef = collection(db, `events_${id}`);
     const ev = doc(eventDocRef)
-    await setDoc(doc(eventDocRef), {...event, author: id})
+    await setDoc(doc(eventDocRef), {...event})
 
     /*  let userSnapshot = await getDoc(ev);
       if (!userSnapshot.exists()) {

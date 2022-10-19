@@ -36,6 +36,7 @@ const Week: FC = () => {
 
 
     const setDate = (time:string,date:string) => {
+        setEventActive(true)
         dispatch(addDate( date))
         setTimeEvent(time)
     }
@@ -93,8 +94,6 @@ const Week: FC = () => {
 
             {editEventActive && event && <Modal setActive={setEditEventActive} active={editEventActive}
                                                 children={<EditEvent
-                                                    deleteEvent={deleteEvent}
-                                                    updateEvent={updateEvent}
                                                     event={event}
                                                     setActive={setEditEventActive}/>}/>}
             {deleteEventSuccess && toast.success("Событие успешно удалено")}

@@ -1,19 +1,23 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {IAuth, IUser} from "../../Intarface/IUser";
 import {IEvent} from "../../Intarface/IEvent";
+import {IUser} from "../../Intarface/IUser";
 
 interface eventState {
-    events: IEvent[]|[];
-    isLoading: boolean;
-    error: string;
-    trash:number
+    events: IEvent[] | null;
+    successEvent: boolean;
+    isLoadingEvent: boolean;
+    errorEvent: string | null;
+    reloadEvent: number
+    foreigner: IUser|null
 }
 
 const initialState: eventState = {
     events: [],
-    isLoading: false,
-    error: "",
-    trash:0
+    successEvent: false,
+    isLoadingEvent: false,
+    errorEvent: null,
+    reloadEvent: 0,
+    foreigner: null,
 
 }
 
@@ -21,21 +25,29 @@ export const eventSlice = createSlice({
     name: 'event',
     initialState,
     reducers: {
-        eventsFetching:(state) =>{
-            state.isLoading = true;
+        eventsFetching: (state) => {
+            state.isLoadingEvent = true;
+            state.successEvent = false;
+            state.errorEvent = '';
+
         },
-        eventsFetchingSuccess:(state, action: PayloadAction<IEvent[]>) => {
-            state.isLoading = false;
+        eventsFetchingSuccess: (state, action: PayloadAction<IEvent[]>) => {
             state.events = action.payload;
-            state.error = '';
+            state.isLoadingEvent = false;
+            state.successEvent = true;
+            state.errorEvent = '';
         },
         eventsFetchingError: (state, action: PayloadAction<string>) => {
-            state.isLoading = false;
-            state.error = action.payload
+            state.errorEvent = action.payload
+            state.isLoadingEvent = false;
+            state.successEvent = false;
         },
-        addEvent:(state) => {
-            state.trash ++
-        }
+        addEvent: (state) => {
+            state.reloadEvent++
+        },
+        isForeigner: (state,action:PayloadAction<IUser|null>) => {
+            state.foreigner = action.payload
+        },
     },
     /*extraReducers: {
         [fetchUser.pending.type]: (state) => {
@@ -52,5 +64,5 @@ export const eventSlice = createSlice({
         }
     }*/
 })
-export const {eventsFetching,eventsFetchingSuccess,eventsFetchingError,addEvent}= eventSlice.actions
+export const {eventsFetching, eventsFetchingSuccess, eventsFetchingError, addEvent,isForeigner} = eventSlice.actions
 export default eventSlice.reducer

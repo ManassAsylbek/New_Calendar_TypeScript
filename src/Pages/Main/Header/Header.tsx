@@ -4,9 +4,9 @@ import leftArrow from "../../../Media/icons/left_arrow.svg"
 import rightArrow from "../../../Media/icons/right_arrow.svg"
 import search_icon from "../../../Media/icons/Search.svg"
 import bell from "../../../Media/icons/bell.svg"
-import avatar from "../../../Media/images/avatar-7.jpg"
-import {useAppSelector} from "../../../hooks/redux";
-
+import {useAppDispatch, useAppSelector} from "../../../hooks/redux";
+import avatar from "../../../Media/images/avatar.png";
+import {Popover} from 'antd'
 import {useMomentDate} from "../../../hooks/momentDate";
 import Modal from "../../../Modal/modal";
 import Notification from "../../../Components/Notification/Notification";
@@ -14,6 +14,9 @@ import Search from "../../../Components/Search/Search";
 import UserProfile from "../../../Components/UserProfile/UserProfile";
 import {getCurrentUser} from "../../../utilits/firebase_utilits";
 import {isUserAuthenticated} from "../../../store/Auth/ActionCreatorAuth";
+import {isForeigner} from "../../../store/events/eventSlice";
+import {getEvents} from "../../../store/events/ACEvents";
+import {getMarkers} from "../../../store/Marker/ActionCreatorMarker";
 
 
 const Header: FC = () => {
@@ -25,7 +28,23 @@ const Header: FC = () => {
 
     const {nextDate, prevDate, todayDate, setValue} = useMomentDate()
 
-    const {format,} = useAppSelector(state => state.dateSlice)
+    const {format} = useAppSelector(state => state.dateSlice)
+    const {foreigner} = useAppSelector(state => state.eventSlice)
+    const {user, id} = useAppSelector(state => state.authSlice)
+    const [open, setOpen] = useState(false);
+    const dispatch = useAppDispatch()
+
+    const hide = () => {
+        setOpen(false)
+        dispatch(getMarkers(id))
+        dispatch(getEvents(id))
+        dispatch(isForeigner(null))
+    };
+
+    const handleOpenChange = (newOpen: boolean) => {
+        setOpen(newOpen);
+    };
+
     return (
         <div className={style.header}>
             <div className={style.left}>
@@ -50,11 +69,34 @@ const Header: FC = () => {
                         onClick={() => setSearchActive(true)}>
                     <img src={search_icon} alt=""/>
                 </button>
-                <button className={style.bell}
-                        onClick={() => setNotificationActive(true)}>
+                {!foreigner && <button className={style.bell}
+                                       onClick={() => setNotificationActive(true)}>
                     <img src={bell} alt=""/>
-                </button>
-                <div className={style.avatar} onClick={() => setUserProfileActive(true)}><img src={avatar} alt=""/>
+                </button>}
+                {foreigner && <>
+                    <div className={style.foreigner}>
+                        <div className={style.foreignerCall}>Чужой календарь</div>
+                        <div className={style.foreignerName}>{foreigner.displayName}</div>
+                    </div>
+                    <Popover
+                        content={<div className={style.popover}>
+                            <div>{foreigner.displayName}</div>
+                            <button onClick={hide}>Выход</button>
+                        </div>}
+                        trigger="click"
+                        placement="bottomRight"
+                        color="#2E2E2E"
+                        open={open}
+                        onOpenChange={handleOpenChange}
+                    >
+                        <div className={style.avatar}>
+                            <img src={foreigner?.photoURL ? foreigner.photoURL : avatar} alt=""/>
+                        </div>
+                    </Popover>
+                </>
+                }
+                <div className={style.avatar} onClick={() => setUserProfileActive(true)}>
+                    <img src={user?.photoURL ? user.photoURL : avatar} alt=""/>
                 </div>
             </div>
             {notificationActive && <Modal setActive={setNotificationActive} active={notificationActive}

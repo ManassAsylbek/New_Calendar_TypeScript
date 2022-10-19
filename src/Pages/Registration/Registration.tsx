@@ -14,7 +14,7 @@ import {signUp} from "../../store/Auth/ActionCreatorAuth";
 
 const Registration: FC = () => {
     const [correctPass, setCorrectPass] = useState(false)
-    const {isAuth, isLoading, user} = useAppSelector(state => state.authSlice)
+    const {isAuth, isLoadingAuth, user} = useAppSelector(state => state.authSlice)
     const dispatch = useAppDispatch()
     const {
         register,
@@ -43,7 +43,7 @@ const Registration: FC = () => {
         }
     }
     return (<>
-            {isLoading
+            {isLoadingAuth
                 ? <div>loading</div>
                 : isAuth
                     ? <Navigate to={'/'}/>

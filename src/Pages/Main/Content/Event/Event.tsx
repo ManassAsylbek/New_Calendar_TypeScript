@@ -5,6 +5,9 @@ import {IEvent} from "../../../../Intarface/IEvent";
 import {useFindEvent} from "../../../../hooks/findEventHook";
 import moment from "moment";
 import {useAppSelector} from "../../../../hooks/redux";
+import {Popover} from 'antd'
+import PopoverEvent from "../../../../Components/Popover/popoverEvent/PopoverEvent";
+
 
 
 interface EventItemProps {
@@ -17,13 +20,14 @@ interface EventItemProps {
 
 const Event: FC<EventItemProps> = ({time, date, setEditEvent, setEvent, setEventActive}) => {
 
-    const [limit, setLimit] = useState(100)
+    //const [limit, setLimit] = useState(100)
 
     //const {data: events} = eventAPI.useFetchAllEventsQuery(limit)
 
     const {events} = useAppSelector(state => state.eventSlice)
-
+    const {id} = useAppSelector(state => state.authSlice)
     const {findEvent} = useFindEvent(time, date)
+    const {foreigner} = useAppSelector(state => state.eventSlice)
 
     const getEvent = () => {
         if (events)
@@ -36,23 +40,26 @@ const Event: FC<EventItemProps> = ({time, date, setEditEvent, setEvent, setEvent
         setEvent(item)
     }
 
+
     return (
-        <div onClick={getEvent} className={style.Event}>
+        <div  className={style.Event}>
             {
-                findEvent && findEvent.map(item => <div key={item.id} className={style.item}
-                                                        onClick={() => getActive(item)}
-                                                        onMouseEnter={() => {
-                                                        }}
-                                                        onMouseOut={() => {
-                                                        }}>
-                    <div style={{background: item.marker}} className={style.marker}></div>
-                    <div className={style.EventItem}>
-                        {item.title}
-                        <div className={style.EventStart}>
-                            {item.startTime}
+                findEvent && findEvent.map(item => <Popover
+                    color="#FBFCFF" content={() => <PopoverEvent  event={item}/>}
+                    /*placement="right" key={item.id}
+                    open={open}
+                    onOpenChange={handleOpenChange}*/>
+                    <div className={style.item}>
+                        <div style={{background:item.marker, display: "inline-block"}}
+                             className={style.marker}>{/*{item.marker}*/}</div>
+                        <div className={style.EventItem}>
+                            {item.title}
+                            <div className={style.EventStart}>
+                                {item.startTime}
+                            </div>
                         </div>
                     </div>
-                </div>)
+                </Popover>)
             }
         </div>
 

@@ -1,25 +1,25 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {IUser} from "../../Intarface/IUser";
 
-interface UserState {
-    users: IUser[]|[];
+interface searchState {
+    user: IUser[]|null;
     isLoading: boolean;
     error: string;
 }
 
-const initialState: UserState = {
-    users: [],
+const initialState: searchState = {
+    user: null,
     isLoading: false,
     error: "",
 
 }
 
-export const userSlice = createSlice({
-    name: 'user',
+export const searchSlice = createSlice({
+    name: 'search',
     initialState,
     reducers: {
         removeUsers:(state) =>{
-            state.users = []
+            state.user = []
             state.isLoading = false;
         },
         usersFetching:(state) =>{
@@ -27,7 +27,7 @@ export const userSlice = createSlice({
         },
         usersFetchingSuccess:(state, action: PayloadAction<IUser[]>) => {
             state.isLoading = false;
-            state.users = action.payload;
+            state.user = action.payload;
             state.error = '';
         },
         usersFetchingError: (state, action: PayloadAction<string>) => {
@@ -50,5 +50,5 @@ export const userSlice = createSlice({
         }
     }*/
 })
-export const {removeUsers,usersFetching,usersFetchingError,usersFetchingSuccess}= userSlice.actions
-export default userSlice.reducer
+export const {removeUsers,usersFetching,usersFetchingError,usersFetchingSuccess}= searchSlice.actions
+export default searchSlice.reducer

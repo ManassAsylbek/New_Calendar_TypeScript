@@ -12,7 +12,7 @@ import Input from "../formControl/Input";
 import {Controller, SubmitHandler, useForm} from "react-hook-form";
 import ReactSelect from "react-select";
 import {
-    optionAccess,
+    optionAccess, optionMarker,
     optionRepeat,
     optionRoom,
     optionTime,
@@ -27,21 +27,23 @@ import {eventAPI} from "../../services/eventServices";
 import Modal from "../../Modal/modal";
 import InviteParticipants from "../inviteParticipants/inviteParticipants";
 import {userAPI} from "../../services/userServicse";
+import {useAppDispatch, useAppSelector} from "../../hooks/redux";
+import {IMarker} from "../../Intarface/IMarker";
+import {setDeleteEvent, setUpdateEvent} from "../../store/events/ACEvents";
 
 interface NewEventProps {
     setActive: (pt: boolean) => void
     event: IEvent
-    deleteEvent: (event: IEvent) => void;
-    updateEvent: (event: IEvent) => void;
 
 }
 
-const EditEvent: FC<NewEventProps> = ({setActive, event, deleteEvent, updateEvent}) => {
+const EditEvent: FC<NewEventProps> = ({setActive, event}) => {
 
+    const {id} = useAppSelector(state => state.authSlice)
     const [inviteActive, setInviteActive] = useState(false)
-
-    const {data: markers} = markerAPI.useFetchAllMarkersQuery(10)
-
+    const dispatch = useAppDispatch()
+    // const {data: markers} = markerAPI.useFetchAllMarkersQuery(10)
+    const {markers} = useAppSelector(state => state.markerSlice)
     const {data: users} = userAPI.useFetchAllUsersQuery(10)
     const {
         register,
@@ -52,13 +54,18 @@ const EditEvent: FC<NewEventProps> = ({setActive, event, deleteEvent, updateEven
 
 
     const handleRemove = () => {
-        deleteEvent(event)
+
+        dispatch(setDeleteEvent(`events_${id}`, event.id))
+        // deleteEvent(event)
         setActive(false)
     }
 
     const onSubmit: SubmitHandler<IEvent> = (data) => {
         const updateEventValue = {...event, ...data}
-        updateEvent(updateEventValue)
+
+        dispatch(setUpdateEvent(`events_${id}`, event.id, updateEventValue))
+
+        //updateEvent(updateEventValue)
         setActive(false)
     }
 
@@ -183,7 +190,11 @@ const EditEvent: FC<NewEventProps> = ({setActive, event, deleteEvent, updateEven
                                         {value && value.map(user =>
                                             <div className={style.chooseAvatar}>
                                                 <img src={user.photoURL} alt="" className={style.chooseAvatarImg}/>
-                                                <div className={style.name}>{user.displayName}</div>
+                                                <div>
+                                                    <div className={style.name}>{user.displayName}</div>
+                                                    {user.id === id ? <div className={style.invite}>автор</div>
+                                                        : <div className={style.invite}>приглашен</div>}
+                                                </div>
                                             </div>)
                                         }
                                         {inviteActive && <Modal setActive={setInviteActive}
@@ -226,7 +237,7 @@ const EditEvent: FC<NewEventProps> = ({setActive, event, deleteEvent, updateEven
                         {markers && <Controller control={control}
                                                 name="marker"
                                                 rules={{
-                                                    required: 'выберите помещение'
+                                                    required: 'выберите '
                                                 }}
                                                 defaultValue={event.marker}
                                                 render={({field: {onChange, value}, fieldState: {error}}) => <>
@@ -236,7 +247,7 @@ const EditEvent: FC<NewEventProps> = ({setActive, event, deleteEvent, updateEven
                                                         placeholder={markers[0].label}
                                                         options={markers}
                                                         value={getValue(value, markers)}
-                                                        onChange={(newValue) => onChange((newValue as IOption).value)}
+                                                        onChange={(newValue) => onChange((newValue as IMarker).value)}
                                                     />
                                                     {error && <div>{error.message}</div>}
                                                 </>}

@@ -6,6 +6,10 @@ import person from '../../Media/icons/person.svg'
 import bag from '../../Media/icons/bag.svg'
 import local from '../../Media/icons/locol.svg'
 import search_icon from "../../Media/icons/Search.svg";
+import ListSearch from "../ListSearch/ListSearch";
+import {IUser} from "../../Intarface/IUser";
+import {useAppSelector} from "../../hooks/redux";
+import {useSearch} from "../../hooks/useSearch";
 
 interface searchProps {
     setActive: (pt: boolean) => void
@@ -15,12 +19,16 @@ const Search: FC<searchProps> = ({setActive}) => {
     const  searchArray:any = []
     const [title,setTitle] = useState<string>('all')
 
+    const [list,setList] = useState<IUser[]>([])
+    const {searchUsers, search} = useSearch()
 
+
+    // @ts-ignore
     return (
         <div className={style.search} onClick={e => e.stopPropagation()}>
             <div className={style.header}>
                 <img src={search_icon} alt="" className={style.searchImg}/>
-                <input className={style.titleInput}/>
+                <input className={style.titleInput} onChange={search}/>
                 <button onClick={() => setActive(false)} className={style.eventBtn}>
                     <img src={close} alt=""/>
                 </button>
@@ -34,7 +42,7 @@ const Search: FC<searchProps> = ({setActive}) => {
                     <div className={title==='title'?`${style.active}`:`${style.title}`}
                          onClick={()=>setTitle('title')}>
                         <img src={folder} alt=""/>
-                        <div>Название</div>
+                        <div>События</div>
                     </div >
                     <div  className={title==='co-worker'?`${style.active}`:`${style.title}`}
                           onClick={()=>setTitle('co-worker')}>
@@ -54,7 +62,10 @@ const Search: FC<searchProps> = ({setActive}) => {
                 </div>
                 <div className={style.content}>
                     {
-                        /*searchArray.map(item=><div>{item.title}</div>)*/
+                        (title=== 'all')&& <ListSearch list={searchUsers} setActive={setActive} />
+                    }
+                    {
+                        (title=== 'co-worker')&& <ListSearch list={searchUsers} setActive={setActive} />
                     }
                 </div>
             </div>

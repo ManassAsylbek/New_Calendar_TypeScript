@@ -13,11 +13,11 @@
     align-items: center;
     justify-content: center;
     background: #FFFFFF;
-    /*border: 1px solid #E9E9E9;*/
+    border: 1px solid #E9E9E9;
     border-radius: 6px;
     overflow: hidden;
     /*position: relative;*/
-    height: 70px;
+    height: 72px;
 }
 
 .EventItem {
@@ -32,7 +32,11 @@
 
 .marker {
     width: 10px;
+    height: 100%;
 
 /*    border-radius: 6px 0 0 6px*/
 }
 
+
+
+/****************************info*************************/

@@ -30,7 +30,9 @@
 
 .newEventContent {
     width: 632px;
-
+    /*
+    height: 494px;
+    */
     padding: 16px;
     background: #FFFFFF;
     box-shadow: 0px 2px 25px rgba(136, 136, 136, 0.35);
@@ -145,6 +147,7 @@
     overflow: auto;
     padding: 8px;
     gap:1px;
+    row-gap: 3px;
     -ms-overflow-style: none;
 }
 .person::-webkit-scrollbar {
@@ -154,6 +157,15 @@
 
 .chooseAvatar{
     display: flex;
+    align-items: start;
+    column-gap: 7px;
+
+
+}
+.Avatar{
+    display: flex;
+    align-items: center;
+    gap: 7px;
 }
 .chooseAvatarImg{
     width: 32px;
@@ -168,11 +180,23 @@
     font-style: normal;
     font-weight: 600;
     font-size: 14px;
-    line-height: 17px;
+    line-height: 16px;
     display: flex;
     align-items: center;
 
     color: #2E2E2E;
+}
+.invite{
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 15px;
+
+    display: flex;
+    align-items: center;
+
+    color: rgba(46, 46, 46, 0.5);
 }
 .room{
     display: grid;

@@ -111,6 +111,6 @@
     border-bottom: 1px solid rgba(35, 35, 35, .1);
 }
 
-.hours_items div:hover {
+.hours_items:hover {
     background-color: #F9F9F9;
 }

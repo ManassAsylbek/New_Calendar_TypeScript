@@ -22,15 +22,13 @@ import {
 } from "../../Constants/option";
 import {getValue} from "../../hooks/getValue";
 import {IEvent} from "../../Intarface/IEvent";
-import {eventAPI} from "../../services/eventServices";
 import InviteParticipants from "../inviteParticipants/inviteParticipants";
 import Modal from "../../Modal/modal";
-import {useFilterPerson} from "../../hooks/filterPerson";
 import {useTime} from "../../hooks/useTime";
 import {useAppDispatch, useAppSelector} from "../../hooks/redux";
 import {setEvents} from "../../store/events/ACEvents";
-import {createEventsDocumentFromAuth} from "../../utilits/firebase_utilits";
 import {IUser} from "../../Intarface/IUser";
+import {IMarker} from "../../Intarface/IMarker";
 
 interface NewEventProps {
     setActive: (pt: boolean) => void
@@ -42,9 +40,8 @@ interface NewEventProps {
 const NewEvent: FC<NewEventProps> = ({setActive, date, time}) => {
     const [inviteActive, setInviteActive] = useState(false)
     /*   const {data: markers, error, isLoading} = markerAPI.useFetchAllMarkersQuery(10)*/
-
+    const {markers} = useAppSelector(state => state.markerSlice)
     const {user} = useAppSelector(state => state.authSlice)
-    const {setNewUsers} = useFilterPerson()
     const {startTime, endTime} = useTime(time)
     const dispatch = useAppDispatch()
     const {
@@ -53,19 +50,16 @@ const NewEvent: FC<NewEventProps> = ({setActive, date, time}) => {
         formState,
         control
     } = useForm<IEvent>({mode: 'onChange'})
+
     let userArray: IUser[] = []
     if (user)
         userArray.push(user)
-    const [createEvent, {}] = eventAPI.useCreateEventsMutation()
     const {id} = useAppSelector(state => state.authSlice)
 
     const onSubmit: SubmitHandler<IEvent> = async (data) => {
-        // await createEventsDocumentFromAuth(id,data)
 
-
-        const newData: IEvent = {...data, participant: [...data.participant, ...userArray]}
-        /*     const sdf=await createEventsDocumentFromAuth(id,data)*/
-        dispatch(setEvents(id, data))
+        const newData: IEvent = {...data, author: user, status: {label: null, value: null}}
+        dispatch(setEvents(id, newData))
         setActive(false)
     }
 
@@ -180,24 +174,28 @@ const NewEvent: FC<NewEventProps> = ({setActive, date, time}) => {
                                 render={({field: {onChange, value}, fieldState: {error}}) => <>
                                     <div className={style.add}>
                                         <h4>Участники ({value && value.length})</h4>
-                                        <button><img src={add} onClick={() => setInviteActive(true)} alt=""/></button>
+                                        <button><img src={add} onClick={() => setInviteActive(true)} alt=""/>
+                                        </button>
                                     </div>
                                     <div className={style.person}>
                                         {value && value.map(user =>
                                             <div className={style.chooseAvatar}>
                                                 <div className={style.Avatar}>
                                                     <img src={user.photoURL} alt="" className={style.chooseAvatarImg}/>
-                                                    <div className={style.name}>{user.displayName}</div>
+                                                    <div>
+                                                        <div className={style.name}>{user.displayName}</div>
+                                                        {user.id === id ? <div className={style.invite}>автор</div>
+                                                            : <div className={style.invite}>приглашен</div>}
+                                                    </div>
                                                 </div>
                                             </div>)
                                         }
-                                        {inviteActive && <Modal setActive={setInviteActive} active={inviteActive}
-                                                                children={<InviteParticipants onChange={onChange}
-                                                                                              value={value}
-                                                                    /* users={users}*/
-                                                                                              label={"Пригласить"}
-                                                                                              setActive={setInviteActive}/>}/>}
-
+                                        {inviteActive &&
+                                        <Modal setActive={setInviteActive} active={inviteActive}
+                                               children={<InviteParticipants onChange={onChange}
+                                                                             value={value}
+                                                                             label={"Пригласить"}
+                                                                             setActive={setInviteActive}/>}/>}
                                     </div>
                                 </>}
                     />
@@ -225,24 +223,24 @@ const NewEvent: FC<NewEventProps> = ({setActive, date, time}) => {
                 </div>
                 <div className={style.room}>
                     <div>
-                        <h4>Календарь</h4>
-                        {optionMarker && <Controller control={control}
-                                                     name="marker"
-                                                     rules={{
-                                                         required: 'выберите помещение'
-                                                     }}
-                                                     render={({field: {onChange, value}, fieldState: {error}}) => <>
-                                                         <ReactSelect
-                                                             styles={SelectStyles}
-                                                             className={style.endTime}
-                                                             placeholder={optionMarker[0].label}
-                                                             options={optionMarker}
-                                                             value={getValue(value, optionMarker)}
-                                                             onChange={(newValue) => onChange((newValue as IOption).value)}
-                                                         />
-                                                         {error && <div>{error.message}</div>}
-                                                     </>
-                                                     }
+                        <h4>Метки</h4>
+                        {markers && <Controller control={control}
+                                                name="marker"
+                                                rules={{
+                                                    required: 'выберите метку'
+                                                }}
+                                                render={({field: {onChange, value}, fieldState: {error}}) => <>
+                                                    <ReactSelect
+                                                        styles={SelectStyles}
+                                                        className={style.endTime}
+                                                        placeholder={markers[0].label}
+                                                        options={markers}
+                                                        value={getValue(value, markers)}
+                                                        onChange={(newValue) => onChange((newValue as IMarker).value)}
+                                                    />
+                                                    {error && <div>{error.message}</div>}
+                                                </>
+                                                }
                         />}
                     </div>
                     <div>

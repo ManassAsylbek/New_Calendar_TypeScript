@@ -10,7 +10,7 @@ import {signInWithEmail} from "../../store/Auth/ActionCreatorAuth";
 
 const Authorizations: FC = () => {
 
-    const {isAuth, isLoading, user} = useAppSelector(state => state.authSlice)
+    const {isAuth, isLoadingAuth, user} = useAppSelector(state => state.authSlice)
     const dispatch = useAppDispatch()
 
     const {
@@ -26,7 +26,7 @@ const Authorizations: FC = () => {
 
     return (
         <>
-            {/*     {isLoading && <div>loading</div>}
+            {/*     {isLoadingAuth && <div>loading</div>}
             {user && <Navigate to={'/'}/>}*/}
             {isAuth
                 ? <Navigate to={'/'}/>

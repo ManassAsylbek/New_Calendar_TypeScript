@@ -8,6 +8,9 @@ import avatar from "../../Media/images/avatar.png";
 import Modal from "../../Modal/modal";
 import EditEvent from "../EditEvent/EditEvent";
 import {IEvent} from "../../Intarface/IEvent";
+import {useAppSelector} from "../../hooks/redux";
+import {Popover} from "antd";
+import PopoverEdit from "../Popover/popoverEditAnddelete/Popover";
 
 
 interface NotificationProps {
@@ -18,8 +21,8 @@ const Notification: FC<NotificationProps> = ({setActive}) => {
     const [activated, setActivated] = useState(true)
     const [event, setEvent] = useState<IEvent>()
     const [editEventActive, setEditEventActive] = useState(false)
-    const {data: events} = eventAPI.useFetchAllEventsQuery(100)
-
+    // const {data: events} = eventAPI.useFetchAllEventsQuery(100)
+    const {events} = useAppSelector(state => state.eventSlice)
     const [deleteEvent, {isSuccess: deleteEventSuccess}] = eventAPI.useDeleteEventsMutation()
     const [updateEvent, {
         isSuccess: updateEventSuccess,
@@ -60,36 +63,49 @@ const Notification: FC<NotificationProps> = ({setActive}) => {
                 </div>
                 <div className={style.incomingBody}>
                     {
-                        events && events.map(e => <div className={style.message}>
-                            <div onClick={() => getActive(e)}>
-                                <div className={style.eventTitle}>{e.title}</div>
-                                <div>{e.user}</div>
-                            </div>
-                            <div>
-                                <div>{e.date}</div>
-                                <div>{
-                                    todayDate === e.date
-                                        ? "Сегодня"
-                                        : moment(e.date).format("dddd")}
+                        events && events.map(e =>
+                            <div key={e.id} className={style.message}>
+
+                                <div>
+                                    <div className={style.eventTitle}>
+                                        <Popover
+                                            placement="right"
+                                            color="#FBFCFF"
+                                            content={() =>
+                                                <PopoverEdit event={e} setEvent={setEvent} setEditEventActive={setEditEventActive} />}
+                                            key={e.id}>
+                                            <div>{e.title}</div>
+                                            <div className={style.eventAuthor}>{e.author?.displayName}</div>
+                                        </Popover></div>
+
                                 </div>
-                            </div>
-                            <div>{e.startTime + "-" + e.endTime}</div>
-                            <div>{e.room}</div>
-                            <div>{e.repeat}</div>
-                            <DelegateButton event={e}/>
-                            {e.participant && <div className={style.choosePerson}>
-                                {
-                                    e.participant.map(user =>
-                                        <div className={style.chooseAvatar}>
-                                            <img src={user.photoURL ? user.photoURL : avatar}
-                                                 className={style.chooseAvatarImg} alt=""/>
-                                        </div>)
-                                }
-                            </div>
-                            }
+                                <div>
+                                    <div>{e.date}</div>
+                                    <div>{
+                                        todayDate === e.date
+                                            ? "Сегодня"
+                                            : moment(e.date).format("dddd")}
+                                    </div>
+                                </div>
+                                <div>{e.startTime + "-" + e.endTime}</div>
+                                <div>{e.room}</div>
+                                <div>{e.repeat}</div>
+
+                                <DelegateButton event={e}/>
+
+                                    {e.participant && <div className={style.choosePerson}>
+                                        {
+                                            e.participant.map(user => <div key={user.id} className={style.chooseAvatar}>
+                                                <img src={user.photoURL ? user.photoURL : avatar}
+                                                     className={style.chooseAvatarImg} alt=""/>
+                                            </div>)
+                                        }
+                                    </div>
+                                    }
 
 
-                        </div>)
+
+                            </div>)
 
 
                     }
@@ -98,8 +114,6 @@ const Notification: FC<NotificationProps> = ({setActive}) => {
 
             {editEventActive && event && <Modal setActive={setEditEventActive} active={editEventActive}
                                                 children={<EditEvent
-                                                    deleteEvent={deleteEvent}
-                                                    updateEvent={updateEvent}
                                                     event={event}
                                                     setActive={setEditEventActive}/>}/>}
         </>

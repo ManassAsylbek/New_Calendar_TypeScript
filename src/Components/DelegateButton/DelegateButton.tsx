@@ -39,7 +39,6 @@ const DelegateButton: FC<DelegateButtonType> = ({event}) => {
             }
             {delegateActive && <Modal setActive={setDelegateActive} active={delegateActive}
                                       children={<InviteParticipants event={event}
-                                                                    users={users}
                                                                     label={"Делегировать"}
                                                                     setStatus={setStatusToggle}
                                                                     setActive={setDelegateActive}

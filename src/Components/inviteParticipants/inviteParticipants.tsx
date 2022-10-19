@@ -14,7 +14,6 @@ import {useAppSelector} from "../../hooks/redux";
 interface InviteParticipantsType {
     setActive: (pt: boolean) => void;
     label: string
-    users?: Array<IUser> | undefined
     setStatus?: (pt: string) => void;
     onChange?: (users: Array<IUser>) => void
     value?: Array<IUser> | undefined
@@ -24,7 +23,7 @@ interface InviteParticipantsType {
 
 const InviteParticipants: FC<InviteParticipantsType> = ({
                                                             setActive, label,
-                                                            setStatus, users,
+                                                            setStatus,
                                                             onChange, value,
                                                             updateEvent, event
                                                         }) => {
@@ -40,8 +39,8 @@ const InviteParticipants: FC<InviteParticipantsType> = ({
 
     const selectPerson = () => {
         if (event && newUsers && updateEvent && setStatus && label === 'Делегировать') {
-            updateEvent({...event, status: {label: 'Делегирован', value: newUsers}})
-            /*setStatus('Делегирован')*/
+            /*updateEvent({...event, status: {label: 'Делегирован', value: newUsers}})*/
+            setStatus('Делегирован')
         }
 
         onChange && onChange(newUsers)
@@ -65,7 +64,7 @@ const InviteParticipants: FC<InviteParticipantsType> = ({
             </div>
             <div className={style.body}>
                 {searchUsers && searchUsers.map((user) =>
-                    <div className={style.person} onClick={() => addUser(user)}>
+                    <div className={style.person} onClick={() => addUser(user)} key={user.id}>
                         <div className={style.avatar} onClick={() => {
                         }}>
                             <img src={user.photoURL ? user.photoURL : avatar} className={style.avatarImg} alt=""/>
@@ -79,12 +78,13 @@ const InviteParticipants: FC<InviteParticipantsType> = ({
 
             <div className={style.choosePerson}>
                 {
-                    newUsers.map(user =>
-                        <div className={style.chooseAvatar}>
+                    newUsers && newUsers.map(user =>
+                        <div className={style.chooseAvatar} key={user.id}>
                             <img src={user.photoURL ? user.photoURL : avatar} className={style.chooseAvatarImg} alt=""/>
-                            {user.id!==id
-                                ? <img src={redClose} className={style.redClose} alt="" onClick={() => removeUser(user.id)}/>
-                            :<></>}
+                            {user.id !== id
+                                ? <img src={redClose} className={style.redClose} alt=""
+                                       onClick={() => removeUser(user.id)}/>
+                                : <></>}
                         </div>)
                 }
             </div>

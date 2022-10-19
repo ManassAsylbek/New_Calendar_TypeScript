@@ -7,6 +7,9 @@ import {Controller, SubmitHandler, useForm} from "react-hook-form";
 
 import {markerAPI} from "../../services/markerServices";
 import {IMarker} from "../../Intarface/IMarker";
+import {setEvents} from "../../store/events/ACEvents";
+import {setMarkers} from "../../store/Marker/ActionCreatorMarker";
+import {useAppDispatch, useAppSelector} from "../../hooks/redux";
 
 interface MarkerProps {
     setActive: (pt:boolean)=>void
@@ -14,8 +17,9 @@ interface MarkerProps {
 
 const Marker: FC<MarkerProps> = ({setActive}) => {
     const [mark, setMark] = useState("")
-    const [createMarker, {}] = markerAPI.useCreateMarkersMutation()
-
+    //const [createMarker, {}] = markerAPI.useCreateMarkersMutation()
+    const dispatch = useAppDispatch()
+    const {id} = useAppSelector(state => state.authSlice)
     const {
         register,
         handleSubmit,
@@ -25,8 +29,8 @@ const Marker: FC<MarkerProps> = ({setActive}) => {
 
     const onSubmit: SubmitHandler<IMarker> = (data) => {
 
-        console.log(data)
-        createMarker(data)
+        dispatch(setMarkers(id, data))
+       // createMarker(data)
         setActive(false)
     }
 
@@ -40,7 +44,7 @@ const Marker: FC<MarkerProps> = ({setActive}) => {
                     <img src={close} alt=""/>
                 </button>
             </div>
-            <form className={style.body} action="javascript:void (0)">
+            <form className={style.body} >
                 <div>
                     <h4>Название</h4>
                     <input {...register('label', {required: "Введите название"})}

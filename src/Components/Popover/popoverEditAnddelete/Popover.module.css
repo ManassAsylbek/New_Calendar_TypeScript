@@ -1,0 +1,6 @@
+.popoverEdit div {
+    display: flex;
+    align-items: center;
+    column-gap: 8px;
+    cursor: pointer;
+}

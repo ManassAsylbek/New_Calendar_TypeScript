@@ -1,7 +1,7 @@
 import {
     createAuthUserWithEmailAndPassword,
     createUserDocumentFromAuth,
-    getCurrentUser, getEventsAndDocuments, getUser,
+    getCurrentUser, getEventsAndDocuments, getMarkerAndDocuments, getUser, setDefaultMarker,
     signInAuthUserWithEmailAndPassword, signOutUser
 } from "../../utilits/firebase_utilits";
 import {AppDispatch} from "../store";
@@ -9,6 +9,8 @@ import {AuthFetching, AuthFetchingSuccess, AuthFetchingError, removeUser, AddTok
 import {IUserSignUp} from "../../Intarface/IUser";
 import {getEvents} from "../events/ACEvents";
 import {eventsFetchingSuccess} from "../events/eventSlice";
+import {markerFetchingSuccess} from "../Marker/markerSlice";
+import {getMarkers, setDefaultMark} from "../Marker/ActionCreatorMarker";
 
 
 export const signOut = () => async (dispatch: AppDispatch) => {
@@ -32,8 +34,15 @@ export const signUp = (data: IUserSignUp) => async (dispatch: AppDispatch) => {
                 photoURL: "https://cdn.pixabay.com/photo/2016/01/25/19/48/man-1161337__340.jpg"
             })
         const currentUser = await getUser(user.uid)
+
+        await setDefaultMarker(user.uid) //добавляяет дефолтный маркер при регистрации в firestore
+
         const events = await getEventsAndDocuments(user.uid) //получаЮ СОБЫТИЕ  пользователЕЙ из db(events_+id)
         dispatch(eventsFetchingSuccess(events))
+
+        const markers = await getMarkerAndDocuments(user.uid) //получаЮ Marker  пользователЕЙ из db(markers_+id)
+        dispatch(markerFetchingSuccess(markers))
+
         dispatch(AuthFetchingSuccess({
             displayName: currentUser?.displayName,
             department: currentUser?.department,
@@ -63,6 +72,10 @@ export const isUserAuthenticated = () => async (dispatch: AppDispatch) => {
         /* await getEvents(user.uid)*/
         const events = await getEventsAndDocuments(user.uid) //получаЮ СОБЫТИЕ  пользователЕЙ из db(events_+id)
         dispatch(eventsFetchingSuccess(events))
+
+        const markers = await getMarkerAndDocuments(user.uid) //получаЮ Marker  пользователЕЙ из db(markers_+id)
+        dispatch(markerFetchingSuccess(markers))
+
         dispatch(AuthFetchingSuccess({
             displayName: currentUser?.displayName,
             department: currentUser?.department,
@@ -87,8 +100,13 @@ export const signInWithEmail = (data: { email: string, password: string }) => as
         const {user} = await signInAuthUserWithEmailAndPassword(data.email, data.password)
 
         const currentUser = await getUser(user.uid)           //получая данные текушего пользователя из db(users)
+
         const events = await getEventsAndDocuments(user.uid)
         dispatch(eventsFetchingSuccess(events))
+
+        const markers = await getMarkerAndDocuments(user.uid) //получаЮ Marker  пользователЕЙ из db(markers_+id)
+        dispatch(markerFetchingSuccess(markers))
+
         dispatch(AuthFetchingSuccess({
             displayName: currentUser?.displayName,
             department: currentUser?.department,
@@ -99,6 +117,8 @@ export const signInWithEmail = (data: { email: string, password: string }) => as
         }))
         dispatch(AddToken(user.refreshToken))
         await getEvents(user.uid) //получаЮ СОБЫТИЕ  пользователЕЙ из db(events_+id) используя thunk
+
+        await getMarkers(user.uid) //получаЮ Marker  пользователЕЙ из db(marker_+id) используя thunk
     } catch (e) {
         // @ts-ignore
         dispatch(AuthFetchingError(e.message))

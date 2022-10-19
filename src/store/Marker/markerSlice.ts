@@ -2,41 +2,41 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 import {IMarker} from "../../Intarface/IMarker";
 
-interface UserState {
-    markers: IMarker[]|[];
-    isLoading: boolean;
-    error: string;
-    trash:number
+interface markerState {
+    markers: IMarker[] | null;
+    isLoadingMarker: boolean;
+    errorMarker: string | null;
+    reloadMarker: number
 }
 
-const initialState: UserState = {
+const initialState: markerState = {
     markers: [],
-    isLoading: false,
-    error: "",
-    trash:0
-
+    isLoadingMarker: false,
+    errorMarker: null,
+    reloadMarker: 0
 }
 
 export const markerSlice = createSlice({
     name: 'marker',
     initialState,
     reducers: {
-        markerFetching:(state) =>{
-            state.isLoading = true;
+        markerFetching: (state) => {
+            state.isLoadingMarker = true;
+            state.errorMarker = '';
         },
-        markerFetchingSuccess:(state, action: PayloadAction<IMarker[]>) => {
-            state.isLoading = false;
+        markerFetchingSuccess: (state, action: PayloadAction<IMarker[]>) => {
+            state.isLoadingMarker = false;
             state.markers = action.payload;
-            state.error = '';
+            state.errorMarker = '';
         },
         markerFetchingError: (state, action: PayloadAction<string>) => {
-            state.isLoading = false;
-            state.error = action.payload
+            state.isLoadingMarker = false;
+            state.errorMarker = action.payload
         },
-        addMarker:(state) => {
-            state.trash ++
+        addMarker: (state) => {
+            state.reloadMarker++
         }
     },
 })
-export const {markerFetching,markerFetchingSuccess,markerFetchingError,addMarker}= markerSlice.actions
+export const {markerFetching, markerFetchingSuccess, markerFetchingError, addMarker} = markerSlice.actions
 export default markerSlice.reducer

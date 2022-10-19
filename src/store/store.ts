@@ -3,6 +3,7 @@ import dateSlice from "./Date/dateSlice";
 import authSlice from "./Auth/authSlice";
 import userSlice from './User/userSlice'
 import eventSlice from './events/eventSlice'
+import markerSlice from "./Marker/markerSlice";
 
 import {markerAPI} from "../services/markerServices";
 import {eventAPI} from "../services/eventServices";
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
     authSlice,
     userSlice,
     eventSlice,
+    markerSlice,
     [markerAPI.reducerPath]:markerAPI.reducer,
     [eventAPI.reducerPath]:eventAPI.reducer,
     [userAPI.reducerPath]:userAPI.reducer,

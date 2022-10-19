@@ -1,4 +1,4 @@
-import {Calendar} from 'antd';
+import {Calendar, Popover} from 'antd';
 import type {Moment} from 'moment';
 import React, {useState} from 'react';
 import "./Calendar.css";
@@ -12,6 +12,7 @@ import {IEvent} from "../../../../Intarface/IEvent";
 import Modal from "../../../../Modal/modal";
 import NewEvent from "../../../../Components/newEvent/newEvent";
 import EditEvent from "../../../../Components/EditEvent/EditEvent";
+import PopoverEvent from "../../../../Components/Popover/popoverEvent/PopoverEvent";
 
 
 const getMonthData = (value: Moment) => {
@@ -32,10 +33,11 @@ const App: React.FC = () => {
         isLoading: updateEventLoading
     }] = eventAPI.useUpdateEventsMutation()
 
-    const [editEventActive, setEditEventActive] = useState(false)
+
     const [eventActive, setEventActive] = useState(false)
     const [event, setEvent] = useState<IEvent | undefined>()
     const [limit, setLimit] = useState(100)
+    const [open, setOpen] = useState(false);
 
     //const {data: events} = eventAPI.useFetchAllEventsQuery(limit)
     const {events} = useAppSelector(state => state.eventSlice)
@@ -65,21 +67,27 @@ const App: React.FC = () => {
         return listData || [];
     };
 
-    const getEvent = (item: IEvent) => {
-        setEvent(item)
-        events && events.find((item: IEvent) => item.date === date)
-            ? setEditEventActive(true)
-            : setEventActive(true)
-    }
+    /*   const getEvent = (item: IEvent) => {
+           setEvent(item)
+           events && events.find((item: IEvent) => item.date === date)
+               ? ""
+               : setEventActive(true)
+       }*/
+
+    const handleOpenChange = (newOpen: boolean) => {
+        setOpen(newOpen);
+    };
 
     const dateCellRender = (value: Moment) => {
         const listData: Array<IEvent> = getListData(value);
         return (
-            <ul className="events" onClick={() => editEventActive
-                ? setEventActive(false)
-                : setEventActive(true)}>
+            <ul className="events">
                 {listData.map((item) => (
-                    <li key={item.title} style={{position: "relative"}} onClick={() => getEvent(item)}>
+                    <li key={item.title} style={{position: "relative"}}>
+                        <Popover color="#FBFCFF" content={() => <PopoverEvent  event={item}/>}
+                                 key={item.id}
+                                 placement="right"
+                                 >
                        <span onClick={() => setEvent(item)}
                              style={{
                                  display: "inline-block",
@@ -92,12 +100,13 @@ const App: React.FC = () => {
                              }}
                              className="markerCalendar"
                        />
-                        <span style={{marginRight: 5}}
-                        >{item.startTime}</span>
-                        <span
-                        >{item.title}</span>
-
+                            <span style={{marginRight: 5}}
+                            >{item.startTime}</span>
+                            <span
+                            >{item.title}</span>
+                        </Popover>
                     </li>
+
                 ))}
             </ul>
         );
@@ -117,20 +126,13 @@ const App: React.FC = () => {
             onChange={onChange}
             mode="month"
             fullscreen={true}
-            onSelect={() => editEventActive
-                ? setEventActive(false)
-                : setEventActive(true)}
+            onSelect={() => setEventActive(true)}
+
         />;
         {eventActive && <Modal setActive={setEventActive} active={eventActive}
                                children={<NewEvent
                                    date={date}
                                    setActive={setEventActive}/>}/>}
-        {editEventActive && event && <Modal setActive={setEditEventActive} active={editEventActive}
-                                            children={<EditEvent
-                                                deleteEvent={deleteEvent}
-                                                updateEvent={updateEvent}
-                                                event={event}
-                                                setActive={setEditEventActive}/>}/>}
 
 
     </>

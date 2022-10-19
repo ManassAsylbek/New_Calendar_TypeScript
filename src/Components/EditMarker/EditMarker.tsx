@@ -6,6 +6,8 @@ import {color} from "../../Constants/constants";
 import {Controller, SubmitHandler, useForm} from "react-hook-form";
 import {markerAPI} from "../../services/markerServices";
 import {IMarker} from "../../Intarface/IMarker";
+import {setDeleteMarker, setUpdateMarker} from "../../store/Marker/ActionCreatorMarker";
+import {useAppDispatch, useAppSelector} from "../../hooks/redux";
 
 interface MarkerProps {
     setActive: (pt:boolean)=>void;
@@ -14,6 +16,8 @@ interface MarkerProps {
 const Marker: FC<MarkerProps> = ({setActive,marker}) => {
     const [updateMarker,{}] = markerAPI.useUpdateMarkersMutation()
     const [deleteMarker,{}] = markerAPI.useDeleteMarkersMutation()
+    const {id} = useAppSelector(state => state.authSlice)
+    const dispatch = useAppDispatch()
     const {
         register,
         handleSubmit,
@@ -22,13 +26,19 @@ const Marker: FC<MarkerProps> = ({setActive,marker}) => {
     } = useForm<IMarker>({mode: 'onChange'})
 
     const removeMarker = () => {
-        deleteMarker(marker)
+
+        dispatch(setDeleteMarker(`markers_${id}`,marker.id))
+        /*deleteMarker(marker)*/
         setActive(false)
     }
 
+
+
     const onSubmit: SubmitHandler<IMarker> = (data) => {
         const updateMarkerValue={...marker,...data}
-        updateMarker(updateMarkerValue)
+
+        dispatch(setUpdateMarker(`markers_${id}`,marker.id,data))
+       // updateMarker(updateMarkerValue)
         setActive(false)
 
     }
@@ -43,7 +53,7 @@ const Marker: FC<MarkerProps> = ({setActive,marker}) => {
                     <img src={close} alt=""/>
                 </button>
             </div>
-            <form className={style.body} action="javascript:void (0)">
+            <form className={style.body}>
                 <div>
                     <h4>Название</h4>
                     <input defaultValue={marker.label} {...register('label', {required: "Введите название"})}

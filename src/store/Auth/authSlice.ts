@@ -3,8 +3,9 @@ import {IUser} from "../../Intarface/IUser";
 
 interface IAuthState {
     isAuth:boolean,
-    isLoading:boolean,
-    error:string,
+    successAuth:boolean
+    isLoadingAuth:boolean,
+    error: string|null;
     user:IUser|null,
     id:string
     token:string
@@ -13,7 +14,8 @@ interface IAuthState {
 const initialState:IAuthState = {
     isAuth:false,
     token:"",
-    isLoading:false,
+    successAuth:false,
+    isLoadingAuth:false,
     error:"",
     user:null,
     id:""
@@ -26,21 +28,22 @@ export const authSlice = createSlice({
         removeUser:(state) =>{
             state.isAuth = false;
             state.user = null
-            state.isLoading = false;
+            state.isLoadingAuth = false;
             state.token =""
 
         },
         AuthFetching:(state) =>{
-            state.isLoading = true;
+            state.isLoadingAuth = true;
+            state.successAuth = false
         },
         AuthFetchingSuccess:(state, action: PayloadAction<IUser>) => {
-            state.isLoading = false;
+            state.isLoadingAuth = false;
             state.isAuth = true;
             state.user = action.payload;
             state.id = action.payload.id
         },
         AuthFetchingError: (state, action: PayloadAction<string>) => {
-            state.isLoading = false;
+            state.isLoadingAuth = false;
             state.error = action.payload
         },
         AddToken:(state, action: PayloadAction<string>) => {

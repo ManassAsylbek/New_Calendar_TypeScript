@@ -8,15 +8,16 @@ export interface IEvent {
     startTime: string
     endTime: string
     repeat: string
-    author:string
+    author:IUser|null
     participant: Array<IUser>
     room: string
     marker: string
     access: string
-    id:number|string
+    id:string
     status:IStatus
 }
 
+/*
 export interface IEventAdd{
     user:string
     title: string
@@ -30,4 +31,4 @@ export interface IEventAdd{
     marker: string
     access: string
     status:IStatus
-}
+}*/

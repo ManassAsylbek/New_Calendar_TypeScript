@@ -25,11 +25,12 @@ export const useFilterPerson: IFilterPerson = (value?) => {
 
     const {users} = useAppSelector(state => state.userSlice)
 
+    let chooseValue: IUser[] = []
+    if (value) {
+        chooseValue = value
+    }
 
-
-
-
-    const [newUsers, setNewUsers] = useState<Array<IUser>>(value as IUser[])
+    const [newUsers, setNewUsers] = useState<Array<IUser>>(chooseValue as IUser[])
 
     const [searchUsers, setSearchUsers] = useState<Array<IUser>>(users as IUser[])
 
@@ -44,8 +45,9 @@ export const useFilterPerson: IFilterPerson = (value?) => {
     }
     const addUser: (user: IUser) => void = (user) => {
 
-        if (!newUsers.find(item => item.id === user.id) && value) {
+        if (!newUsers.find(item => item.id === user.id)) {
             setNewUsers(curr => [...curr, user])
+
         }
     }
     const removeUser: (id: string) => void = (id) => {

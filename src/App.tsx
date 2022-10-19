@@ -10,26 +10,32 @@ import {isUserAuthenticated} from "./store/Auth/ActionCreatorAuth";
 import {auth} from "./utilits/firebase_utilits";
 import {fetchUser} from "./store/User/ActionCreator";
 import {getEvents} from "./store/events/ACEvents";
+import {getMarkers} from "./store/Marker/ActionCreatorMarker";
 
 function App() {
     const dispatch = useAppDispatch()
-    const {isLoading, id} = useAppSelector(state => state.authSlice)
-    const {trash} = useAppSelector(state => state.eventSlice)
+    const {isLoadingAuth, id} = useAppSelector(state => state.authSlice)
+    const {reloadEvent} = useAppSelector(state => state.eventSlice)
+    const {reloadMarker} = useAppSelector(state => state.markerSlice)
 
     useEffect(() => {
+        dispatch(fetchUser())
         dispatch(isUserAuthenticated())
-        dispatch(getEvents(id))
+
     }, [])
+    useEffect(() => {
+        dispatch(getMarkers(id))
+
+    }, [reloadMarker])
     useEffect(() => {
         dispatch(fetchUser())
-    }, [])
-    useEffect(() => {
         dispatch(getEvents(id))
-    }, [trash])
+
+    }, [reloadEvent])
 
     return (
         <>
-            {isLoading
+            {isLoadingAuth
                 ? <div>loading</div>
                 : <BrowserRouter>
                     <Routes>

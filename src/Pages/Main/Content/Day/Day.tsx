@@ -82,8 +82,6 @@ const Day: FC = () => {
 
             {editEventActive && event && <Modal setActive={setEditEventActive} active={editEventActive}
                                                 children={<EditEvent
-                                                    deleteEvent={deleteEvent}
-                                                    updateEvent={updateEvent}
                                                     event={event}
                                                     setActive={setEditEventActive}/>}/>}
         </>

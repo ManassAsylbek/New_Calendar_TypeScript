@@ -7,16 +7,16 @@ export type passwordType = {
     "password":string
 }
 
-export interface IAuth {
-    /*"avatar":string*/
+/*export interface IAuth {
+    /!*"avatar":string*!/
     "photoURL": string | undefined
     "displayName": string|null,
     "email": string|null,
     "department": string|null,
     "position": string|null,
     "id": string,
-    /*"token":string|null,*/
-}
+    /!*"token":string|null,*!/
+}*/
 
 
 /*export interface IUser {
