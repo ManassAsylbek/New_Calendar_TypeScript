@@ -6,15 +6,16 @@ import Registration from "./Pages/Registration/Registration";
 import Authorizations from "./Pages/Autorization/Authorizations";
 import NotFound from "./Pages/NotFound/NotFound";
 import {useAppDispatch, useAppSelector} from "./hooks/redux";
-import {isUserAuthenticated} from "./store/Auth/ActionCreatorAuth";
+import {getProfile, isUserAuthenticated} from "./store/Auth/ActionCreatorAuth";
 import {auth} from "./utilits/firebase_utilits";
 import {fetchUser} from "./store/User/ActionCreator";
 import {getEvents} from "./store/events/ACEvents";
 import {getMarkers} from "./store/Marker/ActionCreatorMarker";
+import Preloader from "./Components/Preloader/Preloader";
 
 function App() {
     const dispatch = useAppDispatch()
-    const {isLoadingAuth, id} = useAppSelector(state => state.authSlice)
+    const {isLoadingAuth, id,reloadProfile} = useAppSelector(state => state.authSlice)
     const {reloadEvent} = useAppSelector(state => state.eventSlice)
     const {reloadMarker} = useAppSelector(state => state.markerSlice)
 
@@ -27,6 +28,11 @@ function App() {
         dispatch(getMarkers(id))
 
     }, [reloadMarker])
+
+    useEffect(() => {
+        dispatch(getProfile(id))
+    }, [reloadProfile])
+
     useEffect(() => {
         dispatch(fetchUser())
         dispatch(getEvents(id))
@@ -36,7 +42,7 @@ function App() {
     return (
         <>
             {isLoadingAuth
-                ? <div>loading</div>
+                ? <Preloader loader={true}/>
                 : <BrowserRouter>
                     <Routes>
                         <Route path="/" element={<Main/>}/>

@@ -5,19 +5,15 @@ import addMarker from "../../../Media/icons/addMarker.svg"
 import edit from "../../../Media/icons/edit.svg"
 import basketImg from "../../../Media/icons/basket.svg"
 import MiniCalendar from "../MiniCalendar/MiniCalendar";
-import {markerAPI} from "../../../services/markerServices";
 import Modal from "../../../Modal/modal";
 import NewEvent from "../../../Components/newEvent/newEvent";
 import Marker from "../../../Components/marker/Marker";
 import EditMarker from "../../../Components/EditMarker/EditMarker";
 import {IMarker} from "../../../Intarface/IMarker";
 import {useAppDispatch, useAppSelector} from "../../../hooks/redux";
-import {Toaster, toast} from "react-hot-toast";
-import {creat, createEventsDocumentFromAuth, getUser, getUsersAndDocuments} from "../../../utilits/firebase_utilits";
-import {getEvents} from "../../../store/events/ACEvents";
-import {addEvent} from "../../../store/events/eventSlice";
+import {setUpdateEvent} from "../../../store/events/ACEvents";
 import {setDeleteMarker} from "../../../store/Marker/ActionCreatorMarker";
-import {message} from "antd";
+import Preloader from "../../../Components/Preloader/Preloader";
 
 
 const Sidebar: FC = () => {
@@ -30,39 +26,22 @@ const Sidebar: FC = () => {
     const [limit, setLImit] = useState(10)
     const [marker, setMarker] = useState<IMarker>({label: "", value: "", id: ""})
     const {id} = useAppSelector(state => state.authSlice)
-    const {errorEvent} = useAppSelector(state => state.eventSlice)
-    const {foreigner} = useAppSelector(state => state.eventSlice)
-
-
-    //const {data: markers, error, isLoading} = markerAPI.useFetchAllMarkersQuery(limit)
+    const {errorEvent,foreigner,events} = useAppSelector(state => state.eventSlice)
     const {markers, isLoadingMarker, errorMarker} = useAppSelector(state => state.markerSlice)
 
-    /*isLoading && message.loading('Action in progress..', 0);*/
 
     const dispatch = useAppDispatch()
     const onEditMarker = (marker: IMarker) => {
         setMarker(marker)
         setEditMarkerActive(!editMarkerActive)
     }
-    const removeMarker = (markerId: string) => {
-
-        dispatch(setDeleteMarker(`markers_${id}`, markerId))
-        /*deleteMarker(marker)*/
+    const removeMarker = (marker: IMarker) => {
+        events && events.forEach(event => {
+            const updateEventValue = {...event, marker: marker.value === event.marker ? null : event.marker}//проверяяет на совпадение с ткушим маркером и и меняяет
+            dispatch(setUpdateEvent(`events_${id}`, event.id, updateEventValue))
+        })
+        dispatch(setDeleteMarker(`markers_${id}`, marker.id))
     }
-
-    /*const success = () => {
-        if(isLoading){
-            message.loading('Action in progress..', 0)
-        } else {
-            message.success('This is a success message');
-        }
-
-    };*/
-    /* isLoading && message.success('This is a success message');*/
-
-    /* error && message.error('This is an error message');
-
-     isLoading && message.loading('Action in progress..', 0);*/
 
 
     return (
@@ -80,10 +59,9 @@ const Sidebar: FC = () => {
             </div>
             <div className={style.box}></div>
 
-            {/* <div>
-                <button onClick={getUsers}>users</button>
-            </div>*/}
-            <div className={style.addMarker}><span>Мои метки</span>
+            <div className={style.addMarker}>{!foreigner
+                ? <span>Мои метки</span>
+                : <span>{`Метки ${foreigner.displayName}`}</span>}
                 {!foreigner && <button
                     onClick={() => setMarkerActive(!markerActive)}>
                     <img src={addMarker} alt=""/>
@@ -93,7 +71,7 @@ const Sidebar: FC = () => {
             <ul>
                 {errorEvent && <h1>error</h1>}
                 {isLoadingMarker
-                    ? <h1>loading</h1>
+                    ? <Preloader loader={false}/>
                     : <>{markers && markers.map((m) =>
                         <div key={m.id} className={style.mark}
                             /*onClick={() => onEditMarker(m)}*/>
@@ -102,7 +80,7 @@ const Sidebar: FC = () => {
                             <div onClick={() => !foreigner ? onEditMarker(m) : ""}>{m.label}</div>
                             {!foreigner &&
                             <img src={edit} alt="" onClick={() => onEditMarker(m)} className={style.edit}/>}
-                            {!foreigner && <img src={basketImg} alt="" onClick={() => removeMarker(m.id)}
+                            {!foreigner && <img src={basketImg} alt="" onClick={() => removeMarker(m)}
                                                 className={style.delete}/>}
                         </div>)}
                     </>}
@@ -119,9 +97,6 @@ const Sidebar: FC = () => {
             {editMarkerActive && <Modal setActive={setEditMarkerActive} active={editMarkerActive}
                                         children={<EditMarker marker={marker}
                                                               setActive={setEditMarkerActive}/>}/>}
-            <Toaster
-                position="top-center"
-            />
         </div>
     );
 };

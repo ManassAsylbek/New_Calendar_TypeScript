@@ -30,6 +30,7 @@ import {userAPI} from "../../services/userServicse";
 import {useAppDispatch, useAppSelector} from "../../hooks/redux";
 import {IMarker} from "../../Intarface/IMarker";
 import {setDeleteEvent, setUpdateEvent} from "../../store/events/ACEvents";
+import person from "../../Media/icons/person.svg";
 
 interface NewEventProps {
     setActive: (pt: boolean) => void
@@ -42,13 +43,11 @@ const EditEvent: FC<NewEventProps> = ({setActive, event}) => {
     const {id} = useAppSelector(state => state.authSlice)
     const [inviteActive, setInviteActive] = useState(false)
     const dispatch = useAppDispatch()
-    // const {data: markers} = markerAPI.useFetchAllMarkersQuery(10)
     const {markers} = useAppSelector(state => state.markerSlice)
-    const {data: users} = userAPI.useFetchAllUsersQuery(10)
     const {
         register,
         handleSubmit,
-        formState,
+        formState: {errors},
         control
     } = useForm<IEvent>({mode: 'onChange'})
 
@@ -56,16 +55,13 @@ const EditEvent: FC<NewEventProps> = ({setActive, event}) => {
     const handleRemove = () => {
 
         dispatch(setDeleteEvent(`events_${id}`, event.id))
-        // deleteEvent(event)
         setActive(false)
     }
 
     const onSubmit: SubmitHandler<IEvent> = (data) => {
         const updateEventValue = {...event, ...data}
-
+        console.log(updateEventValue)
         dispatch(setUpdateEvent(`events_${id}`, event.id, updateEventValue))
-
-        //updateEvent(updateEventValue)
         setActive(false)
     }
 
@@ -81,7 +77,7 @@ const EditEvent: FC<NewEventProps> = ({setActive, event}) => {
             <form action="javascript:void (0)">
                 <div>
                     <h4>Название</h4>
-                    <Input label='title' defaultValue={event.title} register={register} required
+                    <Input errors={errors.title} label='title' defaultValue={event.title} register={register} required
                            className={style.titleInput}/>
                 </div>
                 <div className={style.date}>
@@ -129,6 +125,7 @@ const EditEvent: FC<NewEventProps> = ({setActive, event}) => {
                                                 value={getValue(value, optionTime)}
                                                 onChange={(newValue) => onChange((newValue as IOption).value)}
                                             />
+                                            {error && <div className={style.error}>{error.message}</div>}
                                         </>}
                             />
                             <img src={tire} alt=""/>
@@ -148,7 +145,7 @@ const EditEvent: FC<NewEventProps> = ({setActive, event}) => {
                                                 value={getValue(value, optionTime)}
                                                 onChange={(newValue) => onChange((newValue as IOption).value)}
                                             />
-
+                                            {error && <div className={style.error}>{error.message}</div>}
                                         </>}
                             />
                         </div>
@@ -168,7 +165,7 @@ const EditEvent: FC<NewEventProps> = ({setActive, event}) => {
                                             value={getValue(value, optionRepeat)}
                                             onChange={(newValue) => onChange((newValue as IOption).value)}
                                         />
-                                        {error && <div>{error.message}</div>}
+                                        {error && <div className={style.error}>{error.message}</div>}
                                     </>}
                         />
                     </div>
@@ -183,13 +180,16 @@ const EditEvent: FC<NewEventProps> = ({setActive, event}) => {
                                 render={({field: {onChange, value}, fieldState: {error}}) => <>
                                     <div className={style.add}>
                                         <h4>Участники ({value && value.length})</h4>
-                                        <button><img src={add} onClick={() => setInviteActive(true)} alt=""/></button>
+                                        <button>
+                                            <img src={add} onClick={() => setInviteActive(true)} alt=""/>
+                                        </button>
                                     </div>
                                     {error && <div className={style.error}>{error.message}</div>}
                                     <div className={style.person}>
                                         {value && value.map(user =>
-                                            <div className={style.chooseAvatar}>
-                                                <img src={user.photoURL} alt="" className={style.chooseAvatarImg}/>
+                                            <div key={user.id} className={style.chooseAvatar}>
+                                                <img src={user.photoURL ? user.photoURL : person}
+                                                     alt="" className={style.chooseAvatarImg}/>
                                                 <div>
                                                     <div className={style.name}>{user.displayName}</div>
                                                     {user.id === id ? <div className={style.invite}>автор</div>
@@ -227,7 +227,7 @@ const EditEvent: FC<NewEventProps> = ({setActive, event}) => {
                                         value={getValue(value, optionRoom)}
                                         onChange={(newValue) => onChange((newValue as IOption).value)}
                                     />
-                                    {error && <div>{error.message}</div>}
+                                    {error && <div className={style.error}>{error.message}</div>}
                                 </>}
                     />
                 </div>
@@ -237,9 +237,9 @@ const EditEvent: FC<NewEventProps> = ({setActive, event}) => {
                         {markers && <Controller control={control}
                                                 name="marker"
                                                 rules={{
-                                                    required: 'выберите '
+                                                    required: 'выберите метку '
                                                 }}
-                                                defaultValue={event.marker}
+                                                defaultValue={event.marker ? event.marker : markers[0].value}
                                                 render={({field: {onChange, value}, fieldState: {error}}) => <>
                                                     <ReactSelect
                                                         styles={SelectStyles}
@@ -249,7 +249,7 @@ const EditEvent: FC<NewEventProps> = ({setActive, event}) => {
                                                         value={getValue(value, markers)}
                                                         onChange={(newValue) => onChange((newValue as IMarker).value)}
                                                     />
-                                                    {error && <div>{error.message}</div>}
+                                                    {error && <div className={style.error}>{error.message}</div>}
                                                 </>}
                         />}
                     </div>
@@ -259,7 +259,7 @@ const EditEvent: FC<NewEventProps> = ({setActive, event}) => {
                         <Controller control={control}
                                     name="access"
                                     rules={{
-                                        required: 'выберите помещение'
+                                        required: 'выберите доступ'
                                     }}
                                     defaultValue={event.access}
                                     render={({field: {onChange, value}, fieldState: {error}}) => <>
@@ -271,7 +271,7 @@ const EditEvent: FC<NewEventProps> = ({setActive, event}) => {
                                             value={getValue(value, optionAccess)}
                                             onChange={(newValue) => onChange((newValue as IOption).value)}
                                         />
-                                        {error && <div>{error.message}</div>}
+                                        {error && <div className={style.error}>{error.message}</div>}
                                     </>}
                         />
                     </div>

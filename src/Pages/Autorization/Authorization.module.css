@@ -18,9 +18,8 @@
     justify-content: center;
 
 }
-.error {
-    color: red;
-}
+
+
 
 .title_right {
 
@@ -29,7 +28,7 @@
     font-size: 24px;
     line-height: 30px;
     color: #FFFFFF;
-    margin-bottom: 50px;
+    margin-bottom: 32px;
 
 }
 
@@ -54,7 +53,9 @@
 
     color: #4B84F4;
 }
-
+.error {
+    color: red;
+}
 .inputArea p {
     font-family: 'Roboto';
     font-style: normal;
@@ -63,8 +64,8 @@
     line-height: 16px;
     display: flex;
     align-items: center;
-    color:#979797;
-    margin-top:8px;
+    color: #979797;
+    margin-top: 8px;
     margin-bottom: 8px;
     /* color: #2E2E2E;
      opacity: 0.5;*/
@@ -75,12 +76,12 @@
     width: 304px;
     height: 48px;
     /*    opacity: 0.1;*/
-    outline:#CBCBCB;
+    outline: #CBCBCB;
 
     border: 1px solid #CBCBCB;
     border-radius: 8px;
     color: black;
-    padding:8px 16px;
+    padding: 8px 16px;
 }
 
 
@@ -88,8 +89,8 @@
     margin-top: 16px;
     width: 304px;
     height: 48px;
-    background: #0A253F;
-    opacity: 0.2;
+    background: #4B84F4;
+    border: none;
     border-radius: 8px;
     display: flex;
     align-items: center;
@@ -135,11 +136,13 @@
     color: #4B84F4;
 
 }
-.account{
-    display:flex;
+
+.account {
+    display: flex;
     padding-top: 10px;
 }
-.account h2{
+
+.account h2 {
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 300;
@@ -150,9 +153,10 @@
     color: #2E2E2E;
     opacity: 0.5;
     margin-right: 8px;
-    margin-bottom:0
+    margin-bottom: 0
 }
-.account a{
+
+.account a {
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 400;

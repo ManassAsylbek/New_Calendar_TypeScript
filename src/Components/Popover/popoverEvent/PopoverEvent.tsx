@@ -35,8 +35,8 @@ const PopoverEvent: FC<IPopoverEvent> = ({event}) => {
     return (<>
             {event && <div className={style.info} onClick={e => e.stopPropagation()}>
                 <div className={style.btn}>
-                    <img src={edit} alt="" onClick={handleUpdate}/>
-                    <img src={basketImg} alt="" onClick={handleRemove}/>
+                    <img className={style.edit}  src={edit} alt="" onClick={handleUpdate}/>
+                    <img className={style.basketImg} src={basketImg} alt="" onClick={handleRemove}/>
                 </div>
                 <div className={style.title}>{event.title}</div>
                 <div className={style.text}>

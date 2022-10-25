@@ -9,6 +9,7 @@ interface eventState {
     errorEvent: string | null;
     reloadEvent: number
     foreigner: IUser|null
+    room:string
 }
 
 const initialState: eventState = {
@@ -18,6 +19,7 @@ const initialState: eventState = {
     errorEvent: null,
     reloadEvent: 0,
     foreigner: null,
+    room:""
 
 }
 
@@ -48,21 +50,10 @@ export const eventSlice = createSlice({
         isForeigner: (state,action:PayloadAction<IUser|null>) => {
             state.foreigner = action.payload
         },
-    },
-    /*extraReducers: {
-        [fetchUser.pending.type]: (state) => {
-            state.isLoading = true;
-        },
-        [fetchUser.fulfilled.type]: (state, action: PayloadAction<IUser[]>) => {
-            state.isLoading = false;
-            state.users = action.payload;
-            state.error = '';
-        },
-        [fetchUser.rejected.type]: (state, action: PayloadAction<string>) => {
-            state.isLoading = false;
-            state.error = action.payload
+        isRoom:(state,action:PayloadAction<string>)=>{
+            state.room = action.payload
         }
-    }*/
+    },
 })
-export const {eventsFetching, eventsFetchingSuccess, eventsFetchingError, addEvent,isForeigner} = eventSlice.actions
+export const {eventsFetching, eventsFetchingSuccess, eventsFetchingError, addEvent,isForeigner,isRoom} = eventSlice.actions
 export default eventSlice.reducer

@@ -26,8 +26,6 @@ const Authorizations: FC = () => {
 
     return (
         <>
-            {/*     {isLoadingAuth && <div>loading</div>}
-            {user && <Navigate to={'/'}/>}*/}
             {isAuth
                 ? <Navigate to={'/'}/>
                 : <div className={style.authorization}>

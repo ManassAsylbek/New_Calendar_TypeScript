@@ -9,6 +9,8 @@ import {userAPI} from "../../services/userServicse";
 import {eventAPI} from "../../services/eventServices";
 import {IEvent} from "../../Intarface/IEvent";
 import {IUser} from "../../Intarface/IUser";
+import {setEvents, setUpdateEvent} from "../../store/events/ACEvents";
+import {useAppDispatch, useAppSelector} from "../../hooks/redux";
 
 
 
@@ -17,20 +19,24 @@ interface DelegateButtonType {
 }
 const DelegateButton: FC<DelegateButtonType> = ({event}) => {
     const [delegateActive, setDelegateActive] = useState(false)
-    const [delegateUser, setDelegateUser] = useState<Array<IUser>>()
+    const [delegateUser, setDelegateUser] = useState<Array<IUser>>([])
     const [statusToggle, setStatusToggle] = useState<string|null>()
-    const {data:users} = userAPI.useFetchAllUsersQuery(10)
-    const [updateEvent,{}]=eventAPI.useUpdateEventsMutation()
-    const delegateStatus = () => {
-        setDelegateActive(true)
+    const {id} = useAppSelector(state => state.authSlice)
+    const dispatch = useAppDispatch()
+
+    const status:(status:string)=>void = (status) => {
+        const newEvent = {
+            ...event, status: {label:status, value: null,new:false}
+        }//
+        dispatch(setUpdateEvent(`events_${id}`, event.id, newEvent))
 
     }
     return (
         <>{
             !event.status.label&& <div className={style.btn}>
-                <button  onClick={()=>setStatusToggle('Принят')}><img src={accepted} alt=""/></button>
-                <button onClick={delegateStatus}><img src={delegate} alt="" /></button>
-                <button onClick={()=>setStatusToggle('Отклонен')}><img src={rejected} alt="" /></button>
+                <button  onClick={()=>status('Принят')}><img src={accepted} alt=""/></button>
+                <button onClick={()=>setDelegateActive(true)}><img src={delegate} alt="" /></button>
+                <button onClick={()=>status('Отклонен')}><img src={rejected} alt="" /></button>
 
             </div>
         }
@@ -41,8 +47,9 @@ const DelegateButton: FC<DelegateButtonType> = ({event}) => {
                                       children={<InviteParticipants event={event}
                                                                     label={"Делегировать"}
                                                                     setStatus={setStatusToggle}
-                                                                    setActive={setDelegateActive}
-                                                                    updateEvent={updateEvent}/>}/>}
+                                                                    onChange={setDelegateUser}
+                                                                    delegate={"delegate"}
+                                                                    setActive={setDelegateActive}/>}/>}
         </>
     )
 }

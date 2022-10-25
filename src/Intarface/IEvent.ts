@@ -11,7 +11,7 @@ export interface IEvent {
     author:IUser|null
     participant: Array<IUser>
     room: string
-    marker: string
+    marker: string|null
     access: string
     id:string
     status:IStatus

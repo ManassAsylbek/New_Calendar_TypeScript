@@ -1,13 +1,15 @@
-import React from 'react';
+import React, {FC} from 'react';
+import style from "./Preloader.module.css";
+import {Spin} from "antd";
 
 interface PreloaderType {
-    ():{}
+    loader: boolean
 }
 
-const Preloader:PreloaderType = () => {
+const Preloader: FC<PreloaderType> = ({loader}) => {
     return (
-        <div>
-
+        <div className={loader ? `${style.globalSpin}` : `${style.spin}`}>
+            <Spin tip="Загрузка..." size="large"/>
         </div>
     );
 };

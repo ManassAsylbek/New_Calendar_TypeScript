@@ -9,6 +9,7 @@ interface IAuthState {
     user:IUser|null,
     id:string
     token:string
+    reloadProfile:number
 }
 
 const initialState:IAuthState = {
@@ -18,7 +19,9 @@ const initialState:IAuthState = {
     isLoadingAuth:false,
     error:"",
     user:null,
-    id:""
+    id:"",
+    reloadProfile:0,
+
 }
 
 export const authSlice = createSlice({
@@ -48,6 +51,9 @@ export const authSlice = createSlice({
         },
         AddToken:(state, action: PayloadAction<string>) => {
             state.token = action.payload;
+        },
+        reloadUser:(state) => {
+            state.reloadProfile++
         }
 
     },
@@ -68,5 +74,5 @@ export const authSlice = createSlice({
     }*/
 })
 
-export const {removeUser,AuthFetching,AuthFetchingSuccess,AuthFetchingError,AddToken} = authSlice.actions
+export const {removeUser,AuthFetching,AuthFetchingSuccess,AuthFetchingError,AddToken,reloadUser} = authSlice.actions
 export default authSlice.reducer

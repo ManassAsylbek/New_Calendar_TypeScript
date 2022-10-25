@@ -5,11 +5,12 @@ import logo from "../../Media/images/logo.svg"
 import {Controller, SubmitHandler, useForm} from "react-hook-form";
 import {IUser, IUserSignUp} from "../../Intarface/IUser";
 import ReactSelect from "react-select";
-import {optionDepartment, optionRoom, SelectStyles} from "../../Constants/option";
+import {optionDepartment, optionPosition, optionRoom, SelectStyles} from "../../Constants/option";
 import {IOption} from "../../Intarface/isShippingField";
-import {Navigate} from "react-router-dom";
+import {Link, Navigate} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../hooks/redux";
 import {signUp} from "../../store/Auth/ActionCreatorAuth";
+import Preloader from "../../Components/Preloader/Preloader";
 
 
 const Registration: FC = () => {
@@ -44,7 +45,7 @@ const Registration: FC = () => {
     }
     return (<>
             {isLoadingAuth
-                ? <div>loading</div>
+                ?  <Preloader loader={true}/>
                 : isAuth
                     ? <Navigate to={'/'}/>
                     : <div className={style.registration}>
@@ -59,7 +60,7 @@ const Registration: FC = () => {
 
                             <div className={style.inputArea}>
                                 <div className={style.surname}>
-                                    <p>Фамилия</p>
+                                    <p>ФИО</p>
                                     <input {...register('displayName', {required: "Введите ФИО"})}/>
                                     {errors.displayName && <span className={style.error}>{"Введите ФИО"}</span>}
                                 </div>
@@ -102,8 +103,8 @@ const Registration: FC = () => {
                                                 render={({field: {onChange, value}, fieldState: {error}}) => <>
                                                     <ReactSelect
                                                         styles={SelectStyles}
-                                                        placeholder={optionDepartment[0].label}
-                                                        options={optionDepartment}
+                                                        placeholder={optionPosition[0].label}
+                                                        options={optionPosition}
                                                         onChange={(newValue) => onChange((newValue as IOption).value)}
                                                     />
                                                     {error && <div className={style.error}>{error.message}</div>}
@@ -124,6 +125,9 @@ const Registration: FC = () => {
                             </div>
                             {correctPass && <span className={style.error}>{"Пароли не совпадают"}</span>}
                             <button className={style.btn}>Сохранить</button>
+                            <div className={style.account}>
+                                <h2>Если у вас есть аккаунта?</h2><Link to="/authorizations">Авторизация</Link>
+                            </div>
                         </form>
                         <div className={style.right}>
                             <h1 className={style.title_right}>Calendar</h1>

@@ -1,0 +1,11 @@
+.spin{
+    padding-top: 50px;
+    display: flex;
+    justify-content: center;
+}
+.globalSpin{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

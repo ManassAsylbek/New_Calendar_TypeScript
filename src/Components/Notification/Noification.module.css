@@ -10,17 +10,9 @@
 
 
 }
-.message{
-    border-bottom: 1px solid rgba(46, 46, 46, 0.08);
-    padding: 0 16px;
-}
 
-.message:hover {
-    background-color: #F9F9F9;
-}
-.message div{
-    cursor: pointer;
-}
+
+
 .body {
     display: grid;
     grid-template-rows: 1fr;
@@ -29,35 +21,20 @@
 
 
 .header {
-    padding: 0 16px;
+    padding: 0 16px 0 26px;
     display: flex;
     justify-content: space-between;
     align-items: start;
     margin-bottom: 16px;
 
 }
-.header div{
+
+.header div {
     display: flex;
     gap: 8px;
 }
 
 .incoming, .sent {
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 17px;
-    line-height: 21px;
-    display: flex;
-    align-items: center;
-    text-decoration:none;
-cursor: pointer;
-    color: rgba(46, 46, 46, 0.5);
-}
-.eventBtn {
-    background-color: transparent;
-    border: none;
-}
-.activated {
     font-family: 'Inter';
     font-style: normal;
     font-weight: 600;
@@ -66,16 +43,36 @@ cursor: pointer;
     display: flex;
     align-items: center;
     text-decoration-line: underline;
+    cursor: pointer;
 
     color: #2E2E2E;
 }
-.messageHeader{
-    display: grid;
-    grid-template-columns: 3.2fr 1fr 1fr 1.5fr 1fr 1fr 1.3fr;
-    padding: 0 16px;
+
+.eventBtn {
+    background-color: transparent;
+    border: none;
 }
 
-.messageHeader h3{
+.activated {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 17px;
+    line-height: 21px;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    cursor: pointer;
+    color: rgba(46, 46, 46, 0.5);
+}
+
+.messageHeader {
+    display: grid;
+    grid-template-columns: 3.2fr 1fr 1fr 1.5fr 1fr 1fr 1.3fr;
+    padding: 0 16px 0 26px;
+}
+
+.messageHeader h3 {
     font-family: 'Inter';
     font-style: normal;
     font-weight: 500;
@@ -88,7 +85,8 @@ cursor: pointer;
     color: rgba(75, 132, 244, 0.8);
 
 }
-.eventTitle{
+
+.eventTitle {
     font-family: 'Inter';
     font-style: normal;
     font-weight: 600;
@@ -99,7 +97,8 @@ cursor: pointer;
 
     color: #2E2E2E;
 }
-.eventAuthor{
+
+.eventAuthor {
 
     font-family: 'Inter';
     font-style: normal;
@@ -113,15 +112,27 @@ cursor: pointer;
 }
 
 
-.message{
+.message {
 
     display: grid;
     align-items: center;
-    grid-template-columns: 3.2fr 1fr 1fr 1.5fr 1fr 1fr 1.3fr;
+    grid-template-columns:10px 3.2fr 1fr 1fr 1.5fr 1fr 1fr 1.3fr;
     height: 56px;
+    border-bottom: 1px solid rgba(46, 46, 46, 0.08);
+    padding: 0 16px;
 
 }
-.message h3{
+
+
+.message:hover {
+    background-color: #F9F9F9;
+}
+
+.message div {
+    cursor: pointer;
+}
+
+.message h3 {
     font-family: 'Inter';
     font-style: normal;
     font-weight: 400;
@@ -132,12 +143,19 @@ cursor: pointer;
 
     color: #2E2E2E;
 }
-
-.btn{
-    display: flex;
-    gap:8px
+.new{
+    background: #4B84F4;
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 8px;
 }
-.btn button{
+.btn {
+    display: flex;
+    gap: 8px
+}
+
+.btn button {
     width: 24px;
     height: 24px;
     display: flex;
@@ -149,16 +167,18 @@ cursor: pointer;
     border: none;
 }
 
-.incomingBody{
+.incomingBody {
     height: 65vh;
-    overflow-y:auto ;
+    overflow-y: auto;
 
     -ms-overflow-style: none;
 }
+
 .incomingBody::-webkit-scrollbar {
     width: 0;
     height: 0;
 }
+
 .choosePerson {
     align-self: start;
     width: 128px;
@@ -172,13 +192,15 @@ cursor: pointer;
     overflow: hidden;
     -ms-overflow-style: none;
     overscroll-behavior: auto;
-    padding:8px;
+    padding: 8px;
     margin: 4px 0;
 }
+
 .choosePerson::-webkit-scrollbar {
     width: 2px;
     height: 2px;
 }
+
 .choosePerson:hover {
     display: grid;
     width: 128px;
@@ -197,14 +219,15 @@ cursor: pointer;
 }
 
 
-.chooseAvatar{
+.chooseAvatar {
     background: #4B84F4;
     border-radius: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-.chooseAvatarImg{
+
+.chooseAvatarImg {
 
     width: 32px;
     height: 32px;

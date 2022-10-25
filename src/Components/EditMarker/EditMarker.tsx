@@ -8,37 +8,51 @@ import {markerAPI} from "../../services/markerServices";
 import {IMarker} from "../../Intarface/IMarker";
 import {setDeleteMarker, setUpdateMarker} from "../../store/Marker/ActionCreatorMarker";
 import {useAppDispatch, useAppSelector} from "../../hooks/redux";
+import {setUpdateEvent} from "../../store/events/ACEvents";
 
 interface MarkerProps {
-    setActive: (pt:boolean)=>void;
-    marker:IMarker
+    setActive: (pt: boolean) => void;
+    marker: IMarker
 }
-const Marker: FC<MarkerProps> = ({setActive,marker}) => {
-    const [updateMarker,{}] = markerAPI.useUpdateMarkersMutation()
-    const [deleteMarker,{}] = markerAPI.useDeleteMarkersMutation()
+
+const Marker: FC<MarkerProps> = ({setActive, marker}) => {
     const {id} = useAppSelector(state => state.authSlice)
+    const {events} = useAppSelector(state => state.eventSlice)
     const dispatch = useAppDispatch()
     const {
         register,
         handleSubmit,
-        formState:{errors},
+        formState: {errors},
         control
     } = useForm<IMarker>({mode: 'onChange'})
 
     const removeMarker = () => {
 
-        dispatch(setDeleteMarker(`markers_${id}`,marker.id))
-        /*deleteMarker(marker)*/
+        events && events.forEach(event => {
+            const updateEventValue = {...event, marker: marker.value === event.marker ? null : event.marker}//проверяяет на совпадение с ткушим маркером и и меняяет
+            dispatch(setUpdateEvent(`events_${id}`, event.id, updateEventValue))
+        })
+
+        dispatch(setDeleteMarker(`markers_${id}`, marker.id))
+
+
         setActive(false)
     }
 
 
-
     const onSubmit: SubmitHandler<IMarker> = (data) => {
-        const updateMarkerValue={...marker,...data}
 
-        dispatch(setUpdateMarker(`markers_${id}`,marker.id,data))
-       // updateMarker(updateMarkerValue)
+
+        const updateMarkerValue = {...marker, ...data}
+        console.log(updateMarkerValue.value)
+        dispatch(setUpdateMarker(`markers_${id}`, marker.id, data))
+        events && events.forEach(event => {
+
+            const updateEventValue = {...event, marker: marker.value === event.marker ? data.value : event.marker}//проверяяет на совпадение с ткушим маркером и и меняяет
+            dispatch(setUpdateEvent(`events_${id}`, event.id, updateEventValue))
+        })
+
+        // updateMarker(updateMarkerValue)
         setActive(false)
 
     }
@@ -71,14 +85,14 @@ const Marker: FC<MarkerProps> = ({setActive,marker}) => {
                                     render={({field: {onChange, value}, fieldState: {error}}) => <>
                                         {
                                             color.map(c =>
-                                                    <div key={c.id}
-                                                         className={style.selectColor}
-                                                         style={{background: c.color}}
-                                                         onClick={() => onChange(c.color)}>
-                                                        {value === c.color
-                                                            ? <img src={checkImg} alt=""/>
-                                                            : ""}
-                                                    </div>
+                                                <div key={c.id}
+                                                     className={style.selectColor}
+                                                     style={{background: c.color}}
+                                                     onClick={() => onChange(c.color)}>
+                                                    {value === c.color
+                                                        ? <img src={checkImg} alt=""/>
+                                                        : ""}
+                                                </div>
                                             )
                                         }
                                     </>

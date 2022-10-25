@@ -8,7 +8,8 @@ import {IUser} from "../../Intarface/IUser";
 import {useFilterPerson} from "../../hooks/filterPerson";
 import {useSearch} from "../../hooks/useSearch";
 import {IEvent} from "../../Intarface/IEvent";
-import {useAppSelector} from "../../hooks/redux";
+import {useAppDispatch, useAppSelector} from "../../hooks/redux";
+import {setEvents, setUpdateEvent} from "../../store/events/ACEvents";
 
 
 interface InviteParticipantsType {
@@ -17,35 +18,43 @@ interface InviteParticipantsType {
     setStatus?: (pt: string) => void;
     onChange?: (users: Array<IUser>) => void
     value?: Array<IUser> | undefined
-    updateEvent?: (event: IEvent) => void
     event?: IEvent
+    delegate?: string
 }
 
 const InviteParticipants: FC<InviteParticipantsType> = ({
                                                             setActive, label,
                                                             setStatus,
-                                                            onChange, value,
-                                                            updateEvent, event
+                                                            onChange, value, event,
+                                                            delegate
                                                         }) => {
 
     const {id} = useAppSelector(state => state.authSlice)
 
     const {addUser, removeUser, newUsers, setNewUsers} = useFilterPerson(value)
-    const {searchUsers, search} = useSearch()
+    const {searchUsers, getSearch} = useSearch()
+    const dispatch = useAppDispatch()
+
+    const selectPerson = () => {
+      /*  if (event && newUsers && setStatus && label === 'Делегировать') {
+            /!*updateEvent({...event, status: {label: 'Делегирован', value: newUsers}})*!/
+            setStatus('Делегирован')
+        }*/
+        if (delegate && event && newUsers.length > 0) {
+            const newEvent = {
+                ...event, status: {label: 'Делегирован', value: [...newUsers],new:false}
+            }//delegate users
+            console.log(newEvent)
+            dispatch(setEvents(id, newEvent)) //отправляем события для делегированный пользавтелей
+            dispatch(setUpdateEvent(`events_${id}`, event.id, newEvent))//обновляем текушия события
+        }
+        onChange && onChange(newUsers)
+        setActive(false)
+    }
 
     useEffect(() => {
         value && setNewUsers(value)
     }, [value])
-
-    const selectPerson = () => {
-        if (event && newUsers && updateEvent && setStatus && label === 'Делегировать') {
-            /*updateEvent({...event, status: {label: 'Делегирован', value: newUsers}})*/
-            setStatus('Делегирован')
-        }
-
-        onChange && onChange(newUsers)
-        setActive(false)
-    }
 
     return (
         <div className={style.Content} onClick={e => e.stopPropagation()}>
@@ -59,7 +68,7 @@ const InviteParticipants: FC<InviteParticipantsType> = ({
             <div>
                 <div className={style.searchInput}>
                     <img src={search_icon} alt=""/>
-                    <input onChange={search} className={style.titleInput}/>
+                    <input onChange={getSearch} className={style.titleInput}/>
                 </div>
             </div>
             <div className={style.body}>

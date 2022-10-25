@@ -107,6 +107,7 @@
 .item{
     width: 100%;
     border-left: 1px solid rgba(35, 35, 35, .1);
+    overflow: hidden;
 }
 .item:hover {
     background-color: #F9F9F9;

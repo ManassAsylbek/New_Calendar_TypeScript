@@ -9,9 +9,11 @@ import {
     signOut,
     onAuthStateChanged,
     User,
-    NextOrObserver,
     UserCredential,
-    updateProfile
+    updateProfile,
+    updateEmail,
+    updatePassword,
+    deleteUser
 } from 'firebase/auth';
 import {
     getFirestore,
@@ -27,7 +29,7 @@ import {
     QueryDocumentSnapshot,
 } from 'firebase/firestore';
 import {AdditionalInformation} from "../Intarface/IFirebase";
-import {IUser} from "../Intarface/IUser";
+import {IUser, IUserSignUp} from "../Intarface/IUser";
 import {IEvent} from "../Intarface/IEvent";
 import {IMarker} from "../Intarface/IMarker";
 
@@ -86,7 +88,7 @@ export const createUserDocumentFromAuth = async (
     if (auth.currentUser) {
         await updateProfile(auth.currentUser, {
             displayName: additionalInformation.displayName,
-            photoURL: "https://cdn.pixabay.com/photo/2016/11/10/12/33/model-1814200__340.jpg",
+            photoURL: additionalInformation.photoURL,
         })
     }
     const {displayName, email, uid} = userAuth
@@ -154,20 +156,50 @@ export const getUsersAndDocuments = async (): Promise<IUser[]> => {
 export const getUser = async (uid: string) => {
     let userDocRef = doc(db, 'users', uid);
 
-
     let userSnapshot = await getDoc(userDocRef);
     return userSnapshot.data()
 
 }
 
-///////update////////////////////////////////////////////////
-export const setUpdateDoc = async (uId:string,docId:string,data:IMarker|IEvent) =>{
-    console.log(uId)
-    const dataDocRef = doc(db, uId,docId);
-    console.log(dataDocRef)
 
-    try{
-        await setDoc(dataDocRef,data)
+///////delete auth user//////////////////////////////////////
+
+export const deleteAuthUser = async () => {
+    const user = auth.currentUser;
+    if (user) {
+        await deleteUser(user)
+    }
+}
+
+///////update auth user//////////////////////////////////////
+export const updatePasswordAuthUser = async (password: string) => {
+    const user = auth.currentUser;
+    if (user) {
+        await updatePassword(user, password)
+    }
+}
+
+export const updateEmailAuthUser = async (email: string) => {
+    const user = auth.currentUser;
+    if (user) {
+        await updateEmail(user, email)
+    }
+}
+export const updateAuthUser = async (additionalInformation = {} as AdditionalInformation) => {
+    const user = auth.currentUser;
+    if (user) {
+        await updateProfile(user, {
+            displayName: additionalInformation.displayName,
+            photoURL: additionalInformation.photoURL,
+        })
+    }
+}
+
+///////update////////////////////////////////////////////////
+export const setUpdateDoc = async (uId: string, docId: string, data: IMarker | IEvent | IUser ) => {
+    const dataDocRef = doc(db, uId, docId);
+    try {
+        await setDoc(dataDocRef, data)
         // @ts-ignore
         //await updateDoc(dataDocRef, data)
     } catch (err) {
@@ -176,7 +208,7 @@ export const setUpdateDoc = async (uId:string,docId:string,data:IMarker|IEvent) 
 }
 
 /////////delete/////////////////////////////////////////////
-export const setDeleteDoc = async (uId:string,docId:string) => {
+export const setDeleteDoc = async (uId: string, docId: string) => {
     await deleteDoc(doc(db, uId, docId));
 }
 
@@ -184,7 +216,7 @@ export const setDeleteDoc = async (uId:string,docId:string) => {
 
 
 export const setDefaultMarker = async (id: string): Promise<void> => {
-    const markerDocRef = doc(db, `markers_${id}`,"default_marker");
+    const markerDocRef = doc(db, `markers_${id}`, "default_marker");
     let markerSnapshot = await getDoc(markerDocRef)
     if (!markerSnapshot.exists()) {
         await setDoc(markerDocRef, {
@@ -215,15 +247,15 @@ export const createMarkersDocumentFromAuth = async (id: string, marker = {} as I
     if (!userSnapshot.exists()) {
 
     }*/
-   /* const q = query(markerCollRef);
-    const querySnapshot = await getDocs(q);
-    if(querySnapshot.empty){
-        await setDoc(doc(markerCollRef), {
-            label: "рабочий",
-            value: "#445370",
-            id: "default"
-        })
-    }*/
+    /* const q = query(markerCollRef);
+     const querySnapshot = await getDocs(q);
+     if(querySnapshot.empty){
+         await setDoc(doc(markerCollRef), {
+             label: "рабочий",
+             value: "#445370",
+             id: "default"
+         })
+     }*/
 
 }
 
@@ -243,36 +275,9 @@ export const getEventsAndDocuments = async (id: string): Promise<IEvent[]> => {
 
 
 export const createEventsDocumentFromAuth = async (id: string, event = {} as IEvent) => {
-
     const eventDocRef = collection(db, `events_${id}`);
-    const ev = doc(eventDocRef)
+    /*  const ev = doc(eventDocRef)*/
     await setDoc(doc(eventDocRef), {...event})
-
-    /*  let userSnapshot = await getDoc(ev);
-      if (!userSnapshot.exists()) {
-          try {
-              await setDoc(ev, {
-                  title:"a6565"
-              });
-          } catch (error) {
-              console.log('error creating the user', error);
-          }
-      }*/
-
-    /*const eventDocRef = doc(db, `events_${id}`);
-    let userSnapshot = await getDoc(eventDocRef);
-
-    if (!userSnapshot.exists()) {
-        try {
-            await setDoc(eventDocRef, {
-                title:"hello"
-              /!*  ...event,
-                author:id,*!/
-            });
-        } catch (error) {
-            console.log('error creating the user', error);
-        }
-    }*/
 }
 export const creat = async () => {
     console.log(console.log(auth))

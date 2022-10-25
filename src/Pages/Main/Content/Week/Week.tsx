@@ -10,8 +10,7 @@ import {IEvent} from "../../../../Intarface/IEvent";
 import NewEvent from "../../../../Components/newEvent/newEvent";
 import {useAppDispatch, useAppSelector} from "../../../../hooks/redux";
 import {dateSlice} from "../../../../store/Date/dateSlice";
-import {eventAPI} from "../../../../services/eventServices";
-import {toast} from "react-hot-toast";
+
 
 
 const Week: FC = () => {
@@ -27,12 +26,12 @@ const Week: FC = () => {
     const dispatch = useAppDispatch()
     const {addDate} = dateSlice.actions
 
-    const [deleteEvent, {isSuccess: deleteEventSuccess}] = eventAPI.useDeleteEventsMutation()
+/*    const [deleteEvent, {isSuccess: deleteEventSuccess}] = eventAPI.useDeleteEventsMutation()
     const [updateEvent, {
         isSuccess: updateEventSuccess,
         isError: updateEventError,
         isLoading: updateEventLoading
-    }] = eventAPI.useUpdateEventsMutation()
+    }] = eventAPI.useUpdateEventsMutation()*/
 
 
     const setDate = (time:string,date:string) => {
@@ -65,7 +64,7 @@ const Week: FC = () => {
                                     {
                                         wno.map(n => <div key={n.id} onClick={() => setDate(t.time, n.date)}
                                                           className={style.item}>
-                                                <div>
+
                                                     <Event
                                                         setEditEvent={setEditEventActive}
                                                         setEventActive={setEventActive}
@@ -73,7 +72,6 @@ const Week: FC = () => {
                                                         time={t.time}
                                                         date={n.date}
                                                     />
-                                                </div>
                                             </div>
                                         )}
                                 </div>
@@ -96,8 +94,8 @@ const Week: FC = () => {
                                                 children={<EditEvent
                                                     event={event}
                                                     setActive={setEditEventActive}/>}/>}
-            {deleteEventSuccess && toast.success("Событие успешно удалено")}
-            {updateEventSuccess && toast.success("Событие успешно редактирована")}
+   {/*         {deleteEventSuccess && toast.success("Событие успешно удалено")}
+            {updateEventSuccess && toast.success("Событие успешно редактирована")}*/}
         </>
     );
 };

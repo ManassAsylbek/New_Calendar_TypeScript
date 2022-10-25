@@ -25,22 +25,14 @@ const App: React.FC = () => {
     const dispatch = useAppDispatch()
     const {addDate} = dateSlice.actions
     const {date} = useAppSelector(state => state.dateSlice)
-
-    const [deleteEvent, {isSuccess: deleteEventSuccess}] = eventAPI.useDeleteEventsMutation()
-    const [updateEvent, {
-        isSuccess: updateEventSuccess,
-        isError: updateEventError,
-        isLoading: updateEventLoading
-    }] = eventAPI.useUpdateEventsMutation()
+    const {id} = useAppSelector(state => state.authSlice)
+    const {foreigner} = useAppSelector(state => state.eventSlice)
 
 
     const [eventActive, setEventActive] = useState(false)
-    const [event, setEvent] = useState<IEvent | undefined>()
-    const [limit, setLimit] = useState(100)
-    const [open, setOpen] = useState(false);
 
-    //const {data: events} = eventAPI.useFetchAllEventsQuery(limit)
-    const {events} = useAppSelector(state => state.eventSlice)
+    const [event, setEvent] = useState<IEvent | undefined>()
+    const {events,room} = useAppSelector(state => state.eventSlice)
 
     const monthCellRender = (value: Moment) => {
         const num = getMonthData(value);
@@ -57,8 +49,13 @@ const App: React.FC = () => {
 
     const getListData: ListDataType = (value: Moment) => {
         let listData: Array<IEvent> = []
-        if (events)
-            events.map((item: IEvent) => {
+        let newEvent = events
+        if (room && events) {
+            newEvent = events.filter(event => event.room === room)
+        }
+
+        if (newEvent)
+            newEvent.map((item: IEvent) => {
                     if (item.date === (moment(value).format("YYYY-MM-DD"))) {
                         return listData.push(item)
                     }
@@ -66,34 +63,26 @@ const App: React.FC = () => {
             )
         return listData || [];
     };
-
-    /*   const getEvent = (item: IEvent) => {
-           setEvent(item)
-           events && events.find((item: IEvent) => item.date === date)
-               ? ""
-               : setEventActive(true)
-       }*/
-
-    const handleOpenChange = (newOpen: boolean) => {
-        setOpen(newOpen);
-    };
+    ;
 
     const dateCellRender = (value: Moment) => {
         const listData: Array<IEvent> = getListData(value);
         return (
             <ul className="events">
-                {listData.map((item) => (
+                {listData.map((item) => ((item.status.label === 'Принят' || item.author?.id === id) &&//прверка на свое события или на принятия
                     <li key={item.title} style={{position: "relative"}}>
-                        <Popover color="#FBFCFF" content={() => <PopoverEvent  event={item}/>}
+                        <Popover color="#FBFCFF" content={() => <PopoverEvent event={item}/>}
                                  key={item.id}
                                  placement="right"
-                                 >
+                        >
                        <span onClick={() => setEvent(item)}
                              style={{
                                  display: "inline-block",
-                                 background: item.marker,
+                                 background: !foreigner
+                                     ? item.marker ? item.marker : "gray"
+                                     : "gray",
                                  width: 10,
-                                 color: item.marker,
+                                 //color: item.marker?item.marker:"gray",
                                  height: 10,
                                  borderRadius: 10,
                                  marginRight: 5,
@@ -128,7 +117,7 @@ const App: React.FC = () => {
             fullscreen={true}
             onSelect={() => setEventActive(true)}
 
-        />;
+        />
         {eventActive && <Modal setActive={setEventActive} active={eventActive}
                                children={<NewEvent
                                    date={date}

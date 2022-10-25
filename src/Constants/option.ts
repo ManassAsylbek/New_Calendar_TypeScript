@@ -44,6 +44,14 @@ export const optionAccess: IOption[] = [
 ]
 
 export const optionDepartment: IOption[] = [
+    {id:'1',value: "Отдел разработок", label: "Отдел разработок"},
+    {id:'2',value: "маркетинг", label: "маркетинг"},
+    {id:'3',value: "продажа и развитие бизнеса", label: "продажа и развитие бизнеса"},
+    {id:'4',value: "дизайн", label: "дизайн"},
+    {id:'5',value: "программное обеспечение и сервисы", label: "программное обеспечение и сервисы"},
+]
+
+export const optionPosition: IOption[] = [
     {id:'1',value: "Руководитель", label: "Руководитель"},
     {id:'2',value: "UX/UI дизайнер", label: "UX/UI дизайнер"},
     {id:'3',value: "Frontend разработчик", label: "Frontend разработчик"},

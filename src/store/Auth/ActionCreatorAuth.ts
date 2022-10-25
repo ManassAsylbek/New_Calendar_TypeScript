@@ -1,18 +1,21 @@
 import {
     createAuthUserWithEmailAndPassword,
-    createUserDocumentFromAuth,
-    getCurrentUser, getEventsAndDocuments, getMarkerAndDocuments, getUser, setDefaultMarker,
-    signInAuthUserWithEmailAndPassword, signOutUser
+    createUserDocumentFromAuth, deleteAuthUser,
+    getCurrentUser, getEventsAndDocuments, getMarkerAndDocuments, getUser, setDefaultMarker, setDeleteDoc, setUpdateDoc,
+    signInAuthUserWithEmailAndPassword, signOutUser, updateAuthUser, updateEmailAuthUser, updatePasswordAuthUser
 } from "../../utilits/firebase_utilits";
 import {AppDispatch} from "../store";
-import {AuthFetching, AuthFetchingSuccess, AuthFetchingError, removeUser, AddToken} from "./authSlice"
+import {AuthFetching, AuthFetchingSuccess, AuthFetchingError, removeUser, AddToken,reloadUser} from "./authSlice"
 import {IUserSignUp} from "../../Intarface/IUser";
 import {getEvents} from "../events/ACEvents";
-import {eventsFetchingSuccess} from "../events/eventSlice";
+import {addEvent, eventsFetchingSuccess} from "../events/eventSlice";
 import {markerFetchingSuccess} from "../Marker/markerSlice";
-import {getMarkers, setDefaultMark} from "../Marker/ActionCreatorMarker";
+import {getMarkers} from "../Marker/ActionCreatorMarker";
 
+import {message} from "antd";
+import {fetchUser} from "../User/ActionCreator";
 
+const key = 'event';
 export const signOut = () => async (dispatch: AppDispatch) => {
 
     try {
@@ -31,7 +34,7 @@ export const signUp = (data: IUserSignUp) => async (dispatch: AppDispatch) => {
         await createUserDocumentFromAuth(user,
             {
                 displayName: data.displayName, department: data.department, position: data.position,
-                photoURL: "https://cdn.pixabay.com/photo/2016/01/25/19/48/man-1161337__340.jpg"
+                /*photoURL: "https://cdn.pixabay.com/photo/2016/01/25/19/48/man-1161337__340.jpg"*/
             })
         const currentUser = await getUser(user.uid)
 
@@ -125,3 +128,47 @@ export const signInWithEmail = (data: { email: string, password: string }) => as
     }
 }
 
+export const deleteProfile = (id: string) => async (dispatch: AppDispatch) => {
+
+
+    message.loading({content: 'Загрузка...', key});
+    await setDeleteDoc("users", id)
+
+    dispatch(AuthFetching())
+    await deleteAuthUser()
+
+    isUserAuthenticated()
+    dispatch(removeUser())
+    message.success({content: 'Профиль удален', key, duration: 2});
+}
+
+export const updateProfile = (data: IUserSignUp) => async (dispatch: AppDispatch) => {
+    try {
+        message.loading({content: 'Загрузка...', key});
+      /*  dispatch(AuthFetching())*/
+        await setUpdateDoc("users", data.id, {
+            displayName: data.displayName, department: data.department, position: data.position,
+            /*photoURL: "https://cdn.pixabay.com/photo/2016/01/25/19/48/man-1161337__340.jpg",*/
+            id: data.id, email: data.email
+        })
+        await updateAuthUser({displayName: data.displayName, photoURL: data.photoURL})
+        await updateEmailAuthUser(data.email)
+        await updatePasswordAuthUser(data.password)
+        dispatch(reloadUser())
+        message.success({content: 'Профиль редоктирован', key, duration: 2});
+    } catch (e) {
+
+    }
+}
+
+export const getProfile = (id:string) => async (dispatch: AppDispatch) => {
+    const currentUser = await getUser(id)
+    dispatch(AuthFetchingSuccess({
+        displayName: currentUser?.displayName,
+        department: currentUser?.department,
+        position: currentUser?.position,
+        email: currentUser?.email,
+        id: currentUser?.id,
+        photoURL: currentUser?.photoURL
+    }))
+}

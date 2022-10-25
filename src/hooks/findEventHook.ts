@@ -3,9 +3,10 @@ import {eventAPI} from "../services/eventServices";
 import {IEvent} from "../Intarface/IEvent";
 import moment from "moment";
 import {useAppSelector} from "./redux";
+import {eventsFetchingSuccess, isRoom} from "../store/events/eventSlice";
 
 
-interface IFindEvent {(time: string, date: string): {findEvent:IEvent[]|undefined}}
+interface IFindEvent {(time: string, date: string): {findEvents:IEvent[]|undefined}}
 
 
 export const useFindEvent:IFindEvent = (time: string, date: string) => {
@@ -14,14 +15,17 @@ export const useFindEvent:IFindEvent = (time: string, date: string) => {
     const [eventArray, setEventArray] = useState([ ])
 
      //const {data: events} = eventAPI.useFetchAllEventsQuery(limit)
-    const {events} = useAppSelector(state => state.eventSlice)
+    const {events,room} = useAppSelector(state => state.eventSlice)
 
-    let findEvent:Array<IEvent>| undefined
+    let findEvents:Array<IEvent>| undefined
     if(events) {
-        findEvent = events.filter((item: IEvent) => item.date === (moment(date).format("YYYY-MM-DD"))
+        findEvents = events.filter((item: IEvent) => item.date === (moment(date).format("YYYY-MM-DD"))
             && item.startTime === time)
     }else{
-        findEvent =undefined
+        findEvents =undefined
     }
-    return {findEvent}
+    if (room && findEvents) {
+        findEvents =findEvents.filter(event => event.room === room)
+    }
+    return {findEvents}
 }

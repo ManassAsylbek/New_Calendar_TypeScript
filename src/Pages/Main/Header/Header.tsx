@@ -12,11 +12,11 @@ import Modal from "../../../Modal/modal";
 import Notification from "../../../Components/Notification/Notification";
 import Search from "../../../Components/Search/Search";
 import UserProfile from "../../../Components/UserProfile/UserProfile";
-import {getCurrentUser} from "../../../utilits/firebase_utilits";
-import {isUserAuthenticated} from "../../../store/Auth/ActionCreatorAuth";
-import {isForeigner} from "../../../store/events/eventSlice";
+
+import {isForeigner, isRoom} from "../../../store/events/eventSlice";
 import {getEvents} from "../../../store/events/ACEvents";
 import {getMarkers} from "../../../store/Marker/ActionCreatorMarker";
+import EditProfile from "../../../Components/EditProfile/EditProfile";
 
 
 const Header: FC = () => {
@@ -25,11 +25,11 @@ const Header: FC = () => {
     const [notificationActive, setNotificationActive] = useState(false)
     const [searchActive, setSearchActive] = useState(false)
     const [userProfileActive, setUserProfileActive] = useState(false)
-
+    const [editActive, setEditActive] = useState(false)
     const {nextDate, prevDate, todayDate, setValue} = useMomentDate()
 
     const {format} = useAppSelector(state => state.dateSlice)
-    const {foreigner} = useAppSelector(state => state.eventSlice)
+    const {foreigner, room} = useAppSelector(state => state.eventSlice)
     const {user, id} = useAppSelector(state => state.authSlice)
     const [open, setOpen] = useState(false);
     const dispatch = useAppDispatch()
@@ -40,6 +40,9 @@ const Header: FC = () => {
         dispatch(getEvents(id))
         dispatch(isForeigner(null))
     };
+const getRoom = () => {
+    dispatch(isRoom(""))
+}
 
     const handleOpenChange = (newOpen: boolean) => {
         setOpen(newOpen);
@@ -62,7 +65,11 @@ const Header: FC = () => {
                     <img src={rightArrow} alt="стрелка вправо"/>
                 </button>
                 <span className={style.date}>{format}</span>
-
+                {room && <div className={style.room} onClick={getRoom}>{room}
+                    {/*<button className={style.eventBtn}>
+                        <img src={close} alt=""/>
+                    </button>*/}
+                </div>}
             </div>
             <div className={style.right}>
                 <button className={style.search}
@@ -104,7 +111,10 @@ const Header: FC = () => {
             {searchActive && <Modal setActive={setSearchActive} active={searchActive}
                                     children={<Search setActive={setSearchActive}/>}/>}
             {userProfileActive && <Modal setActive={setUserProfileActive} active={userProfileActive}
-                                         children={<UserProfile setActive={setUserProfileActive}/>}/>}
+                                         children={<UserProfile setActive={setUserProfileActive}
+                                                                setEditActive={setEditActive}/>}/>}
+            {editActive && <Modal setActive={setEditActive} active={editActive}
+                                  children={<EditProfile setEditActive={setEditActive}/>}/>}
         </div>
     );
 };

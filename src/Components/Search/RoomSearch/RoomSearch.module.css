@@ -1,0 +1,55 @@
+.person {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    display: grid;
+    color: #2E2E2E;
+    row-gap: 8px;
+    margin-top: 8px;
+    width: 100%;
+    border-radius: 8px;
+}
+
+.chooseAvatar{
+    display: grid;
+    align-items: center;
+    cursor:pointer;
+}
+.Avatar{
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+.chooseAvatarImg{
+    width: 32px;
+    height: 32px;
+    border-radius: 100%;
+    object-fit: cover
+
+}
+
+.name{
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 16px;
+    display: flex;
+    align-items: center;
+    height: 32px;
+    color: #2E2E2E;
+}
+.invite{
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 15px;
+
+    display: flex;
+    align-items: center;
+
+    color: rgba(46, 46, 46, 0.5);
+}

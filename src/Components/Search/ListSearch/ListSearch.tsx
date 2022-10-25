@@ -1,11 +1,11 @@
 import React, {FC} from 'react';
 import style from "./ListSearch.module.css";
-import avatar from "../../Media/images/avatar.png";
-import {IUser} from "../../Intarface/IUser";
-import {getEvents} from "../../store/events/ACEvents";
-import {useAppDispatch} from "../../hooks/redux";
-import {isForeigner} from "../../store/events/eventSlice"
-import {getMarkers} from "../../store/Marker/ActionCreatorMarker";
+import avatar from "../../../Media/images/avatar.png";
+import {IUser} from "../../../Intarface/IUser";
+import {getEvents} from "../../../store/events/ACEvents";
+import {useAppDispatch} from "../../../hooks/redux";
+import {isForeigner} from "../../../store/events/eventSlice"
+import {getMarkers} from "../../../store/Marker/ActionCreatorMarker";
 
 
 interface IList {
