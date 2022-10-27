@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/New_Calendar_TypeScript/static/css/main.652a24bb.css",
-    "main.js": "/New_Calendar_TypeScript/static/js/main.265b9c09.js",
+    "main.js": "/New_Calendar_TypeScript/static/js/main.5abe552b.js",
     "static/js/787.f4b9e84d.chunk.js": "/New_Calendar_TypeScript/static/js/787.f4b9e84d.chunk.js",
     "static/media/logo.svg": "/New_Calendar_TypeScript/static/media/logo.844b928b80ec7aeaf5e11ab57cdc3c43.svg",
     "static/media/logoColendar.svg": "/New_Calendar_TypeScript/static/media/logoColendar.f515f8894778387f3034315035de5d44.svg",
@@ -32,11 +32,11 @@
     "static/media/left_arrow.svg": "/New_Calendar_TypeScript/static/media/left_arrow.e477219c064abb6da705b9d59a6391dd.svg",
     "static/media/right_arrow.svg": "/New_Calendar_TypeScript/static/media/right_arrow.6aaae1a043c0621988e8e11d14a132d9.svg",
     "main.652a24bb.css.map": "/New_Calendar_TypeScript/static/css/main.652a24bb.css.map",
-    "main.265b9c09.js.map": "/New_Calendar_TypeScript/static/js/main.265b9c09.js.map",
+    "main.5abe552b.js.map": "/New_Calendar_TypeScript/static/js/main.5abe552b.js.map",
     "787.f4b9e84d.chunk.js.map": "/New_Calendar_TypeScript/static/js/787.f4b9e84d.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.652a24bb.css",
-    "static/js/main.265b9c09.js"
+    "static/js/main.5abe552b.js"
   ]
 }
