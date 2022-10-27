@@ -8,7 +8,7 @@ export type passwordType = {
 }
 
 export interface IUser {
-    "photoURL"?: string | undefined
+    "photoURL": string | null
     "displayName": string,
     "email": string,
     "department": string,

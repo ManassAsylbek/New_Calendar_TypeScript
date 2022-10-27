@@ -44,7 +44,6 @@ const InviteParticipants: FC<InviteParticipantsType> = ({
             const newEvent = {
                 ...event, status: {label: 'Делегирован', value: [...newUsers],new:false}
             }//delegate users
-            console.log(newEvent)
             dispatch(setEvents(id, newEvent)) //отправляем события для делегированный пользавтелей
             dispatch(setUpdateEvent(`events_${id}`, event.id, newEvent))//обновляем текушия события
         }

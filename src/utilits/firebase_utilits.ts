@@ -20,17 +20,16 @@ import {
     doc,
     getDoc,
     setDoc,
+    addDoc,
     collection,
     writeBatch,
     query,
     getDocs,
     deleteDoc,
-    updateDoc,
-    QueryDocumentSnapshot,
 } from 'firebase/firestore';
 import {AdditionalInformation} from "../Intarface/IFirebase";
-import {IUser, IUserSignUp} from "../Intarface/IUser";
-import {IEvent} from "../Intarface/IEvent";
+import {IUser} from "../Intarface/IUser";
+import {IEvent, IEventAdd} from "../Intarface/IEvent";
 import {IMarker} from "../Intarface/IMarker";
 
 
@@ -196,7 +195,7 @@ export const updateAuthUser = async (additionalInformation = {} as AdditionalInf
 }
 
 ///////update////////////////////////////////////////////////
-export const setUpdateDoc = async (uId: string, docId: string, data: IMarker | IEvent | IUser ) => {
+export const setUpdateDoc = async (uId: string, docId: string, data: IMarker | IEvent | IUser) => {
     const dataDocRef = doc(db, uId, docId);
     try {
         await setDoc(dataDocRef, data)
@@ -241,25 +240,25 @@ export const createMarkersDocumentFromAuth = async (id: string, marker = {} as I
 
     const markerCollRef = collection(db, `markers_${id}`)
     await setDoc(doc(markerCollRef), {...marker})
-    /*const markerDocRef = doc(db, `markers_${id}`);
-    let userSnapshot = await getDoc(markerDocRef)
-    console.log(userSnapshot.exists())
-    if (!userSnapshot.exists()) {
-
-    }*/
-    /* const q = query(markerCollRef);
-     const querySnapshot = await getDocs(q);
-     if(querySnapshot.empty){
-         await setDoc(doc(markerCollRef), {
-             label: "рабочий",
-             value: "#445370",
-             id: "default"
-         })
-     }*/
 
 }
 
 ///////event///////////////////////////////////////////////////////////
+
+
+export const createEventsDocumentFromAuth = async (id: string, event = {} as IEvent) => {
+
+    const eventDocRef = collection(db, `events_${id}`);
+
+    try {
+        await addDoc((eventDocRef), event)
+    } catch (err) {
+        console.log(err)
+    }
+
+
+}
+
 
 export const getEventsAndDocuments = async (id: string): Promise<IEvent[]> => {
 
@@ -274,36 +273,7 @@ export const getEventsAndDocuments = async (id: string): Promise<IEvent[]> => {
 };
 
 
-export const createEventsDocumentFromAuth = async (id: string, event = {} as IEvent) => {
-    const eventDocRef = collection(db, `events_${id}`);
-    /*  const ev = doc(eventDocRef)*/
-    await setDoc(doc(eventDocRef), {...event})
-}
-export const creat = async () => {
-    console.log(console.log(auth))
-    const citiesRef = collection(db, "cities");
 
-    /*   await setDoc(doc(citiesRef, "SF"), {
-           name: "San Francisco", state: "CA", country: "USA",
-           capital: false, population: 860000,
-           regions: ["west_coast", "norcal"] });
-       await setDoc(doc(citiesRef, "LA"), {
-           name: "Los Angeles", state: "CA", country: "USA",
-           capital: false, population: 3900000,
-           regions: ["west_coast", "socal"] });
-       await setDoc(doc(citiesRef, "DC"), {
-           name: "Washington, D.C.", state: null, country: "USA",
-           capital: true, population: 680000,
-           regions: ["east_coast"] });
-       await setDoc(doc(citiesRef, "TOK"), {
-           name: "Tokyo", state: null, country: "Japan",
-           capital: true, population: 9000000,
-           regions: ["kanto", "honshu"] });
-       await setDoc(doc(citiesRef, "BJ"), {
-           name: "Beijing", state: null, country: "China",
-           capital: true, population: 21500000,
-           regions: ["jingjinji", "hebei"]
-       });*/
-}
+
 
 

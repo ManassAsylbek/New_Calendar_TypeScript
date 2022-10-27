@@ -11,7 +11,7 @@ interface dateState {
 const initialState: dateState = {
     date: moment(new Date()).format('YYYY-MM-DD'),
     format: moment(new Date()).format('DD MMMM YYYY - dddd'),
-    dateFormat: 'day'
+    dateFormat: "month"
 }
 
 export const dateSlice = createSlice({

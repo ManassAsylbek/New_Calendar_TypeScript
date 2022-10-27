@@ -1,8 +1,7 @@
-import React, {FC, useState} from 'react';
+import React, {FC} from 'react';
 import style from './Event.module.css'
 import {IEvent} from "../../../../Intarface/IEvent";
 import {useFindEvent} from "../../../../hooks/findEventHook";
-import moment from "moment";
 import {useAppSelector} from "../../../../hooks/redux";
 import {Popover} from 'antd'
 import PopoverEvent from "../../../../Components/Popover/popoverEvent/PopoverEvent";
@@ -33,8 +32,8 @@ const Event: FC<EventItemProps> = ({time, date, setEditEvent, setEvent, setEvent
                         <div className={style.item}>
                             <div style={{
                                 background: !foreigner
-                                    ? item.marker ? item.marker : "gray"
-                                    : "gray"
+                                    ? item.marker ? item.marker : "#808080"
+                                    : "#808080"
                             }}
                                  className={style.marker}/>
                             <div className={style.EventItem}>

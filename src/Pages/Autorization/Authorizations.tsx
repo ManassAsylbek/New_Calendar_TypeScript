@@ -54,6 +54,11 @@ const Authorizations: FC = () => {
                         <div className={style.account}>
                             <h2>У вас нет аккаунта?</h2><Link to="/registration">Регистрация</Link>
                         </div>
+                        <div className={style.test}>
+                            <div>Если не хотите регистрироваться, внизу тестовый аккаунт!</div>
+                            <div className={style.testEmail}>Email: test1@gmail.com</div>
+                            <div className={style.testPass}>пароль: 123456</div>
+                        </div>
                     </form>
                     <div className={style.right}>
                         <h2 className={style.title_right}>Calendar</h2>

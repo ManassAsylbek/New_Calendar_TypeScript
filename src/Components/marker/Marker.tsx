@@ -4,10 +4,7 @@ import close from '../../Media/icons/close.svg'
 import checkImg from '../../Media/icons/check.svg'
 import {color} from "../../Constants/constants";
 import {Controller, SubmitHandler, useForm} from "react-hook-form";
-
-import {markerAPI} from "../../services/markerServices";
 import {IMarker} from "../../Intarface/IMarker";
-import {setEvents} from "../../store/events/ACEvents";
 import {setMarkers} from "../../store/Marker/ActionCreatorMarker";
 import {useAppDispatch, useAppSelector} from "../../hooks/redux";
 

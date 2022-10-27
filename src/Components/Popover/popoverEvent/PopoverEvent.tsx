@@ -22,6 +22,7 @@ interface IPopoverEvent {
 const PopoverEvent: FC<IPopoverEvent> = ({event}) => {
     const [editEventActive, setEditEventActive] = useState(false)
     const {id} = useAppSelector(state => state.authSlice)
+    const {foreigner} = useAppSelector(state => state.eventSlice)
     const dispatch = useAppDispatch()
     const handleRemove = () => {
         dispatch(setDeleteEvent(`events_${id}`, event.id))
@@ -34,10 +35,10 @@ const PopoverEvent: FC<IPopoverEvent> = ({event}) => {
 
     return (<>
             {event && <div className={style.info} onClick={e => e.stopPropagation()}>
-                <div className={style.btn}>
-                    <img className={style.edit}  src={edit} alt="" onClick={handleUpdate}/>
+                {!foreigner && <div className={style.btn}>
+                    <img className={style.edit} src={edit} alt="" onClick={handleUpdate}/>
                     <img className={style.basketImg} src={basketImg} alt="" onClick={handleRemove}/>
-                </div>
+                </div>}
                 <div className={style.title}>{event.title}</div>
                 <div className={style.text}>
                     <img src={timeLogo} alt=""/>{moment(event.date).format('DD MMMM YYYY - dddd')}</div>

@@ -17,7 +17,7 @@ interface IEditProfile {
 
 const EditProfile: FC<IEditProfile> = ({setEditActive}) => {
     const [correctPass, setCorrectPass] = useState(false)
-    const {isAuth, isLoadingAuth, user, id} = useAppSelector(state => state.authSlice)
+    const { user, id} = useAppSelector(state => state.authSlice)
     const dispatch = useAppDispatch()
     const {
         register,
@@ -46,7 +46,7 @@ const EditProfile: FC<IEditProfile> = ({setEditActive}) => {
     }
     return (
         <div onClick={e => e.stopPropagation()}>
-            <form className={style.left} action="javascript:void (0)">
+            <form className={style.left} action="#">
                 <div className={style.header}>
                     <h1 className={style.title_left}>Редактирование профиля</h1>
                     <button onClick={() => setEditActive(false)}
@@ -58,8 +58,6 @@ const EditProfile: FC<IEditProfile> = ({setEditActive}) => {
                 <label htmlFor="inputTag" className={style.addFile}>
                     <img src={addFileImg} alt=""/>
                     <span>Добавьте фото профиля</span>
-                    {/*<input {...register('avatar', { required:"Введите название" })}  className={style.file}/>
-                          <input className={style.file} id="inputTag" type="text"/>*/}
                 </label>
 
                 <div className={style.inputArea}>

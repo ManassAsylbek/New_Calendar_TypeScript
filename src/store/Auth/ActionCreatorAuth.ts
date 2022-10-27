@@ -8,12 +8,11 @@ import {AppDispatch} from "../store";
 import {AuthFetching, AuthFetchingSuccess, AuthFetchingError, removeUser, AddToken,reloadUser} from "./authSlice"
 import {IUserSignUp} from "../../Intarface/IUser";
 import {getEvents} from "../events/ACEvents";
-import {addEvent, eventsFetchingSuccess} from "../events/eventSlice";
+import {eventsFetchingSuccess} from "../events/eventSlice";
 import {markerFetchingSuccess} from "../Marker/markerSlice";
 import {getMarkers} from "../Marker/ActionCreatorMarker";
 
 import {message} from "antd";
-import {fetchUser} from "../User/ActionCreator";
 
 const key = 'event';
 export const signOut = () => async (dispatch: AppDispatch) => {
@@ -125,6 +124,7 @@ export const signInWithEmail = (data: { email: string, password: string }) => as
     } catch (e) {
         // @ts-ignore
         dispatch(AuthFetchingError(e.message))
+        message.error({content: 'Ошибка: Неправильный Email или пароль.Повтарите попытку. ', key, duration: 2});
     }
 }
 
@@ -145,19 +145,18 @@ export const deleteProfile = (id: string) => async (dispatch: AppDispatch) => {
 export const updateProfile = (data: IUserSignUp) => async (dispatch: AppDispatch) => {
     try {
         message.loading({content: 'Загрузка...', key});
-      /*  dispatch(AuthFetching())*/
         await setUpdateDoc("users", data.id, {
             displayName: data.displayName, department: data.department, position: data.position,
-            /*photoURL: "https://cdn.pixabay.com/photo/2016/01/25/19/48/man-1161337__340.jpg",*/
-            id: data.id, email: data.email
+            id: data.id, email: data.email,photoURL: data.photoURL?data.photoURL:""
         })
         await updateAuthUser({displayName: data.displayName, photoURL: data.photoURL})
         await updateEmailAuthUser(data.email)
         await updatePasswordAuthUser(data.password)
-        dispatch(reloadUser())
         message.success({content: 'Профиль редоктирован', key, duration: 2});
-    } catch (e) {
+        dispatch(reloadUser())
 
+    } catch (e) {
+        dispatch(AuthFetchingError("Ошибка"))
     }
 }
 

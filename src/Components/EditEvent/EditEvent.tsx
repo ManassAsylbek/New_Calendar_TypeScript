@@ -15,22 +15,19 @@ import {
     optionAccess, optionMarker,
     optionRepeat,
     optionRoom,
-    optionTime,
+    optionTime, SelectFooterStyles,
     SelectStyles,
     SelectTimeStyles
 } from "../../Constants/option";
 import {IOption} from "../../Intarface/isShippingField";
 import {getValue} from "../../hooks/getValue";
 import {IEvent} from "../../Intarface/IEvent";
-import {markerAPI} from "../../services/markerServices";
-import {eventAPI} from "../../services/eventServices";
 import Modal from "../../Modal/modal";
 import InviteParticipants from "../inviteParticipants/inviteParticipants";
-import {userAPI} from "../../services/userServicse";
 import {useAppDispatch, useAppSelector} from "../../hooks/redux";
 import {IMarker} from "../../Intarface/IMarker";
-import {setDeleteEvent, setUpdateEvent} from "../../store/events/ACEvents";
-import person from "../../Media/icons/person.svg";
+import {setDeleteEvent, setEvents, setUpdateEvent} from "../../store/events/ACEvents";
+import person from "../../Media/images/avatar.png";
 
 interface NewEventProps {
     setActive: (pt: boolean) => void
@@ -233,7 +230,7 @@ const EditEvent: FC<NewEventProps> = ({setActive, event}) => {
                 </div>
                 <div className={style.room}>
                     <div>
-                        <h4>Календарь</h4>
+                        <h4>Метки</h4>
                         {markers && <Controller control={control}
                                                 name="marker"
                                                 rules={{
@@ -242,7 +239,7 @@ const EditEvent: FC<NewEventProps> = ({setActive, event}) => {
                                                 defaultValue={event.marker ? event.marker : markers[0].value}
                                                 render={({field: {onChange, value}, fieldState: {error}}) => <>
                                                     <ReactSelect
-                                                        styles={SelectStyles}
+                                                        styles={SelectFooterStyles}
                                                         className={style.endTime}
                                                         placeholder={markers[0].label}
                                                         options={markers}

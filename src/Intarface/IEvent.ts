@@ -17,7 +17,6 @@ export interface IEvent {
     status:IStatus
 }
 
-/*
 export interface IEventAdd{
     user:string
     title: string
@@ -25,10 +24,10 @@ export interface IEventAdd{
     startTime: string
     endTime: string
     repeat: string
-    author:string
+    author:IUser|null
     participant: Array<IUser>
     room: string
-    marker: string
+    marker: string|null
     access: string
     status:IStatus
-}*/
+}

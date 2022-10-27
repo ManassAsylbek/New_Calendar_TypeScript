@@ -5,16 +5,21 @@ import {
     setDeleteDoc,
     setUpdateDoc,
 } from "../../utilits/firebase_utilits";
-import {eventsFetching, eventsFetchingError, eventsFetchingSuccess, addEvent, isRoom} from "./eventSlice";
+import {eventsFetching, eventsFetchingError, eventsFetchingSuccess, addEvent} from "./eventSlice";
 import {IEvent} from "../../Intarface/IEvent";
 import {IMarker} from "../../Intarface/IMarker";
 import {message} from "antd";
 
 const key = 'event';
 
-export const setUpdateEvent = (uId: string, docId: string, data: IMarker | IEvent) => async (dispatch: AppDispatch) => {
+export const setUpdateEvent = (uId: string, docId: string, data: IEvent) => async (dispatch: AppDispatch) => {
     try {
         message.loading({content: 'Загрузка...', key});
+
+       /* for (let i = 0; i < data.participant.length; i++) {  //sent  participant users
+            await setUpdateDoc(`events_${data.participant[i].id}`, docId, data)
+        }*/
+
         await setUpdateDoc(uId, docId, data)
         dispatch(addEvent())
         message.success({content: 'Событие успешно редактирована', key, duration: 2});
@@ -56,17 +61,17 @@ export const setEvents = (id: string, event: IEvent) => async (dispatch: AppDisp
                 await createEventsDocumentFromAuth(event.participant[i].id, event)
             }
         }
-        dispatch(addEvent())
+
         const events = await getEventsAndDocuments(id)
 
-        // message.success('Событие успешно добавлена');
         dispatch(eventsFetchingSuccess(events))
         dispatch(addEvent())
         message.success({content: 'Событие успешно добавлена', key, duration: 2});
     } catch
-        (e) {
-// @ts-ignore
-        dispatch(eventsFetchingError(e.message))
+        (error) {
+        dispatch(eventsFetchingError("Ошибка"))
+        // @ts-ignore
+        console.log(error.message,)
         message.error({content: 'Ошибка', key, duration: 2});
     }
 }

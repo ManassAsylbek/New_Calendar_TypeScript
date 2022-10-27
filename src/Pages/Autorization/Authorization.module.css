@@ -169,3 +169,20 @@
     color: #4B84F4;
 
 }
+
+.test{
+    margin-top: 15px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 19px;
+
+    color: #2E2E2E;
+}
+.testEmail{
+    margin-top: 10px;
+}
+.testPass{
+    margin-top: 10px;
+}

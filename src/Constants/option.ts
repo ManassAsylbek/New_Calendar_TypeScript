@@ -78,6 +78,24 @@ export const SelectStyles = {
     }),
 
 }
+
+
+export const SelectFooterStyles = {
+    input:(style: any) => ({...style,
+        display:'flex',
+        alignItems: 'center',
+        height:30,
+    }),
+    menu:(style: any)=>({...style,
+        height:125,
+        overflow:"auto",
+    }),
+    option: (style: any) => ({...style,
+        overflow:"auto",
+
+    }),
+
+}
 export const SelectTimeStyles = {
     input:(style: any) => ({...style,
         display:'flex',

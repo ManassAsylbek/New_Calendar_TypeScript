@@ -9,9 +9,10 @@ import Modal from "../../../Modal/modal";
 import NewEvent from "../../../Components/newEvent/newEvent";
 import Marker from "../../../Components/marker/Marker";
 import EditMarker from "../../../Components/EditMarker/EditMarker";
+import {isMarker} from "../../../store/events/eventSlice";
 import {IMarker} from "../../../Intarface/IMarker";
 import {useAppDispatch, useAppSelector} from "../../../hooks/redux";
-import {setUpdateEvent} from "../../../store/events/ACEvents";
+import {setUpdateEvent,} from "../../../store/events/ACEvents";
 import {setDeleteMarker} from "../../../store/Marker/ActionCreatorMarker";
 import Preloader from "../../../Components/Preloader/Preloader";
 
@@ -23,17 +24,22 @@ const Sidebar: FC = () => {
     const [eventActive, setEventActive] = useState(false)
     const [markerActive, setMarkerActive] = useState(false)
     const [editMarkerActive, setEditMarkerActive] = useState(false)
-    const [limit, setLImit] = useState(10)
     const [marker, setMarker] = useState<IMarker>({label: "", value: "", id: ""})
     const {id} = useAppSelector(state => state.authSlice)
-    const {errorEvent,foreigner,events} = useAppSelector(state => state.eventSlice)
-    const {markers, isLoadingMarker, errorMarker} = useAppSelector(state => state.markerSlice)
+    const {errorEvent, foreigner, events, selectMarker} = useAppSelector(state => state.eventSlice)
+    const {markers, isLoadingMarker,} = useAppSelector(state => state.markerSlice)
 
 
     const dispatch = useAppDispatch()
     const onEditMarker = (marker: IMarker) => {
         setMarker(marker)
         setEditMarkerActive(!editMarkerActive)
+    }
+    const getMarker = (marker: IMarker) => {
+        setMarker(marker)
+        marker.value === selectMarker
+            ? dispatch(isMarker(""))
+            : dispatch(isMarker(marker.value))
     }
     const removeMarker = (marker: IMarker) => {
         events && events.forEach(event => {
@@ -72,17 +78,33 @@ const Sidebar: FC = () => {
                 {errorEvent && <h1>error</h1>}
                 {isLoadingMarker
                     ? <Preloader loader={false}/>
-                    : <>{markers && markers.map((m) =>
-                        <div key={m.id} className={style.mark}
-                            /*onClick={() => onEditMarker(m)}*/>
-                            <div style={{backgroundColor: m.value}} className={style.colorBox}
-                                 onClick={() => !foreigner ? onEditMarker(m) : ""}/>
-                            <div onClick={() => !foreigner ? onEditMarker(m) : ""}>{m.label}</div>
-                            {!foreigner &&
-                            <img src={edit} alt="" onClick={() => onEditMarker(m)} className={style.edit}/>}
-                            {!foreigner && <img src={basketImg} alt="" onClick={() => removeMarker(m)}
-                                                className={style.delete}/>}
-                        </div>)}
+                    : <>
+                        <div className={style.mark}>
+                            <div className={style.markerName} onClick={() => getMarker({
+                                label: "Без метки",
+                                value: "null",
+                                id: "#808080"
+                            })}
+                                 style={{backgroundColor: selectMarker === "null" ? "#808080" : "transparent"}}>
+                                <div style={{backgroundColor: "#808080"}} className={style.colorBox}/>
+                                <div>Без метки</div>
+                            </div>
+                        </div>
+
+                        {markers && markers.map((m) =>
+                            <div key={m.id} className={style.mark}
+                                /*onClick={() => onEditMarker(m)}*/>
+                                <div className={style.markerName} onClick={() => getMarker(m)}
+                                     style={{backgroundColor: selectMarker === m.value ? m.value : "transparent"}}>
+                                    <div style={{backgroundColor: m.value}} className={style.colorBox}/>
+                                    <div>{m.label}</div>
+                                </div>
+
+                                {!foreigner &&
+                                <img src={edit} alt="" onClick={() => onEditMarker(m)} className={style.edit}/>}
+                                {!foreigner && <img src={basketImg} alt="" onClick={() => removeMarker(m)}
+                                                    className={style.delete}/>}
+                            </div>)}
                     </>}
             </ul>
 

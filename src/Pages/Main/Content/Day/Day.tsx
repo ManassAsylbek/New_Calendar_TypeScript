@@ -22,21 +22,13 @@ const Day: FC = () => {
     const [timeEvent, setTimeEvent] = useState<string>()
     const [event, setEvent] = useState<IEvent | undefined>()
     const {date} = useAppSelector(state => state.dateSlice)
-
+    const {foreigner} = useAppSelector(state => state.eventSlice)
     const {day, day_date} = useWeekDate()
 
-    const [deleteEvent, {isSuccess: deleteEventSuccess}] = eventAPI.useDeleteEventsMutation()
-    const [updateEvent, {
-        isSuccess: updateEventSuccess,
-        isError: updateEventError,
-        isLoading: updateEventLoading,
-    }] = eventAPI.useUpdateEventsMutation()
-
-
-    /*updateEventSuccess && toast.success("Событие успешно редактирована")*/
-
-    /*  updateEventLoading && message.loading('Action in progress..', 0);*/
-
+    const setDate = (time:string) => {
+        !foreigner &&  setEventActive(true)
+        setTimeEvent(time)
+    }
 
     return (
         <>
@@ -58,7 +50,7 @@ const Day: FC = () => {
                     <div>
                         {
                             times.map((t) =>
-                                <div key={t.id} onClick={() => setTimeEvent(t.time)}
+                                <div key={t.id} onClick={() => setDate(t.time)}
                                      className={style.hours_items}>
                                     <Event
                                         setEditEvent={setEditEventActive}

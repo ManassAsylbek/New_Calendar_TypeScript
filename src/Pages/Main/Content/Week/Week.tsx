@@ -21,21 +21,14 @@ const Week: FC = () => {
     const [editEventActive, setEditEventActive] = useState(false)
     const [event, setEvent] = useState<IEvent | undefined>()
     const [timeEvent, setTimeEvent] = useState<string>()
-
+    const {foreigner} = useAppSelector(state => state.eventSlice)
     const {wd, wno,} = useWeekDate()
     const dispatch = useAppDispatch()
     const {addDate} = dateSlice.actions
 
-/*    const [deleteEvent, {isSuccess: deleteEventSuccess}] = eventAPI.useDeleteEventsMutation()
-    const [updateEvent, {
-        isSuccess: updateEventSuccess,
-        isError: updateEventError,
-        isLoading: updateEventLoading
-    }] = eventAPI.useUpdateEventsMutation()*/
-
 
     const setDate = (time:string,date:string) => {
-        setEventActive(true)
+        !foreigner &&  setEventActive(true)
         dispatch(addDate( date))
         setTimeEvent(time)
     }
@@ -94,8 +87,6 @@ const Week: FC = () => {
                                                 children={<EditEvent
                                                     event={event}
                                                     setActive={setEditEventActive}/>}/>}
-   {/*         {deleteEventSuccess && toast.success("Событие успешно удалено")}
-            {updateEventSuccess && toast.success("Событие успешно редактирована")}*/}
         </>
     );
 };

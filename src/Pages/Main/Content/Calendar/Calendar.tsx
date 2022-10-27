@@ -32,7 +32,7 @@ const App: React.FC = () => {
     const [eventActive, setEventActive] = useState(false)
 
     const [event, setEvent] = useState<IEvent | undefined>()
-    const {events,room} = useAppSelector(state => state.eventSlice)
+    const {events, room, selectMarker} = useAppSelector(state => state.eventSlice)
 
     const monthCellRender = (value: Moment) => {
         const num = getMonthData(value);
@@ -52,6 +52,12 @@ const App: React.FC = () => {
         let newEvent = events
         if (room && events) {
             newEvent = events.filter(event => event.room === room)
+        }
+        if (selectMarker && events) {
+            newEvent = events.filter(event => event.marker === selectMarker)
+        }
+        if (selectMarker==="null" && events) {
+            newEvent = events.filter(event => event.marker === null)
         }
 
         if (newEvent)
@@ -79,8 +85,8 @@ const App: React.FC = () => {
                              style={{
                                  display: "inline-block",
                                  background: !foreigner
-                                     ? item.marker ? item.marker : "gray"
-                                     : "gray",
+                                     ? item.marker ? item.marker : "#808080"
+                                     : "#808080",
                                  width: 10,
                                  //color: item.marker?item.marker:"gray",
                                  height: 10,
@@ -115,7 +121,7 @@ const App: React.FC = () => {
             onChange={onChange}
             mode="month"
             fullscreen={true}
-            onSelect={() => setEventActive(true)}
+            onSelect={() => !foreigner ? setEventActive(true) : ""}
 
         />
         {eventActive && <Modal setActive={setEventActive} active={eventActive}

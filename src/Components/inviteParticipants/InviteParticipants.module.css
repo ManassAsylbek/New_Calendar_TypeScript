@@ -125,6 +125,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
+    border-top: 1px solid rgba(46, 46, 46, 0.08);
 }
 .chooseAvatar{
     width: 36px;

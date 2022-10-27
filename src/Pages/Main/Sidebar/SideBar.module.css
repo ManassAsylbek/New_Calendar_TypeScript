@@ -75,13 +75,22 @@
 .mark{
     display: grid;
     align-items: center;
-    grid-template-columns: 1fr 10fr 1fr 1fr;
+    grid-template-columns:  11fr 1fr 1fr;
     margin-left: 16px;
     margin-right: 16px;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
     cursor: pointer;
     column-gap: 8px;
 
+}
+
+.markerName{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    column-gap: 8px;
+    height: 16px;
+    border-radius: 4px;
 }
 .colorBox{
     width: 16px;

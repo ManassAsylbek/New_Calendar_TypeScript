@@ -71,20 +71,41 @@
 }
 
 .avatarImg {
-    /*    position: absolute;*/
+        position: absolute;
     width: 100%;
     height: 100%;
     border-radius: 100%;
     object-fit: cover
 }
 
-.avatarEdit{
 
+.edit{
+    color: rgba(0,0,0,0);
 }
+
+.edit:hover{
+    height: 56px;
+    width: 56px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 12px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    background-color: rgba(0,0,0,0.4);
+    color: #FFFFFF;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
 
 .info {
     display: grid;
     justify-items: center;
+    align-items: center;
+    position: relative;
 }
 
 .name {

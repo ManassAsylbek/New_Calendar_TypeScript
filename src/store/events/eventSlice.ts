@@ -10,6 +10,7 @@ interface eventState {
     reloadEvent: number
     foreigner: IUser|null
     room:string
+    selectMarker:string
 }
 
 const initialState: eventState = {
@@ -19,7 +20,8 @@ const initialState: eventState = {
     errorEvent: null,
     reloadEvent: 0,
     foreigner: null,
-    room:""
+    room:"",
+    selectMarker:""
 
 }
 
@@ -52,8 +54,11 @@ export const eventSlice = createSlice({
         },
         isRoom:(state,action:PayloadAction<string>)=>{
             state.room = action.payload
+        },
+        isMarker:(state,action:PayloadAction<string>)=>{
+            state.selectMarker = action.payload
         }
     },
 })
-export const {eventsFetching, eventsFetchingSuccess, eventsFetchingError, addEvent,isForeigner,isRoom} = eventSlice.actions
+export const {eventsFetching, eventsFetchingSuccess, eventsFetchingError, addEvent,isForeigner,isRoom,isMarker} = eventSlice.actions
 export default eventSlice.reducer

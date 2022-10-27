@@ -5,7 +5,10 @@ import close from '../../Media/icons/close.svg'
 import {useAppDispatch, useAppSelector} from "../../hooks/redux";
 import person from "../../Media/images/avatar.png";
 import {signOut} from "../../store/Auth/ActionCreatorAuth";
-import {isForeigner} from "../../store/events/eventSlice";
+import {addEvent, isForeigner} from "../../store/events/eventSlice";
+import {dateSlice} from "../../store/Date/dateSlice";
+import {isRoom,isMarker} from "../../store/events/eventSlice";
+import {addMarker} from "../../store/Marker/markerSlice";
 
 
 
@@ -18,7 +21,7 @@ interface UserProfileProps {
 
 const UserProfile: FC<UserProfileProps> = ({setActive,setEditActive}) => {
     const {user} = useAppSelector(state => state.authSlice)
-/*    const [editActive, setEditActive] = useState(false)*/
+    const {changeDateFormat} = dateSlice.actions
     const dispatch = useAppDispatch()
     const editProfile =()=>{
         setEditActive(true)
@@ -26,7 +29,12 @@ const UserProfile: FC<UserProfileProps> = ({setActive,setEditActive}) => {
     }
 
     const logout = () => {
+        dispatch(isRoom(""))
+        dispatch(isMarker(""))
         dispatch(signOut())
+        dispatch(changeDateFormat("month"))
+        dispatch(addEvent())
+        dispatch(addMarker())
         dispatch(isForeigner(null))
     };
     return (
@@ -39,6 +47,7 @@ const UserProfile: FC<UserProfileProps> = ({setActive,setEditActive}) => {
                 <div className={style.info}>
                     <div className={style.avatar} onClick={editProfile}>
                         <img className={style.avatarImg} src={user.photoURL?user.photoURL:person} alt=""/>
+                        <span className={style.edit}>Изменить данные</span>
                     </div>
                     <div className={style.name}>{user.displayName}</div>
                     <div className={style.email}>{user.email}</div>

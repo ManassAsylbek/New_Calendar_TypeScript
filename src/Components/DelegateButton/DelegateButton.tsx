@@ -5,11 +5,9 @@ import delegate from "../../Media/icons/delegate.svg";
 import rejected from "../../Media/icons/rejected.svg";
 import Modal from "../../Modal/modal";
 import InviteParticipants from "../inviteParticipants/inviteParticipants";
-import {userAPI} from "../../services/userServicse";
-import {eventAPI} from "../../services/eventServices";
 import {IEvent} from "../../Intarface/IEvent";
 import {IUser} from "../../Intarface/IUser";
-import {setEvents, setUpdateEvent} from "../../store/events/ACEvents";
+import {setUpdateEvent} from "../../store/events/ACEvents";
 import {useAppDispatch, useAppSelector} from "../../hooks/redux";
 
 
@@ -26,7 +24,7 @@ const DelegateButton: FC<DelegateButtonType> = ({event}) => {
 
     const status:(status:string)=>void = (status) => {
         const newEvent = {
-            ...event, status: {label:status, value: null,new:false}
+            ...event, status: {label:status, value: null,new:false},marker:null
         }//
         dispatch(setUpdateEvent(`events_${id}`, event.id, newEvent))
 

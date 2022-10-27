@@ -12,7 +12,6 @@ import Modal from "../../../Modal/modal";
 import Notification from "../../../Components/Notification/Notification";
 import Search from "../../../Components/Search/Search";
 import UserProfile from "../../../Components/UserProfile/UserProfile";
-
 import {isForeigner, isRoom} from "../../../store/events/eventSlice";
 import {getEvents} from "../../../store/events/ACEvents";
 import {getMarkers} from "../../../store/Marker/ActionCreatorMarker";
@@ -28,7 +27,7 @@ const Header: FC = () => {
     const [editActive, setEditActive] = useState(false)
     const {nextDate, prevDate, todayDate, setValue} = useMomentDate()
 
-    const {format} = useAppSelector(state => state.dateSlice)
+    const {format, dateFormat} = useAppSelector(state => state.dateSlice)
     const {foreigner, room} = useAppSelector(state => state.eventSlice)
     const {user, id} = useAppSelector(state => state.authSlice)
     const [open, setOpen] = useState(false);
@@ -40,9 +39,9 @@ const Header: FC = () => {
         dispatch(getEvents(id))
         dispatch(isForeigner(null))
     };
-const getRoom = () => {
-    dispatch(isRoom(""))
-}
+    const getRoom = () => {
+        dispatch(isRoom(""))
+    }
 
     const handleOpenChange = (newOpen: boolean) => {
         setOpen(newOpen);
@@ -53,7 +52,7 @@ const getRoom = () => {
             <div className={style.left}>
                 <button className={style.today} onClick={todayDate}>Сегодня
                 </button>
-                <select className={style.day} id="" onChange={setValue}>
+                <select className={style.day} id="" onChange={setValue} value={dateFormat}>
                     <option value="day">День</option>
                     <option value="week">Неделя</option>
                     <option value="month">Месяц</option>

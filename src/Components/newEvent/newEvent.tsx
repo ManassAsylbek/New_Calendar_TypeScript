@@ -14,14 +14,13 @@ import Input from "../formControl/Input";
 import ReactSelect from 'react-select';
 import {
     optionAccess,
-    optionMarker,
     optionRepeat,
     optionRoom,
-    optionTime, SelectStyles,
+    optionTime, SelectStyles, SelectFooterStyles,
     SelectTimeStyles
 } from "../../Constants/option";
 import {getValue} from "../../hooks/getValue";
-import {IEvent} from "../../Intarface/IEvent";
+import {IEvent, IEventAdd} from "../../Intarface/IEvent";
 import InviteParticipants from "../inviteParticipants/inviteParticipants";
 import Modal from "../../Modal/modal";
 import {useTime} from "../../hooks/useTime";
@@ -29,7 +28,8 @@ import {useAppDispatch, useAppSelector} from "../../hooks/redux";
 import {setEvents} from "../../store/events/ACEvents";
 import {IUser} from "../../Intarface/IUser";
 import {IMarker} from "../../Intarface/IMarker";
-import person from "../../Media/icons/person.svg";
+import person from "../../Media/images/avatar.png";
+
 
 interface NewEventProps {
     setActive: (pt: boolean) => void
@@ -40,25 +40,26 @@ interface NewEventProps {
 
 const NewEvent: FC<NewEventProps> = ({setActive, date, time}) => {
     const [inviteActive, setInviteActive] = useState(false)
-    /*   const {data: markers, error, isLoading} = markerAPI.useFetchAllMarkersQuery(10)*/
     const {markers} = useAppSelector(state => state.markerSlice)
-    const {user,id} = useAppSelector(state => state.authSlice)
+    const {user, id} = useAppSelector(state => state.authSlice)
     const {startTime, endTime} = useTime(time)
     const dispatch = useAppDispatch()
     const {
         register,
         handleSubmit,
-        formState:{errors},
+        formState: {errors},
         control
     } = useForm<IEvent>({mode: 'onChange'})
+
 
     let userArray: IUser[] = []
     if (user)
         userArray.push(user)
 
-    const onSubmit: SubmitHandler<IEvent> = (data) => {
+    const onSubmit: SubmitHandler<IEvent> = async (data) => {
 
-        const newData: IEvent = {...data, author: user, status: {label: null, value: null,new:true}}
+        const newData: IEvent = {...data, author:user, id: "def", status: {label: null, value: null, new: true}}
+        console.log(newData)
         dispatch(setEvents(id, newData))
         setActive(false)
     }
@@ -179,9 +180,9 @@ const NewEvent: FC<NewEventProps> = ({setActive, date, time}) => {
                                     </div>
                                     <div className={style.person}>
                                         {value && value.map(user =>
-                                            <div className={style.chooseAvatar}>
+                                            <div className={style.chooseAvatar} key={user.id}>
                                                 <div className={style.Avatar}>
-                                                    <img src={user.photoURL?user.photoURL:person}
+                                                    <img src={user.photoURL ? user.photoURL : person}
                                                          alt="" className={style.chooseAvatarImg}/>
                                                     <div>
                                                         <div className={style.name}>{user.displayName}</div>
@@ -232,7 +233,7 @@ const NewEvent: FC<NewEventProps> = ({setActive, date, time}) => {
                                                 }}
                                                 render={({field: {onChange, value}, fieldState: {error}}) => <>
                                                     <ReactSelect
-                                                        styles={SelectStyles}
+                                                        styles={SelectFooterStyles}
                                                         className={style.endTime}
                                                         placeholder={markers[0].label}
                                                         options={markers}
@@ -266,7 +267,7 @@ const NewEvent: FC<NewEventProps> = ({setActive, date, time}) => {
                     </div>
                 </div>
                 <div className={style.footer}>
-                    <button onClick={handleSubmit(onSubmit)}>Сохранить</button>
+                    <button onClick={handleSubmit(onSubmit)} className={style.save}>Сохранить</button>
                 </div>
             </form>
         </div>
@@ -274,3 +275,4 @@ const NewEvent: FC<NewEventProps> = ({setActive, date, time}) => {
 };
 
 export default NewEvent;
+

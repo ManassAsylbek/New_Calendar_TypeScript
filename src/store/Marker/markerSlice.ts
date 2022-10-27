@@ -27,6 +27,7 @@ export const markerSlice = createSlice({
         markerFetchingSuccess: (state, action: PayloadAction<IMarker[]>) => {
             state.isLoadingMarker = false;
             state.markers = action.payload;
+            /*state.markers = [{label: "Без метки", value: "gray", id: "gray"}, ...action.payload];*/
             state.errorMarker = '';
         },
         markerFetchingError: (state, action: PayloadAction<string>) => {
