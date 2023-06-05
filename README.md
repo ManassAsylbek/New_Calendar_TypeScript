@@ -1,5 +1,6 @@
-![20230602_205720](https://github.com/urbanbboy/star-wars-app/assets/102015315/5dfa87de-0a31-4fa4-96eb-9724ee3db3e8)
-
+<p align="center">
+ <img width="600" src="./public/7oamow.gif" alt="snake"/>
+</p>
 # Calendar:
 
 Make an MVP for internal communication and organizing meetings of megacom employees
